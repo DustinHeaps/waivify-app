@@ -1,10 +1,10 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "./AuthProvider";
-import ClerkButtons from '@/components/ClerkButtons';
+import ClerkButtons from "@/components/ClerkButtons";
+import PostHogWrapper from '@/lib/posthog/posthogWrapper';
 
 const inter = Inter({ subsets: ["latin"] });
-
 
 export const metadata = {
   title: "Waivify – Digital Waivers Made Simple",
@@ -81,14 +81,14 @@ export default function RootLayout({
 }>) {
   return (
     <AuthProvider>
-      <html lang='en'>
-        <body
-           className={inter.className}
-        >
-           <ClerkButtons />
-          {children}
-        </body>
-      </html>
+      <PostHogWrapper>
+        <html lang='en'>
+          <body className={inter.className}>
+            <ClerkButtons />
+            {children}
+          </body>
+        </html>
+      </PostHogWrapper>
     </AuthProvider>
   );
 }
