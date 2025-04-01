@@ -2,8 +2,8 @@ import { getSignatureById } from "@/app/actions/signature";
 
 import { format } from "date-fns";
 import { notFound } from "next/navigation";
-import { ReturnHomeButton } from '../../components/ReturnHomeButton';
-import { SendEmailButton } from '../../components/SendEmailButton';
+import { ReturnHomeButton } from "../../components/ReturnHomeButton";
+import { SendEmailButton } from "../../components/SendEmailButton";
 
 export const metadata = {
   title: "Waiver Signed – Confirmation | Waivify",
@@ -21,9 +21,10 @@ export const metadata = {
 export default async function ConfirmationPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const signature = await getSignatureById(params.id);
+  const { id } = await params;
+  const signature = await getSignatureById(id);
 
   if (!signature) {
     notFound();
@@ -38,10 +39,7 @@ export default async function ConfirmationPage({
         <p className='text-sm text-gray-500 mt-4 text-center'>
           Your waiver has been securely submitted. All waivers are legally
           binding under our{" "}
-          <a
-            href='/policy'
-            className='underline hover:text-teal-400'
-          >
+          <a href='/policy' className='underline hover:text-teal-400'>
             Digital Signature Policy
           </a>
           .
