@@ -6,7 +6,13 @@ import { z } from "zod";
 import jwt from "jsonwebtoken";
 import { db } from "@/lib/prisma";
 import { getSignatureById } from "./signature";
-import { auth } from "@clerk/nextjs/dist/types/server";
+
+import WaiverConfirmationEmail from "../waiver/components/WaiverConfirmationEmail";
+import { Resend } from "resend";
+import { getUserById } from "./user";
+import { auth } from "@clerk/nextjs/server";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const WaiverSchema = z.object({
   name: z.string(),
@@ -88,32 +94,33 @@ export async function getWaiverById(waiverId: string) {
   }
 }
 
-// export async function sendEmail(id: string, waiverId: string) {
-//   const { userId } =  await auth();
-//   if (!userId) throw new Error("Unauthorized");
+export async function sendEmail(id: string, waiverId: string) {
+  const { userId } = await auth();
 
-//   const user = await clerkClient.users.getUser(userId);
-//   const email = user.emailAddresses[0].emailAddress;
+  if (!userId) throw new Error("Unauthorized");
 
-//   const signature = await getSignatureById(id);
-//   if (!signature) throw new Error("Signature not found");
+  const user = await getUserById(userId);
+  if (!user) throw new Error("User not found");
 
-//   const response = await resend.emails.send({
-//     from: process.env.EMAIL_FROM as string,
-//     to: email, // user's email
-//     subject: "✅ Waiver Confirmation",
-//     react: WaiverConfirmationEmail({
-//       name: signature.name,
-//       id,
-//       date: signature.uploadedAt.toISOString(),
-//       waiverId,
-//     }),
-//   });
+  const email = user.email;
 
-//   await trackEvent({
-//     event: "waiver_email_sent",
-//     distinctId: id,
-//   });
+  const signature = await getSignatureById(id);
+  if (!signature) throw new Error("Signature not found");
 
-//   return { status: "success" };
-// }
+  const response = await resend.emails.send({
+    from: process.env.EMAIL_FROM as string,
+    to: email, // user's email
+    subject: "✅ Waiver Confirmation",
+    react: WaiverConfirmationEmail({
+      name: signature.name,
+      id,
+      date: signature.uploadedAt.toISOString(),
+      waiverId,
+    }),
+  });
+  if (response.error) {
+    console.error("Resend failed:", response.error);
+    throw new Error("Email send failed");
+  }
+  return { status: "success" };
+}

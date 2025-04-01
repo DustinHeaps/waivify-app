@@ -60,6 +60,19 @@ export async function updateUser(
   });
 }
 
+export async function getUserById(userId: string) {
+  try {
+      const user = await db.user.findUnique({
+          where: { clerkId: userId },
+      });
+
+      return user;
+  } catch (error) {
+      console.error("Failed to get user by ID:", error);
+      return null;
+  }
+}
+
 export async function resetMonthlyWaiverCounts() {
   const oneMonthAgo = subMonths(new Date(), 1);
 

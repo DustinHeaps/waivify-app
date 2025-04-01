@@ -58,14 +58,14 @@ export default async function ConfirmationPage({
         <ReturnHomeButton />
       </div>
 
-      <p className='text-sm mt-5'>
+      <div className='text-sm mt-5'>
         <span>Need</span> a copy? <br />
         <div className='flex justify-center relative'>
           {/* <WaiverDownloadButton waiverId={signature.waiverId} /> */}
           or
-          {/* <SendEmailButton id={signature.id} waiverId={signature.waiverId} /> */}
+          <SendEmailButton id={signature.id} waiverId={signature.waiverId} />
         </div>
-      </p>
+      </div>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-// import { sendEmail } from "@/app/actions/waiver";
+import { sendEmail } from '@/app/actions/waiver';
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 
@@ -16,7 +16,7 @@ export function SendEmailButton({
 
   const handleClick = async () => {
     try {
-    //   await sendEmail(id, waiverId);
+      await sendEmail(id, waiverId);
       setEmailSent(true);
       setTimeout(() => setEmailSent(false), 3000);
     } catch (err) {
