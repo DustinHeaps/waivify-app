@@ -9,10 +9,19 @@ import { Progress } from "@radix-ui/react-progress";
 import { Badge } from "@/components/ui/badge";
 import CompanyInfo from "./components/CompanyInfo";
 import { redirect, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { checkout } from "../actions/stripe";
 
 export default function AccountPage() {
+  return (
+    <Suspense fallback={null}>
+      <AccountPageContent />
+    </Suspense>
+  );
+}
+
+
+  function AccountPageContent() {
   const { user } = useUser();
   const router = useRouter();
   const searchParams = useSearchParams();
