@@ -1,16 +1,10 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "./AuthProvider";
+import ClerkButtons from '@/components/ClerkButtons';
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+const inter = Inter({ subsets: ["latin"] });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata = {
   title: "Waivify – Digital Waivers Made Simple",
@@ -89,8 +83,9 @@ export default function RootLayout({
     <AuthProvider>
       <html lang='en'>
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+           className={inter.className}
         >
+           <ClerkButtons />
           {children}
         </body>
       </html>
