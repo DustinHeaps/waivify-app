@@ -1,6 +1,4 @@
 import Link from "next/link";
-import { headers } from "next/headers";
-import { log404 } from "./actions/waiver";
 
 export const metadata = {
   title: "Page Not Found – Waivify",
@@ -9,9 +7,6 @@ export const metadata = {
 };
 
 export default async function NotFound() {
-  const pathname = (await headers()).get("x-next-url") || "unknown";
-  await log404(pathname);
-
   return (
     <div className='max-w-md mx-auto mt-20 bg-white p-6 rounded-xl shadow-md text-center'>
       <div className='bg-white rounded-xl p-8 max-w-md text-center'>
