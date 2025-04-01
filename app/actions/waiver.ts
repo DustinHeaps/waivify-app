@@ -124,3 +124,38 @@ export async function sendEmail(id: string, waiverId: string) {
   }
   return { status: "success" };
 }
+
+export async function markWaiverViewed(waiverId?: string) {
+  if (!waiverId) {
+    await trackEvent({
+      event: "waiver_viewed",
+      distinctId: "server",
+    });
+
+    return { success: false };
+  }
+
+  await db.waiver.update({
+    where: { id: waiverId },
+    data: { viewedAt: new Date() },
+  });
+
+  return { success: true };
+}
+
+export async function getWaiverByToken(token: string) {
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
+      waiverId: string;
+    };
+
+    const waiver = await db.waiver.findUnique({
+      where: { id: decoded.waiverId },
+    });
+
+    return waiver;
+  } catch (error) {
+    console.error("[getWaiverByToken]", error);
+    return null;
+  }
+}
