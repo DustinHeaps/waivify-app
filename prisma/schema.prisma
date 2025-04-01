@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String   @id @default(cuid())
+  clerkId       String   @unique
+  email         String   @unique
+  name          String?
+  logoUrl       String?
+  companyName   String?
+  plan          String   @default("free")
+  waiverCount   Int      @default(0)
+  teamMembers   Int      @default(1)
+  feedbackGiven Boolean  @default(false)
+  nextSteps     Json
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  lastActiveAt  DateTime @default(now())
+}
+
+model Signature {
+  id         String   @id @default(cuid())
+  name       String
+  date       DateTime
+  fileKey    String
+  uploadedAt DateTime @default(now())
+
+  waiver   Waiver @relation(name: "WaiverSignature", fields: [waiverId], references: [id], onDelete: Cascade)
+  waiverId String @unique
+}
+
+model Waiver {
+  id        String    @id @default(cuid())
+  token     String    @unique
+  name      String
+  date      DateTime  @default(now())
+  ipAddress String
+  terms     Boolean
+  liability Boolean
+  viewedAt  DateTime?
+  archived  Boolean   @default(false)
+
+  signature Signature? @relation(name: "WaiverSignature")
+}
