@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { notFound } from "next/navigation";
 import { ReturnHomeButton } from "../../components/ReturnHomeButton";
 import { SendEmailButton } from "../../components/SendEmailButton";
+import WaiverDownloadButton from '../../components/WaiverDownloadButton';
 
 export const metadata = {
   title: "Waiver Signed – Confirmation | Waivify",
@@ -61,7 +62,7 @@ export default async function ConfirmationPage({
       <div className='text-sm mt-5'>
         <span>Need</span> a copy? <br />
         <div className='flex justify-center relative'>
-          {/* <WaiverDownloadButton waiverId={signature.waiverId} /> */}
+          <WaiverDownloadButton waiverId={signature.waiverId} />
           or
           <SendEmailButton id={signature.id} waiverId={signature.waiverId} />
         </div>
