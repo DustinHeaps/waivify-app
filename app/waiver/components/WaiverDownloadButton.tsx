@@ -36,7 +36,7 @@ export default function WaiverDownloadButton({ waiverId }: Props) {
       className='text-blue-500 hover:underline mr-1'
       disabled={isPending}
     >
-      Download Waiver
+        {isPending ? "Downloading..." : "Download PDF"}
     </button>
   );
 }

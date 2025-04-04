@@ -11,6 +11,7 @@ import WaiverConfirmationEmail from "../waiver/components/WaiverConfirmationEmai
 import { Resend } from "resend";
 import { getUserById } from "./user";
 import { auth } from "@clerk/nextjs/server";
+import { revalidatePath } from 'next/cache';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -66,6 +67,23 @@ export async function saveWaiver(data: unknown) {
 
   return waiver;
 }
+
+export async function getAllWaivers() {
+    try {
+      const waivers = await db.waiver.findMany({
+        orderBy: { date: "desc" },
+        include: {
+          signature: true,
+        },
+        where: { archived: false },
+      });
+  
+      return waivers;
+    } catch (error) {
+      console.error("Failed to fetch waivers:", error);
+      throw new Error("Could not fetch waivers");
+    }
+  }
 
 export async function log404(path: string) {
   trackEvent({
@@ -159,3 +177,26 @@ export async function getWaiverByToken(token: string) {
     return null;
   }
 }
+
+export async function archiveWaivers(ids: string[]) {
+    await db.waiver.updateMany({
+      where: { id: { in: ids } },
+      data: { archived: true },
+    });
+  }
+  
+  export async function deleteWaivers(ids: string[]) {
+    try {
+      await db.waiver.deleteMany({
+        where: { id: { in: ids } },
+      });
+  
+      revalidatePath("/dashboard");
+  
+      return { success: true };
+    } catch (error) {
+      console.error("Failed to delete waivers:", error);
+      return { success: false };
+    }
+  }
+  

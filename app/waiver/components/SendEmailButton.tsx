@@ -1,6 +1,6 @@
 "use client";
 
-import { sendEmail } from '@/app/actions/waiver';
+import { sendEmail } from "@/app/actions/waiver";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 
@@ -11,17 +11,22 @@ export function SendEmailButton({
   id: string;
   waiverId: string;
 }) {
+  const [isPending, setIsPending] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
   const [emailError, setEmailError] = useState(false);
 
   const handleClick = async () => {
     try {
+      setIsPending(true);
       await sendEmail(id, waiverId);
       setEmailSent(true);
       setTimeout(() => setEmailSent(false), 3000);
     } catch (err) {
+      setIsPending(false);
       setEmailError(true);
       setTimeout(() => setEmailError(false), 3000);
+    } finally {
+      setIsPending(false);
     }
   };
 
@@ -30,8 +35,9 @@ export function SendEmailButton({
       <button
         onClick={handleClick}
         className='text-blue-500 hover:underline ml-1'
+        disabled={isPending}
       >
-        Email it to me
+        {isPending ? "Emailing..." : "Email it to me"}
       </button>
 
       <AnimatePresence>
