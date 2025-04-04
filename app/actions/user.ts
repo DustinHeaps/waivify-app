@@ -3,6 +3,9 @@
 import { db } from "@/lib/prisma";
 import { subMonths } from "date-fns";
 
+
+
+
 export async function createUser({
   clerkId,
   email,
@@ -52,8 +55,10 @@ export async function updateUser(
     waiverCount: number;
     feedbackGiven: boolean;
     nextSteps: any;
+    stripeCustomerId: string; 
   }>
 ) {
+
   await db.user.update({
     where: { clerkId },
     data,
@@ -63,7 +68,7 @@ export async function updateUser(
 export async function getUserById(userId: string) {
   try {
       const user = await db.user.findUnique({
-          where: { clerkId: userId },
+          where: { clerkId: userId as string },
       });
 
       return user;

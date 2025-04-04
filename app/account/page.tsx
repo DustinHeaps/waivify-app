@@ -1,8 +1,5 @@
 "use client";
 
-export const dynamic = "force-dynamic";
-
-import { useUser } from "@clerk/nextjs";
 import { Card, CardContent } from "@/components/ui/card";
 import { format } from "date-fns";
 import { Progress } from "@radix-ui/react-progress";
@@ -11,6 +8,8 @@ import CompanyInfo from "./components/CompanyInfo";
 import { redirect, useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { checkout } from "../actions/stripe";
+import { getUserById } from "../actions/user";
+import { useUser } from "@clerk/nextjs";
 
 export default function AccountPage() {
   return (
@@ -20,8 +19,10 @@ export default function AccountPage() {
   );
 }
 
+function AccountPageContent() {
+  const [dbUser, setDBUser] = useState<any>(null);
+  const [currentPlan, setCurrentPlan] = useState<string>('');
 
-  function AccountPageContent() {
   const { user } = useUser();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -43,6 +44,21 @@ export default function AccountPage() {
       return () => clearTimeout(timeout);
     }
   }, [success, canceled, router]);
+
+  const clerkId = user?.id;
+  useEffect(() => {
+    const fetchUser = async () => {
+      if (user?.id) {
+        const result = await getUserById(clerkId as string);
+        setDBUser(result);
+        setCurrentPlan(result?.plan as string)
+      }
+    };
+
+    fetchUser();
+  }, [user?.id]);
+
+ 
 
   return (
     <div className='max-w-screen-md mx-auto py-10 space-y-6'>
@@ -126,7 +142,7 @@ export default function AccountPage() {
               { label: "Starter", id: "starter", price: "$9/mo" },
               { label: "Pro", id: "pro", price: "$29/mo" },
             ].map((plan) => {
-              const isCurrent = user?.publicMetadata?.plan === plan.id;
+              const isCurrent = dbUser?.plan === plan.id;
               const [loading, setLoading] = useState(false);
 
               return (
@@ -151,7 +167,7 @@ export default function AccountPage() {
                     <span className='text-sm text-green-600'>Current Plan</span>
                   ) : loading ? (
                     <span className='text-sm text-gray-400'>Processing...</span>
-                  ) : plan.id === "starter" ? (
+                  ) : currentPlan === "pro" && plan.id === "starter" ? (
                     <span className='text-sm text-blue-600'>
                       Switch to Starter
                     </span>
