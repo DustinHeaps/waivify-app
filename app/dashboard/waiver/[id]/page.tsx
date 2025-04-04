@@ -1,17 +1,17 @@
-import { getWaiverByToken } from '@/app/actions/waiver';
+import { getWaiverByToken } from "@/app/actions/waiver";
 import { notFound } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
 interface WaiverDetailProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export default async function WaiverDetail({ params }: WaiverDetailProps) {
-  const waiverId = params.id;
+  const { id } = await params;
+  const waiverId = id;
 
- 
-  const waiver = await getWaiverByToken(waiverId); 
+  const waiver = await getWaiverByToken(waiverId);
 
   if (!waiver) return notFound();
 
@@ -53,7 +53,7 @@ export default async function WaiverDetail({ params }: WaiverDetailProps) {
             className='w-full max-w-sm'
           />
         ) : ( */}
-          <p>No signature on file.</p>
+        <p>No signature on file.</p>
         {/* )} */}
       </div>
 
@@ -68,5 +68,3 @@ export default async function WaiverDetail({ params }: WaiverDetailProps) {
     </div>
   );
 }
-
-
