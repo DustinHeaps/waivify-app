@@ -10,6 +10,8 @@ import { Links } from "./components/Links";
 import { Changelog } from "./components/Changelog";
 import { Hero } from "./components/Hero";
 import { NextSteps } from "./components/NextSteps";
+import YourBrand from "./components/YourBrand";
+import { PlanSummary } from "./components/PlanSummary";
 
 export default function HomePage() {
   return (
@@ -20,7 +22,7 @@ export default function HomePage() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className='grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-8 border-t pt-8'
+        className='grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-8 border-t pt-8 items-start'
       >
         <GetMoreDone />
         <QuickActions />
@@ -33,9 +35,12 @@ export default function HomePage() {
         transition={{ delay: 0.2 }}
         className='grid grid-cols-1 md:grid-cols-3 gap-8 border-t pt-8'
       >
-        <RecentActivities />
-        <Stats />
-        <NextSteps />
+        {/* <RecentActivities />
+        <Stats /> */}
+        <div className='md:col-span-2'>
+          <YourBrand plan='free' />
+        </div>
+        <PlanSummary />
       </motion.div>
 
       {/* --------------------- Row 3 --------------------- */}

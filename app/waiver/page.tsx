@@ -1,9 +1,10 @@
 import SimpleWaiverForm from "@/components/SimpleWaiverForm";
+import WaiverGuard from '@/components/WaiverGuard';
+import { auth } from '@clerk/nextjs/server';
+import { redirect } from 'next/navigation';
+import { getUserById } from '../actions/user';
+import { getWaiverLimit } from '@/lib/waiverUsage';
 // import { markWaiverViewed } from "../actions/waiver";
-// import { redirect } from "next/navigation";
-// import WaiverLimitGuard from '@/components/WaiverLimitGuard';
-// import { useUser } from "@clerk/nextjs";
-// import { currentUser } from "@clerk/nextjs/server";
 
 
 export const metadata = {
@@ -20,21 +21,24 @@ export const metadata = {
 };
 
 export default async function WaiverPage() {
-//   const user = await currentUser();
+    const { userId } = await auth();
+  if (!userId) throw new Error("Not authenticated");
 
-//   await markWaiverViewed();
+  const dbUser = await getUserById(userId);
+  if (!dbUser) throw new Error("User not found");
 
-//   const waiversUsed = Number(user?.publicMetadata?.waiversUsed) || 0;
-//   const plan = user?.publicMetadata?.plan || "free";
+  const waiversUsed = dbUser.waiverCount ?? 0;
+  const plan = dbUser.plan ?? "free";
+  const limit = getWaiverLimit(plan);
 
-//   if (plan === "free" && waiversUsed >= 10) {
-//     redirect("/upgrade");
-//   }
+  if (waiversUsed >= limit) {
+    redirect("/upgrade");
+  }
   return (
     <div className='min-h-screen flex items-center justify-center bg-gray-50 p-4'>
-      {/* <WaiverLimitGuard> */}
+      <WaiverGuard>
         <SimpleWaiverForm />
-      {/* </WaiverLimitGuard> */}
+      </WaiverGuard>
     </div>
   );
 }

@@ -68,7 +68,6 @@ export function GetMoreDone() {
                     {hasViewedDashboard ? "✅" : "⬜"} View your dashboard
                   </li>
                 </ul>
-             
               </CardContent>
             </Card>
           </motion.div>
@@ -79,24 +78,24 @@ export function GetMoreDone() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
           >
-            <Card className='hover:scale-[1.01]  transition'>
-              <CardContent className=' p-9 text-center space-y-2'>
+            <Card className='hover:scale-[1.01] transition-all duration-200 py-0'>
+              <CardContent className='p-6 md:p-8 text-center space-y-3'>
                 <h2 className='text-base font-semibold text-gray-900'>
                   Get More Done 🚀
                 </h2>
                 <p className='text-sm text-muted-foreground'>
                   Create new waivers, track submissions, or export your data.
                 </p>
-                <div className='flex justify-center space-x-2'>
+                <div className='flex justify-center flex-wrap gap-2 pt-1'>
                   <Link
                     href='/waiver'
-                    className='px-4 py-3 bg-teal-500 rounded text-white text-sm hover:opacity-90 transition hover:scale-[1.02]'
+                    className='px-4 py-2 bg-teal-500 rounded text-white text-sm hover:opacity-90 transition'
                   >
                     Create New Waiver
                   </Link>
                   <Link
                     href='/admin'
-                    className='px-4 py-3 border rounded text-sm hover:bg-gray-50 transition hover:scale-[1.02]'
+                    className='px-4 py-2 border rounded text-sm hover:bg-gray-50 transition'
                   >
                     View Dashboard
                   </Link>

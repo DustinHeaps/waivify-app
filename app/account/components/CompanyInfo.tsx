@@ -3,39 +3,39 @@
 import { useEffect, useState, useTransition } from "react";
 import { useUser } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
-// import { Input } from "@/components/ui/input";
+import { Input } from "@/components/ui/input";
 // import { markStepIfEligible } from "@/lib/utils";
-// import { SaveButton } from "./SaveButton";
-// import { uploadFile } from "@/app/actions/account";
+import { SaveButton } from "./SaveButton";
+import { uploadFile } from "@/app/actions/account";
+import { getUserById } from "@/app/actions/user";
 
 export default function CompanyInfo() {
   const { user } = useUser();
-  const [name, setName] = useState<string>(
-    (user?.publicMetadata?.companyName as string) || ""
-  );
-  const [logo, setLogo] = useState<string>(
-    (user?.publicMetadata?.logo as string) || ""
-  );
+  const [name, setName] = useState<string>("");
+  const [logo, setLogo] = useState<string>("");
   const [isPending, startTransition] = useTransition();
   const [status, setStatus] = useState<
     "idle" | "saving" | "saved" | "uploading"
   >("idle");
 
   useEffect(() => {
-    if (user) {
-      const meta = user.publicMetadata as Record<string, any>;
-      setName(meta.companyName || "");
-      setLogo(meta.logoUrl || "");
+    if (user?.id) {
+      startTransition(async () => {
+        const dbUser = await getUserById(user.id);
+        if (dbUser) {
+          setName(dbUser.companyName || "");
+          setLogo(dbUser.logoUrl || "");
+        }
+      });
     }
-  }, [user]);
+  }, [user?.id]);
 
   const handleSave = async () => {
     if (!user) return;
     setStatus("saving");
     startTransition(async () => {
       try {
-        debugger;
-        // await SaveButton({ name, logo });
+        await SaveButton({ name, logo });
 
         // auto mark step if they saved company info
         if (name.trim() || logo.trim()) {
@@ -44,7 +44,7 @@ export default function CompanyInfo() {
 
         setStatus("saved");
       } catch (err) {
-        setStatus("idle"); 
+        setStatus("idle");
       }
     });
   };
@@ -59,14 +59,14 @@ export default function CompanyInfo() {
       <div className='space-y-2'>
         <div>
           <label className='block text-xs mb-1'>Company Name</label>
-          {/* <Input
+          <Input
             value={name}
             onChange={(e) => {
               setName(e.target.value);
               setStatus("idle");
             }}
             placeholder='Your company name'
-          /> */}
+          />
         </div>
 
         <div>
@@ -84,8 +84,8 @@ export default function CompanyInfo() {
               setStatus("uploading");
 
               try {
-                // const url = await uploadFile(formData);
-                // setLogo(url);
+                const url = await uploadFile(formData);
+                setLogo(url);
               } catch (err) {
                 console.error("Upload failed", err);
               } finally {

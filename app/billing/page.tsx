@@ -1,21 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useUser } from "@clerk/nextjs";
-import { checkout } from "../actions/stripe";
+import { checkout, createCustomerPortalSession } from "../actions/stripe";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { getUserById } from "../actions/user";
 
 export default function BillingPage() {
+  const [currentPlan, setCurrentPlan] = useState<
+    "free" | "starter" | "pro" | undefined
+  >("free");
+
+  const [isPending, startTransition] = useTransition();
   const { user } = useUser();
 
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
-  const currentPlan = user?.publicMetadata?.plan as
-    | "free"
-    | "starter"
-    | "pro"
-    | undefined;
+
   const [error, setError] = useState<string | null>(null);
 
   const handleSubscribe = async (plan: "starter" | "pro") => {
@@ -28,6 +30,33 @@ export default function BillingPage() {
       setLoadingPlan(null);
     }
   };
+
+  const handleManageSubscription = () => {
+    startTransition(async () => {
+      try {
+        const url = await createCustomerPortalSession();
+        if (url) window.location.href = url;
+      } catch (err) {
+        console.error("Error:", err);
+        setError("Failed to open Stripe portal. Try again.");
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (user?.id) {
+      (async () => {
+        try {
+          const dbUser = await getUserById(user.id);
+          setCurrentPlan(
+            (dbUser?.plan as "free" | "starter" | "pro") || "free"
+          );
+        } catch (err) {
+          setError("Failed to load billing info");
+        }
+      })();
+    }
+  }, [user?.id]);
 
   return (
     <div className='max-w-screen-md mx-auto py-10 space-y-6'>
@@ -92,6 +121,14 @@ export default function BillingPage() {
           )}
         </CardContent>
       </Card>
+
+      <button
+        onClick={handleManageSubscription}
+        disabled={isPending}
+        className='px-4 py-2 rounded border bg-white hover:bg-gray-100'
+      >
+        {isPending ? "Loading..." : "Manage Subscription"}
+      </button>
     </div>
   );
 }

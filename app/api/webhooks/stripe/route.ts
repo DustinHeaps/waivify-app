@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
 import { updateUser } from "@/app/actions/user";
-import { db } from '@/lib/prisma';
+import { db } from "@/lib/prisma";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2025-02-24.acacia",
@@ -27,11 +27,14 @@ export async function POST(req: Request) {
   }
 
   const session = event.data.object as Stripe.Checkout.Session;
+  let customerId: string;
 
   switch (event.type) {
     case "checkout.session.completed":
       // ✅ Get user ID from metadata (you pass it when creating checkout session)
       const clerkId = session.metadata?.userId;
+
+      customerId = session.customer as string;
 
       if (!clerkId) {
         console.error("Missing userId in metadata");
@@ -47,23 +50,57 @@ export async function POST(req: Request) {
       const plan =
         priceId === process.env.STRIPE_PRO_PRICE_ID ? "pro" : "starter";
 
-      // ✅ Save plan in Clerk
-      console.log("✅ Calling updateUser with", clerkId, plan);
-      await updateUser(clerkId, { plan });
+      const subscription = await stripe.subscriptions.retrieve(
+        session.subscription as string
+      );
+
+      const renewalDate = new Date(subscription.current_period_end * 1000);
+      console.log("📦 Updating user", {
+        clerkId,
+        customerId,
+        plan,
+        renewalDate,
+      });
+      await updateUser(clerkId, {
+        plan,
+        renewalDate,
+        stripeCustomerId: customerId,
+      });
 
       console.log(`Updated user ${clerkId} to plan: ${plan}`);
       break;
 
+    case "customer.subscription.updated":
+      const sub = event.data.object as any;
+
+      if (sub.cancel_at_period_end) {
+        const customerId = sub.customer;
+
+        console.log("🛑 Sub scheduled to cancel for:", customerId);
+
+        const user = await db.user.findFirst({
+          where: { stripeCustomerId: customerId },
+        });
+
+        if (user) {
+          await updateUser(user.clerkId, { plan: "free", renewalDate: null });
+          console.log(
+            `⬇️ Downgraded ${user.clerkId} to free plan (scheduled cancel)`
+          );
+        }
+      }
+      break;
     case "customer.subscription.deleted":
       // ✅ Downgrade on cancel
-      const customerId = (event.data.object as any).customer;
+      customerId = (event.data.object as any).customer;
+      console.log("Deleting sub for customer:", customerId);
 
       const user = await db.user.findFirst({
         where: { stripeCustomerId: customerId },
       });
 
       if (user) {
-        await updateUser(user.clerkId, { plan: "free" });
+        await updateUser(user.clerkId, { plan: "free", renewalDate: null });
         console.log(`🔁 Downgraded user ${user.clerkId} to free plan`);
       }
       break;

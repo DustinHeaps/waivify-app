@@ -1,10 +1,8 @@
 "use server";
 
 import { db } from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
 import { subMonths } from "date-fns";
-
-
-
 
 export async function createUser({
   clerkId,
@@ -47,34 +45,51 @@ export async function createUser({
     throw error;
   }
 }
+// export async function updateUser(
+//   clerkId: string,
+//   data: Partial<{
+//     logoUrl: string;
+//     plan: string;
+//     waiverCount: number;
+//     feedbackGiven: boolean;
+//     nextSteps: any;
+//     stripeCustomerId: string;
+//     companyName: string;
+//     renewalDate: Date
+//   }>
+// ) {
+// console.log('DATA - ',data)
+//   await db.user.update({
+//     where: { clerkId },
+//     data,
+//   });
+// }
+
 export async function updateUser(
   clerkId: string,
-  data: Partial<{
-    logoUrl: string;
-    plan: string;
-    waiverCount: number;
-    feedbackGiven: boolean;
-    nextSteps: any;
-    stripeCustomerId: string; 
-  }>
+  data: Prisma.UserUpdateInput
 ) {
-
-  await db.user.update({
-    where: { clerkId },
-    data,
-  });
+  console.log("🔧 Updating user with data:", data);
+  try {
+    await db.user.update({
+      where: { clerkId },
+      data,
+    });
+  } catch (err) {
+    console.error("❌ Failed to update user:", err);
+  }
 }
 
 export async function getUserById(userId: string) {
   try {
-      const user = await db.user.findUnique({
-          where: { clerkId: userId as string },
-      });
+    const user = await db.user.findUnique({
+      where: { clerkId: userId as string },
+    });
 
-      return user;
+    return user;
   } catch (error) {
-      console.error("Failed to get user by ID:", error);
-      return null;
+    console.error("Failed to get user by ID:", error);
+    return null;
   }
 }
 
