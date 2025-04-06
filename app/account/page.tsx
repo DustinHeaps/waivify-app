@@ -49,7 +49,7 @@ function AccountPageContent() {
   useEffect(() => {
     const fetchUser = async () => {
       if (user?.id) {
-        const result = await getUserById(clerkId as string);
+        const result = await getUserById();
         setDBUser(result);
         setCurrentPlan(result?.plan as string)
       }
@@ -114,7 +114,7 @@ function AccountPageContent() {
       </Card>
 
       {/* Progress */}
-      <Card>
+      {/* <Card>
         <CardContent className='p-5 space-y-3'>
           <div className='flex items-center justify-between'>
             <h2 className='text-sm font-medium'>Next Steps Progress</h2>
@@ -124,13 +124,13 @@ function AccountPageContent() {
           </div>
           <Progress value={(completedSteps / totalSteps) * 100} />
         </CardContent>
-      </Card>
+      </Card> */}
 
       <CompanyInfo />
 
       {/* Billing & Plan */}
       <Card>
-        <CardContent className='p-5 space-y-3'>
+        <CardContent className='px-5 space-y-3'>
           <h2 className='text-sm font-medium'>Billing & Plan</h2>
           <p className='text-sm text-muted-foreground'>
             Upgrade, downgrade, or manage your subscription anytime.

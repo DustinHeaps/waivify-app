@@ -21,7 +21,7 @@ export default function CompanyInfo() {
   useEffect(() => {
     if (user?.id) {
       startTransition(async () => {
-        const dbUser = await getUserById(user.id);
+        const dbUser = await getUserById();
         if (dbUser) {
           setName(dbUser.companyName || "");
           setLogo(dbUser.logoUrl || "");

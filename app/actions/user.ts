@@ -1,6 +1,7 @@
 "use server";
 
 import { db } from "@/lib/prisma";
+import { auth } from '@clerk/nextjs/server';
 import { Prisma } from "@prisma/client";
 import { subMonths } from "date-fns";
 
@@ -79,8 +80,9 @@ export async function updateUser(
     console.error("❌ Failed to update user:", err);
   }
 }
-
-export async function getUserById(userId: string) {
+ 
+export async function getUserById() {
+  const { userId } = await auth();
   try {
     const user = await db.user.findUnique({
       where: { clerkId: userId as string },

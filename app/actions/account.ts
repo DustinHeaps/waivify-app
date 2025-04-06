@@ -15,7 +15,7 @@ export async function uploadFile(formData: FormData) {
   const uploadPromise = utapi.uploadFiles(file);
 
  
-  const user = await getUserById(userId)
+  const user = await getUserById()
 
   const oldLogoUrl = user?.logoUrl;
   const oldKey = oldLogoUrl?.split("/f/")[1];

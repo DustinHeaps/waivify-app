@@ -19,7 +19,7 @@ export default function WaiverLimitGuard({
     if (!user?.id) return;
 
     (async () => {
-      const dbUser = await getUserById(user.id);
+      const dbUser = await getUserById();
       setWaiversUsed(dbUser?.waiverCount || 0);
       setPlan((dbUser?.plan as "free" | "starter" | "pro") || "free");
       setLoading(false);

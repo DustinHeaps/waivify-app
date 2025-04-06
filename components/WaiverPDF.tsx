@@ -89,6 +89,25 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 30,
   },
+  companyBlock: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    marginBottom: 16,
+  },
+  companyText: {
+    fontSize: 12,
+    fontWeight: "bold",
+    color: "#111827",
+    marginLeft: 8,
+  },
+
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 16,
+  },
 });
 
 export default function WaiverPDF({
@@ -96,11 +115,21 @@ export default function WaiverPDF({
   date,
   signatureUrl,
   waiverId,
+  ipAddress,
+  terms,
+  liability,
+  logoUrl,
+  companyName,
 }: {
   name: string;
   date: string;
   signatureUrl: string;
   waiverId: string;
+  ipAddress: string;
+  terms: boolean;
+  liability: boolean;
+  logoUrl?: string;
+  companyName?: string;
 }) {
   return (
     <Document>
@@ -112,9 +141,15 @@ export default function WaiverPDF({
           <View style={styles.watermarkWrapper}>
             <Text style={styles.watermark}>Waivify</Text>
           </View>
-          {/* <Image src='https://waivify.com/logo.png' style={styles.logo} /> */}
 
-          <Text style={styles.header}>Waiver Confirmation</Text>
+          {logoUrl && companyName && (
+            <View style={styles.companyBlock}>
+              <Image src={logoUrl} style={styles.logo} />
+              <Text style={styles.companyText}>{companyName}</Text>
+            </View>
+          )}
+
+          <Text style={styles.header}>Signed Waiver</Text>
 
           <View style={styles.section}>
             <Text style={styles.label}>Name:</Text>
@@ -127,8 +162,26 @@ export default function WaiverPDF({
           </View>
 
           <View style={styles.section}>
-            <Text style={styles.label}>Confirmation ID:</Text>
-            <Text style={styles.value}>{waiverId}</Text>
+            <Text style={styles.label}>Waiver ID:</Text>
+            <Text style={styles.value}>
+              WVR-{waiverId.slice(0, 6).toUpperCase()}
+            </Text>
+          </View>
+
+          <View style={styles.section}>
+            <Text style={styles.label}>IP Address:</Text>
+            <Text style={styles.value}>{ipAddress}</Text>
+          </View>
+
+          <View style={styles.row}>
+            <View>
+              <Text style={styles.label}>Terms:</Text>
+              <Text style={styles.value}>{terms ? "Yes" : "No"}</Text>
+            </View>
+            <View>
+              <Text style={styles.label}>Liability:</Text>
+              <Text style={styles.value}>{liability ? "Yes" : "No"}</Text>
+            </View>
           </View>
 
           <View style={styles.section}>

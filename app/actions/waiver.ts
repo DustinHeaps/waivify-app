@@ -6,39 +6,34 @@ import { z } from "zod";
 import jwt from "jsonwebtoken";
 import { db } from "@/lib/prisma";
 import { getSignatureById } from "./signature";
+import { headers } from "next/headers";
 
 import WaiverConfirmationEmail from "../waiver/components/WaiverConfirmationEmail";
 import { Resend } from "resend";
 import { getUserById } from "./user";
 import { auth } from "@clerk/nextjs/server";
-import { revalidatePath } from 'next/cache';
+import { revalidatePath } from "next/cache";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const WaiverSchema = z.object({
   name: z.string(),
-  ipAddress: z.string().default("0.0.0.0"),
+  ipAddress: z.string(),
   signatureId: z.string().optional(),
   terms: z.boolean(),
   liability: z.boolean(),
   date: z.string().transform((val) => new Date(val)),
 });
 
+
+
 export async function saveWaiver(data: unknown) {
-  console.log("Incoming data:", data);
+  const forwardedFor = (await headers()).get("x-forwarded-for");
+  const ip = forwardedFor?.split(",")[0] ?? "Unknown";
 
   const id = uuidv4();
 
   const token = jwt.sign({ waiverId: id }, process.env.JWT_SECRET as string);
-
-  const waiverInput = data as {
-    name: string;
-    ipAddress?: string;
-    signatureId?: string;
-    terms: boolean;
-    liability: boolean;
-    token: string;
-  };
 
   const parsed = WaiverSchema.safeParse(data);
   if (!parsed.success) {
@@ -55,6 +50,7 @@ export async function saveWaiver(data: unknown) {
   const waiver = await db.waiver.create({
     data: {
       ...waiverData,
+      ipAddress: ip,
       id,
       token,
     },
@@ -69,30 +65,20 @@ export async function saveWaiver(data: unknown) {
 }
 
 export async function getAllWaivers() {
-    try {
-      const waivers = await db.waiver.findMany({
-        orderBy: { date: "desc" },
-        include: {
-          signature: true,
-        },
-        where: { archived: false },
-      });
-  
-      return waivers;
-    } catch (error) {
-      console.error("Failed to fetch waivers:", error);
-      throw new Error("Could not fetch waivers");
-    }
-  }
+  try {
+    const waivers = await db.waiver.findMany({
+      orderBy: { date: "desc" },
+      include: {
+        signature: true,
+      },
+      where: { archived: false },
+    });
 
-export async function log404(path: string) {
-  trackEvent({
-    event: "404_page_view",
-    distinctId: "server",
-    properties: {
-      path,
-    },
-  });
+    return waivers;
+  } catch (error) {
+    console.error("Failed to fetch waivers:", error);
+    throw new Error("Could not fetch waivers");
+  }
 }
 
 export async function getWaiverById(waiverId: string) {
@@ -117,7 +103,7 @@ export async function sendEmail(id: string, waiverId: string) {
 
   if (!userId) throw new Error("Unauthorized");
 
-  const user = await getUserById(userId);
+  const user = await getUserById();
   if (!user) throw new Error("User not found");
 
   const email = user.email;
@@ -179,24 +165,23 @@ export async function getWaiverByToken(token: string) {
 }
 
 export async function archiveWaivers(ids: string[]) {
-    await db.waiver.updateMany({
+  await db.waiver.updateMany({
+    where: { id: { in: ids } },
+    data: { archived: true },
+  });
+}
+
+export async function deleteWaivers(ids: string[]) {
+  try {
+    await db.waiver.deleteMany({
       where: { id: { in: ids } },
-      data: { archived: true },
     });
+
+    revalidatePath("/dashboard");
+
+    return { success: true };
+  } catch (error) {
+    console.error("Failed to delete waivers:", error);
+    return { success: false };
   }
-  
-  export async function deleteWaivers(ids: string[]) {
-    try {
-      await db.waiver.deleteMany({
-        where: { id: { in: ids } },
-      });
-  
-      revalidatePath("/dashboard");
-  
-      return { success: true };
-    } catch (error) {
-      console.error("Failed to delete waivers:", error);
-      return { success: false };
-    }
-  }
-  
+}

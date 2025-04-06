@@ -5,10 +5,19 @@ import { db } from "@/lib/prisma";
 import WaiverPDF from "@/components/WaiverPDF";
 import { format } from "date-fns";
 import { createElement } from "react";
+import { getUserById } from "@/app/actions/user";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const waiverId = searchParams.get("waiverId");
+  
+  const user = await getUserById();
+  let logoUrl: string = "";
+  let companyName: string = "";
+  if (user?.plan === "pro") {
+    logoUrl = user.logoUrl as string;
+    companyName = user.companyName as string;
+  }
 
   if (!waiverId) return new NextResponse("Missing waiverId", { status: 400 });
 
@@ -28,6 +37,11 @@ export async function GET(req: Request) {
       date={formattedDate}
       waiverId={waiver.signature.id}
       signatureUrl={`https://uploadthing.com/f/${waiver.signature.fileKey}`}
+      ipAddress={waiver.ipAddress}
+      terms={waiver.terms}
+      liability={waiver.liability}
+      logoUrl={logoUrl}
+      companyName={companyName}
     />
   );
 

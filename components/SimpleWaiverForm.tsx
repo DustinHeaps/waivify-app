@@ -8,7 +8,7 @@ import SignaturePad from "react-signature-pad-wrapper";
 import { saveWaiver } from "@/app/actions/waiver";
 import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
-import { uploadSignature } from '@/app/actions/signature';
+import { uploadSignature } from "@/app/actions/signature";
 
 const WaiverSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -58,22 +58,19 @@ export default function SimpleWaiverForm() {
       formData.append("name", data.name);
       formData.append("date", data.date);
 
-      const waiverId = uuidv4()
+      const waiverId = uuidv4();
 
-      
       const newWaiver = await saveWaiver({
         id: waiverId,
         name: data.name,
-        ipAddress: "192.168.1.1", // Optional: use a middleware or header to get IP
-        // signature: signature,
+        ipAddress: "192.168.1.1",
         terms: data.terms,
         liability: data.liability,
-        date: new Date().toISOString()
+        date: new Date().toISOString(),
       });
 
-      const signature = await uploadSignature(formData, newWaiver.id );
+      const signature = await uploadSignature(formData, newWaiver.id);
 
- 
       router.push(`/waiver/confirmation/${signature.id}`);
     } catch (error) {
       setError("Something went wrong. Please try again.");

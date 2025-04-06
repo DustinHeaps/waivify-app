@@ -14,7 +14,7 @@ export function getWaiverLimit(plan: string): number {
 
 // --- Check if user has waivers left ---
 export async function hasAvailableWaivers(userId: string): Promise<boolean> {
-  const dbUser = await getUserById(userId);
+  const dbUser = await getUserById();
   if (!dbUser) return false;
 
   const waiversUsed = dbUser.waiverCount ?? 0;
@@ -26,7 +26,7 @@ export async function hasAvailableWaivers(userId: string): Promise<boolean> {
 
 // --- Increment usage ---
 export async function incrementWaiverUsage(userId: string): Promise<void> {
-  const dbUser = await getUserById(userId);
+  const dbUser = await getUserById();
   if (!dbUser) return;
 
   const currentCount = dbUser.waiverCount ?? 0;

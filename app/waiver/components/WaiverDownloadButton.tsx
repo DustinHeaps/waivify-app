@@ -1,6 +1,5 @@
 "use client";
 
-// import { downloadWaiverPdf } from "@/app/actions/waiver";
 import { useTransition } from "react";
 
 type Props = {

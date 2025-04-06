@@ -24,7 +24,7 @@ export default async function WaiverPage() {
     const { userId } = await auth();
   if (!userId) throw new Error("Not authenticated");
 
-  const dbUser = await getUserById(userId);
+  const dbUser = await getUserById();
   if (!dbUser) throw new Error("User not found");
 
   const waiversUsed = dbUser.waiverCount ?? 0;

@@ -16,7 +16,7 @@ export async function checkout({
   userId: string;
   plan: "starter" | "pro";
 }) {
-  const user = await getUserById(userId);
+  const user = await getUserById();
   const priceId =
     plan === "starter"
       ? process.env.STRIPE_STARTER_PRICE_ID!
@@ -45,7 +45,7 @@ export async function createCustomerPortalSession() {
     const { userId } = await auth();
     if (!userId) throw new Error("Not authenticated");
   
-    const dbUser = await getUserById(userId);
+    const dbUser = await getUserById();
     if (!dbUser?.stripeCustomerId) throw new Error("Missing Stripe customer ID");
   
     const session = await stripe.billingPortal.sessions.create({

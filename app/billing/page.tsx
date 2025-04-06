@@ -47,7 +47,7 @@ export default function BillingPage() {
     if (user?.id) {
       (async () => {
         try {
-          const dbUser = await getUserById(user.id);
+          const dbUser = await getUserById();
           setCurrentPlan(
             (dbUser?.plan as "free" | "starter" | "pro") || "free"
           );
