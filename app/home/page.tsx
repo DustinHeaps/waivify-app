@@ -13,6 +13,9 @@ import { NextSteps } from "./components/NextSteps";
 import YourBrand from "./components/YourBrand";
 import { PlanSummary } from "./components/PlanSummary";
 
+import RecentWaivers from "./components/RecentWaivers";
+import { Feedback } from './components/Feedback';
+
 export default function HomePage() {
   return (
     <div className='max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 space-y-12'>
@@ -35,11 +38,14 @@ export default function HomePage() {
         transition={{ delay: 0.2 }}
         className='grid grid-cols-1 md:grid-cols-3 gap-8 border-t pt-8'
       >
-        {/* <RecentActivities />
-        <Stats /> */}
-        <div className='md:col-span-2'>
+        {/* <RecentActivities /> */}
+        {/* <RecentWaivers /> */}
+        <Feedback />
+        {/* <Stats /> */}
+        {/* <div className='md:col-span-2'>
+        
+        </div> */}
           <YourBrand plan='free' />
-        </div>
         <PlanSummary />
       </motion.div>
 

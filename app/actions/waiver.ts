@@ -5,16 +5,8 @@ import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 import jwt from "jsonwebtoken";
 import { db } from "@/lib/prisma";
-import { getSignatureById } from "./signature";
+
 import { headers } from "next/headers";
-
-import WaiverConfirmationEmail from "../waiver/components/WaiverConfirmationEmail";
-import { Resend } from "resend";
-import { getUserById } from "./user";
-import { auth } from "@clerk/nextjs/server";
-import { revalidatePath } from "next/cache";
-
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 const WaiverSchema = z.object({
   name: z.string(),
@@ -25,9 +17,8 @@ const WaiverSchema = z.object({
   date: z.string().transform((val) => new Date(val)),
 });
 
-
-
-export async function saveWaiver(data: unknown) {
+export async function saveWaiver(data: unknown, slug: string) {
+   
   const forwardedFor = (await headers()).get("x-forwarded-for");
   const ip = forwardedFor?.split(",")[0] ?? "Unknown";
 
@@ -46,13 +37,21 @@ export async function saveWaiver(data: unknown) {
   if (!parsed.success) {
     throw new Error("Invalid form data");
   }
+  const business = await db.user.findFirst({
+    where: { slug: slug },
+  });
 
+  if (!business) {
+    throw new Error("Business not found for this slug");
+  }
   const waiver = await db.waiver.create({
     data: {
       ...waiverData,
       ipAddress: ip,
       id,
       token,
+      userId: business.id,
+    //   slug: waiverData.slug
     },
   });
 
@@ -81,6 +80,23 @@ export async function getAllWaivers() {
   }
 }
 
+export async function getAllWaiversByUser(userId: string) {
+  try {
+    const waivers = await db.waiver.findMany({
+      orderBy: { date: "desc" },
+      include: {
+        signature: true,
+      },
+      where: { archived: false, userId },
+    });
+
+    return waivers;
+  } catch (error) {
+    console.error("Failed to fetch waivers:", error);
+    throw new Error("Could not fetch waivers");
+  }
+}
+
 export async function getWaiverById(waiverId: string) {
   try {
     const waiver = await db.waiver.findUnique({
@@ -96,37 +112,6 @@ export async function getWaiverById(waiverId: string) {
     console.error("[getWaiverById]", error);
     return null;
   }
-}
-
-export async function sendEmail(id: string, waiverId: string) {
-  const { userId } = await auth();
-
-  if (!userId) throw new Error("Unauthorized");
-
-  const user = await getUserById();
-  if (!user) throw new Error("User not found");
-
-  const email = user.email;
-
-  const signature = await getSignatureById(id);
-  if (!signature) throw new Error("Signature not found");
-
-  const response = await resend.emails.send({
-    from: process.env.EMAIL_FROM as string,
-    to: email, // user's email
-    subject: "✅ Waiver Confirmation",
-    react: WaiverConfirmationEmail({
-      name: signature.name,
-      id,
-      date: signature.uploadedAt.toISOString(),
-      waiverId,
-    }),
-  });
-  if (response.error) {
-    console.error("Resend failed:", response.error);
-    throw new Error("Email send failed");
-  }
-  return { status: "success" };
 }
 
 export async function markWaiverViewed(waiverId?: string) {
@@ -177,7 +162,7 @@ export async function deleteWaivers(ids: string[]) {
       where: { id: { in: ids } },
     });
 
-    revalidatePath("/dashboard");
+    // revalidatePath("/dashboard");
 
     return { success: true };
   } catch (error) {

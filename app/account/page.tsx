@@ -10,6 +10,8 @@ import { Suspense, useEffect, useState } from "react";
 import { checkout } from "../actions/stripe";
 import { getUserById } from "../actions/user";
 import { useUser } from "@clerk/nextjs";
+import { Button } from "@/components/ui/button";
+import { YourBrand } from "./components/YourBrand";
 
 export default function AccountPage() {
   return (
@@ -21,7 +23,7 @@ export default function AccountPage() {
 
 function AccountPageContent() {
   const [dbUser, setDBUser] = useState<any>(null);
-  const [currentPlan, setCurrentPlan] = useState<string>('');
+  const [currentPlan, setCurrentPlan] = useState<string>("");
 
   const { user } = useUser();
   const router = useRouter();
@@ -51,14 +53,12 @@ function AccountPageContent() {
       if (user?.id) {
         const result = await getUserById();
         setDBUser(result);
-        setCurrentPlan(result?.plan as string)
+        setCurrentPlan(result?.plan as string);
       }
     };
 
     fetchUser();
   }, [user?.id]);
-
- 
 
   return (
     <div className='max-w-screen-md mx-auto py-10 space-y-6'>
@@ -87,7 +87,8 @@ function AccountPageContent() {
 
       {/* Header */}
       <div className='space-y-1'>
-        <h1 className='text-xl font-semibold'>Your Account</h1>
+        <h2 className='text-lg font-semibold'>Brand Settings</h2>
+
         <p className='text-muted-foreground text-sm'>
           Manage your account settings and preferences.
         </p>
@@ -113,73 +114,108 @@ function AccountPageContent() {
         </CardContent>
       </Card>
 
-      {/* Progress */}
-      {/* <Card>
-        <CardContent className='p-5 space-y-3'>
-          <div className='flex items-center justify-between'>
-            <h2 className='text-sm font-medium'>Next Steps Progress</h2>
-            <Badge variant='secondary'>
-              {completedSteps}/{totalSteps} completed
-            </Badge>
-          </div>
-          <Progress value={(completedSteps / totalSteps) * 100} />
-        </CardContent>
-      </Card> */}
-
       <CompanyInfo />
-
-      {/* Billing & Plan */}
-      <Card>
-        <CardContent className='px-5 space-y-3'>
-          <h2 className='text-sm font-medium'>Billing & Plan</h2>
-          <p className='text-sm text-muted-foreground'>
-            Upgrade, downgrade, or manage your subscription anytime.
-          </p>
-
-          {/* Plan Buttons */}
-          <div className='space-y-2'>
-            {[
-              { label: "Starter", id: "starter", price: "$9/mo" },
-              { label: "Pro", id: "pro", price: "$29/mo" },
-            ].map((plan) => {
-              const isCurrent = dbUser?.plan === plan.id;
-              const [loading, setLoading] = useState(false);
-
-              return (
-                <button
-                  key={plan.id}
-                  disabled={isCurrent || loading}
-                  onClick={async () => {
-                    setLoading(true);
-                    await checkout({ userId: user?.id, plan: plan.id } as any);
-                    setLoading(false);
-                  }}
-                  className={`w-full px-4 py-2 rounded border transition text-left flex items-center justify-between ${
-                    isCurrent
-                      ? "bg-green-50 border-green-200 text-green-800 cursor-not-allowed"
-                      : "bg-white border-gray-200 hover:border-gray-300"
-                  }`}
-                >
-                  <span className='font-medium'>
-                    {plan.label} - {plan.price}
-                  </span>
-                  {isCurrent ? (
-                    <span className='text-sm text-green-600'>Current Plan</span>
-                  ) : loading ? (
-                    <span className='text-sm text-gray-400'>Processing...</span>
-                  ) : currentPlan === "pro" && plan.id === "starter" ? (
-                    <span className='text-sm text-blue-600'>
-                      Switch to Starter
-                    </span>
-                  ) : (
-                    <span className='text-sm text-blue-600'>Upgrade</span>
-                  )}
-                </button>
-              );
-            })}
-          </div>
-        </CardContent>
-      </Card>
+      <YourBrand
+        logoUrl={dbUser?.logoUrl}
+        companyName={dbUser?.companyName}
+        slug={dbUser?.slug}
+        plan={(dbUser?.plan || "free") as "free" | "starter" | "pro"}
+      />
     </div>
   );
 }
+// import Image from "next/image";
+// import Link from "next/link";
+// import { Button } from "@/components/ui/button";
+// import { Input } from "@/components/ui/input";
+// import { Label } from "@/components/ui/label";
+// import { Card, CardContent } from "@/components/ui/card";
+
+// export default function BrandSettings({
+//   logoUrl,
+//   companyName,
+//   slug,
+//   plan,
+// }: {
+//   logoUrl?: string;
+//   companyName?: string;
+//   slug?: string;
+//   plan: "free" | "starter" | "pro";
+// }) {
+//   const publicUrl = `https://waivify.com/${slug || "undefined"}`;
+//   const hasBrand = !!logoUrl && !!companyName;
+
+//   return (
+//     // <Card>
+//     //   <CardContent className="p-6 space-y-4">
+//     <div className='max-w-screen-md mx-auto py-10 space-y-6'>
+//         <h2 className="text-lg font-semibold">Brand Settings</h2>
+
+//         {/* Editable Info */}
+        // <div className="space-y-2">
+        //   <Label htmlFor="companyName">Company Name</Label>
+        //   <Input
+        //     id="companyName"
+        //     defaultValue={companyName}
+        //     placeholder="Enter your company name"
+        //   />
+
+        //   <Label htmlFor="logo">Logo Upload</Label>
+        //   <Input id="logo" type="file" />
+        //   <Button variant="default">Save Info</Button>
+        // </div>
+
+//         <hr className="my-4" />
+
+        {/* Preview Section */}
+       
+
+          {/* <div className="flex flex-col items-center gap-2">
+            {hasBrand ? (
+              <Image
+                src={`https://api.qrserver.com/v1/create-qr-code/?data=${publicUrl}&size=160x160`}
+                alt="QR Code"
+                width={120}
+                height={120}
+              />
+            ) : (
+              <div className="w-[120px] h-[120px] bg-gray-100 rounded flex items-center justify-center text-xs text-muted-foreground text-center px-2">
+                QR preview
+              </div>
+            )}
+            <p className="text-xs text-muted-foreground">Scan to view waiver</p>
+          </div>
+        </div> 
+
+
+//         <div className="flex flex-wrap gap-2">
+//           <Link
+//             href={publicUrl}
+//             target="_blank"
+//             className="text-sm px-3 py-1.5 bg-black text-white rounded hover:bg-gray-800"
+//           >
+//             View Public Waiver
+//           </Link>
+
+//           <Link
+//             href="/account"
+//             className="text-sm px-3 py-1.5 bg-gray-100 rounded hover:bg-gray-200"
+//           >
+//             Customize Branding
+//           </Link>
+//         </div>
+
+//         {/* Waivify attribution */}
+//         <p className="text-xs text-muted-foreground mt-2">
+//           “Powered by Waivify” will be visible to clients.{" "}
+//           {plan !== "pro" && (
+//             <Link href="/upgrade" className="text-blue-600 underline">
+//               Upgrade to remove
+//             </Link>
+//           )}
+//         </p>
+//         </div>
+//     //   </CardContent>
+//     // </Card>
+//   );
+// }

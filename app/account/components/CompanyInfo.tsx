@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input";
 import { SaveButton } from "./SaveButton";
 import { uploadFile } from "@/app/actions/account";
 import { getUserById } from "@/app/actions/user";
+import Image from "next/image";
+import { Label } from "@/components/ui/label";
 
 export default function CompanyInfo() {
   const { user } = useUser();
@@ -58,8 +60,11 @@ export default function CompanyInfo() {
 
       <div className='space-y-2'>
         <div>
-          <label className='block text-xs mb-1'>Company Name</label>
+          <Label htmlFor='companyName' className='text-sm font-medium'>
+            Company Name
+          </Label>
           <Input
+            id='companyName'
             value={name}
             onChange={(e) => {
               setName(e.target.value);
@@ -69,11 +74,17 @@ export default function CompanyInfo() {
           />
         </div>
 
-        <div>
-          <label className='block text-xs mb-1'>Logo Upload (optional)</label>
+        <div className='space-y-2'>
+          <Label htmlFor='logo' className='text-sm font-medium'>
+            Logo Upload
+          </Label>
           <input
             type='file'
             accept='image/*'
+            className='block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 
+            file:rounded file:border-0 file:text-sm file:font-semibold 
+            file:bg-gray-100 file:text-gray-700 
+            hover:file:bg-gray-200'
             onChange={async (e) => {
               const file = e.target.files?.[0];
               if (!file) return;

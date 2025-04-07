@@ -3,7 +3,7 @@
 import Stripe from "stripe";
 import { redirect } from "next/navigation";
 import { getUserById } from "./user";
-import { auth } from '@clerk/nextjs/server';
+import { auth } from "@clerk/nextjs/server";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: "2025-02-24.acacia",
@@ -40,18 +40,32 @@ export async function checkout({
   redirect(session.url!);
 }
 
-
 export async function createCustomerPortalSession() {
-    const { userId } = await auth();
-    if (!userId) throw new Error("Not authenticated");
-  
-    const dbUser = await getUserById();
-    if (!dbUser?.stripeCustomerId) throw new Error("Missing Stripe customer ID");
-  
-    const session = await stripe.billingPortal.sessions.create({
-      customer: dbUser.stripeCustomerId,
-      return_url: `${process.env.NEXT_PUBLIC_APP_URL}/account`,
+  const { userId } = await auth();
+  if (!userId) throw new Error("Not authenticated");
+
+  const dbUser = await getUserById();
+
+  if (!dbUser?.stripeCustomerId) throw new Error("Missing Stripe customer ID");
+
+  const session = await stripe.billingPortal.sessions.create({
+    customer: dbUser.stripeCustomerId,
+    return_url: `${process.env.NEXT_PUBLIC_APP_URL}/account`,
+  });
+
+  return session.url;
+}
+
+export async function getPaymentMethod(stripeCustomerId: string) {
+  try {
+    const paymentMethods = await stripe.paymentMethods.list({
+      customer: stripeCustomerId,
+      type: "card",
     });
-  
-    return session.url;
+
+    return paymentMethods.data[0];
+  } catch (err) {
+    console.error("Failed to fetch payment method:", err);
+    return null;
   }
+}

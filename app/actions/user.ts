@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/lib/prisma";
-import { auth } from '@clerk/nextjs/server';
+import { auth } from "@clerk/nextjs/server";
 import { Prisma } from "@prisma/client";
 import { subMonths } from "date-fns";
 
@@ -20,6 +20,7 @@ export async function createUser({
       create: {
         clerkId,
         email,
+        slug: "",
         lastActiveAt: new Date(),
         companyName: "",
         name: name || "",
@@ -46,25 +47,6 @@ export async function createUser({
     throw error;
   }
 }
-// export async function updateUser(
-//   clerkId: string,
-//   data: Partial<{
-//     logoUrl: string;
-//     plan: string;
-//     waiverCount: number;
-//     feedbackGiven: boolean;
-//     nextSteps: any;
-//     stripeCustomerId: string;
-//     companyName: string;
-//     renewalDate: Date
-//   }>
-// ) {
-// console.log('DATA - ',data)
-//   await db.user.update({
-//     where: { clerkId },
-//     data,
-//   });
-// }
 
 export async function updateUser(
   clerkId: string,
@@ -80,7 +62,7 @@ export async function updateUser(
     console.error("❌ Failed to update user:", err);
   }
 }
- 
+
 export async function getUserById() {
   const { userId } = await auth();
   try {

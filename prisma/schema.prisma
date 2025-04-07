@@ -14,6 +14,7 @@ model User {
   email            String    @unique
   name             String?
   logoUrl          String?
+  slug             String?
   companyName      String?
   plan             String    @default("free")
   waiverCount      Int       @default(0)
@@ -24,6 +25,8 @@ model User {
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
   lastActiveAt     DateTime  @default(now())
+
+  Waiver Waiver[]
 }
 
 model Signature {
@@ -48,5 +51,7 @@ model Waiver {
   viewedAt  DateTime?
   archived  Boolean   @default(false)
 
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
   signature Signature? @relation(name: "WaiverSignature")
 }

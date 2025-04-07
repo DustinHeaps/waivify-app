@@ -1,6 +1,7 @@
 "use client";
 
-import { sendEmail } from "@/app/actions/waiver";
+
+import { sendEmail } from '@/app/actions/email';
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 

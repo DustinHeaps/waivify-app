@@ -23,7 +23,11 @@ const WaiverSchema = z.object({
 
 type FormData = z.infer<typeof WaiverSchema>;
 
-export default function SimpleWaiverForm() {
+type Props = {
+  slug: string;
+};
+
+export default function SimpleWaiverForm({ slug }: Props) {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -60,14 +64,17 @@ export default function SimpleWaiverForm() {
 
       const waiverId = uuidv4();
 
-      const newWaiver = await saveWaiver({
-        id: waiverId,
-        name: data.name,
-        ipAddress: "192.168.1.1",
-        terms: data.terms,
-        liability: data.liability,
-        date: new Date().toISOString(),
-      });
+      const newWaiver = await saveWaiver(
+        {
+          id: waiverId,
+          name: data.name,
+          ipAddress: "192.168.1.1",
+          terms: data.terms,
+          liability: data.liability,
+          date: new Date().toISOString(),
+        },
+        slug
+      );
 
       const signature = await uploadSignature(formData, newWaiver.id);
 
