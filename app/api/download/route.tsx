@@ -37,8 +37,8 @@ export async function GET(req: Request) {
       waiverId={waiver.signature.id}
       signatureUrl={`https://uploadthing.com/f/${waiver.signature.fileKey}`}
       ipAddress={waiver.ipAddress}
-      terms={waiver.terms}
-      liability={waiver.liability}
+      terms={waiver.terms ?? false}
+      liability={waiver.liability ?? false}
       logoUrl={logoUrl}
       companyName={companyName}
     />
