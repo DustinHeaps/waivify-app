@@ -25,5 +25,7 @@ export default async function DashboardPage() {
 
   const waivers = await getAllWaivers();
 
-  return <Dashboard waivers={waivers} />;
+  return <div>DAbajdkme</div>
+
+  // return <Dashboard waivers={waivers} />;
 }

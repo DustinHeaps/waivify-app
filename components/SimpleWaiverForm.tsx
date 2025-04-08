@@ -77,7 +77,7 @@ export default function SimpleWaiverForm({ slug, fields }: Props) {
         slug
       );
 
-      const signature = await uploadSignature(formData, newWaiver.id);
+      const signature = await uploadSignature(formData, newWaiver.id, newWaiver.date);
 
       router.push(`/waiver/confirmation/${signature.id}`);
     } catch (error) {

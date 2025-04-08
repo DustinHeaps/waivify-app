@@ -21,7 +21,7 @@ export default function RecentWaivers() {
     const fetchData = async () => {
       const all = await getAllWaivers();
       const topThree = all.slice(0, 3);
-      setRecent(topThree);
+      // setRecent(topThree);
     };
 
     fetchData();
