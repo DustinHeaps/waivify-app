@@ -6,6 +6,7 @@ import {
   Image,
   StyleSheet,
 } from "@react-pdf/renderer";
+import { format } from "date-fns";
 
 const styles = StyleSheet.create({
   page: {
@@ -120,6 +121,7 @@ export default function WaiverPDF({
   liability,
   logoUrl,
   companyName,
+  fields,
 }: {
   name: string;
   date: string;
@@ -130,6 +132,7 @@ export default function WaiverPDF({
   liability: boolean;
   logoUrl?: string;
   companyName?: string;
+  fields: Record<string, string | boolean>;
 }) {
   return (
     <Document>
@@ -151,10 +154,10 @@ export default function WaiverPDF({
 
           <Text style={styles.header}>Signed Waiver</Text>
 
-          <View style={styles.section}>
+          {/* <View style={styles.section}>
             <Text style={styles.label}>Name:</Text>
             <Text style={styles.value}>{name}</Text>
-          </View>
+          </View> */}
 
           <View style={styles.section}>
             <Text style={styles.label}>Date:</Text>
@@ -173,16 +176,28 @@ export default function WaiverPDF({
             <Text style={styles.value}>{ipAddress}</Text>
           </View>
 
-          <View style={styles.row}>
-            <View>
-              <Text style={styles.label}>Terms:</Text>
-              <Text style={styles.value}>{terms ? "Yes" : "No"}</Text>
-            </View>
-            <View>
-              <Text style={styles.label}>Liability:</Text>
-              <Text style={styles.value}>{liability ? "Yes" : "No"}</Text>
-            </View>
-          </View>
+          {Object.entries(fields).map(([label, value]) => {
+            let displayValue = value;
+
+            if (typeof value === "boolean") {
+              displayValue = value ? "Yes" : "No";
+            }
+
+            // Format anything with "Date" in the label
+            if (
+              label.toLowerCase().includes("date") &&
+              typeof value === "string"
+            ) {
+              displayValue = format(new Date(value), "MMMM do, yyyy");
+            }
+
+            return (
+              <View style={styles.section} key={label}>
+                <Text style={styles.label}>{label}:</Text>
+                <Text style={styles.value}>{displayValue}</Text>
+              </View>
+            );
+          })}
 
           <View style={styles.section}>
             <Text style={styles.label}>Signature:</Text>

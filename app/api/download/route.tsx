@@ -41,6 +41,7 @@ export async function GET(req: Request) {
       liability={waiver.liability ?? false}
       logoUrl={logoUrl}
       companyName={companyName}
+      fields={(waiver.fields ?? {}) as Record<string, string | boolean>}
     />
   );
 
