@@ -25,9 +25,10 @@ type FormData = z.infer<typeof WaiverSchema>;
 
 type Props = {
   slug: string;
+  fields: any
 };
 
-export default function SimpleWaiverForm({ slug }: Props) {
+export default function SimpleWaiverForm({ slug, fields }: Props) {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 

@@ -4,13 +4,12 @@ import { db } from "@/lib/prisma";
 
 import WaiverPDF from "@/components/WaiverPDF";
 import { format } from "date-fns";
-import { createElement } from "react";
 import { getUserById } from "@/app/actions/user";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const waiverId = searchParams.get("waiverId");
-  
+
   const user = await getUserById();
   let logoUrl: string = "";
   let companyName: string = "";

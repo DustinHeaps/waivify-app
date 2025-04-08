@@ -5,7 +5,8 @@ import { utapi } from "../api/uploadthing/core";
 // import { trackEvent } from '@/lib/posthog/posthog.server';
 // import { revalidatePath } from 'next/cache';
 
-export async function uploadSignature(formData: FormData, waiverId: string) {
+export async function uploadSignature(formData: FormData, waiverId: string, date: Date) {
+    console.log('date', date)
   const files = formData.getAll("file") as File[];
 
   if (!files || files.length === 0) {
@@ -13,7 +14,7 @@ export async function uploadSignature(formData: FormData, waiverId: string) {
   }
 
   const name = formData.get("name") as string;
-  const date = `${formData.get("date")}T00:00:00Z`;
+  // const date = `${formData.get("date")}T00:00:00Z`;
 
   const uploaded = await utapi.uploadFiles(files);
 

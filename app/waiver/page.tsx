@@ -1,11 +1,13 @@
 import SimpleWaiverForm from "@/components/SimpleWaiverForm";
-import WaiverGuard from '@/components/WaiverGuard';
-import { auth } from '@clerk/nextjs/server';
-import { redirect } from 'next/navigation';
-import { getUserById } from '../actions/user';
-import { getWaiverLimit } from '@/lib/waiverUsage';
+import WaiverGuard from "@/components/WaiverGuard";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
+import { getUserById } from "../actions/user";
+import { getWaiverLimit } from "@/lib/waiverUsage";
+import { TemplateSelector } from "@/components/TemplateSelector";
+import { getDefaultTemplates } from "../actions/template";
+import TemplatePageContent from '@/components/TemplatePageContent';
 // import { markWaiverViewed } from "../actions/waiver";
-
 
 export const metadata = {
   title: "Sign Your Waiver – Fast & Secure | Powered by Waivify",
@@ -21,7 +23,9 @@ export const metadata = {
 };
 
 export default async function WaiverPage() {
-    const { userId } = await auth();
+  const templates = await getDefaultTemplates();
+
+  const { userId } = await auth();
   if (!userId) throw new Error("Not authenticated");
 
   const dbUser = await getUserById();
@@ -32,14 +36,13 @@ export default async function WaiverPage() {
   const limit = getWaiverLimit(plan);
 
   if (waiversUsed >= limit) {
-    redirect("/upgrade");
+    // redirect("/upgrade");
   }
   return (
     <div className='min-h-screen flex items-center justify-center bg-gray-50 p-4'>
-       {/* <WaiverGuard>
-       <SimpleWaiverForm />
+      <WaiverGuard>
+      <TemplatePageContent templates={templates} />
       </WaiverGuard>
-       */}
     </div>
   );
 }

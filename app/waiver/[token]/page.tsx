@@ -2,9 +2,8 @@ import { getWaiverByToken } from "@/app/actions/waiver";
 import { db } from "@/lib/prisma";
 import { notFound, redirect } from "next/navigation";
 import WaiverDownloadButton from "../components/WaiverDownloadButton";
-import { getUserById } from '@/app/actions/user';
+import { getUserById } from "@/app/actions/user";
 import Image from "next/image";
-
 
 type PageProps = {
   params: Promise<{ token: string }>;
@@ -25,7 +24,7 @@ export default async function ViewWaiverPage({ params }: PageProps) {
 
   return (
     <div className='max-w-xl mx-auto mt-10 border p-6 rounded shadow'>
-      <div className='flex justify-between items-start'>
+      <div className='flex justify-between items-center border-b pb-2'>
         {user?.plan === "pro" && user.logoUrl && (
           <div className='flex items-center gap-3'>
             <Image
@@ -40,16 +39,34 @@ export default async function ViewWaiverPage({ params }: PageProps) {
             </p>
           </div>
         )}
-        <h1 className='text-2xl font-bold mb-4'>Signed Waiver</h1>
+        <h1 className='text-2xl  font-bold'>Signed Waiver</h1>
+
         <WaiverDownloadButton waiverId={waiver.id} />
       </div>
-      <p className='py-2'>
-        <b>Waiver ID:</b>{" "}
+      <p className='py-2 '>
+        <b className='font-medium'>Waiver ID:</b>{" "}
         <span className='font-mono text-xs bg-gray-100 px-1 rounded'>
           WVR-{waiver.id.slice(0, 6).toUpperCase()}
         </span>
       </p>
-      <p className='py-2'>
+      {waiver.fields && (
+        <div className=''>
+          {Object.entries(waiver.fields).map(([label, value]) => (
+            <p className='py-2' key={label}>
+              <span className='font-medium'>{label}:</span>{" "}
+              <span className='text-sm'>
+                {typeof value === "boolean"
+                  ? value
+                    ? "✅ Yes"
+                    : "❌ No"
+                  : value}
+              </span>
+            </p>
+          ))}
+        </div>
+      )}
+
+      {/* <p className='py-2'>
         <strong>Name:</strong> {waiver.name}
       </p>
       <p className='py-2'>
@@ -64,9 +81,8 @@ export default async function ViewWaiverPage({ params }: PageProps) {
       <p className='py-2'>
         <strong>Liability:</strong> {waiver.liability ? "✅ Yes" : "❌ No"}
       </p>
-      <p>
-        <strong>Signature:</strong>
-      </p>
+       */}
+      <p className='font-medium'>Signature:</p>
       <img
         src={`https://uploadthing.com/f/${waiver.signature?.fileKey}`}
         alt='Signature'
