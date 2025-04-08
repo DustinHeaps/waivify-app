@@ -34,7 +34,7 @@ export default async function PublicWaiverPage({ params }: PageProps) {
       </div>
 
       {/* Waiver form */}
-      <SimpleWaiverForm slug={slug} />
+      {/* <SimpleWaiverForm slug={slug} /> */}
     </div>
   );
 }
