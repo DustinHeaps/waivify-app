@@ -27,3 +27,24 @@ export function downloadCSV(data: any[], filename = "Waivers.csv") {
   link.setAttribute("download", filename);
   link.click();
 }
+
+
+export function getNameFieldValue(form: Record<string, string>) {
+  const lowerEntries = Object.entries(form).map(([label, value]) => [
+    label.toLowerCase(),
+    value,
+  ]);
+
+  const owner = lowerEntries.find(([label]) => label.includes("owner name"));
+  if (owner) return owner[1];
+
+  const participant = lowerEntries.find(([label]) =>
+    label.includes("participant name")
+  );
+  if (participant) return participant[1];
+
+  const fullName = lowerEntries.find(([label]) =>
+    label.includes("full name")
+  );
+  return fullName ? fullName[1] : null;
+}

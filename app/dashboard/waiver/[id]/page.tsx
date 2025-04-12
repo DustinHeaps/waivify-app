@@ -1,7 +1,6 @@
 import { getWaiverByToken } from "@/app/actions/waiver";
 import { notFound } from "next/navigation";
 
-export const dynamic = "force-dynamic";
 
 interface WaiverDetailProps {
   params: Promise<{ id: string }>;

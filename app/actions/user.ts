@@ -53,6 +53,7 @@ export async function updateUser(
   data: Prisma.UserUpdateInput
 ) {
   console.log("🔧 Updating user with data:", data);
+
   try {
     await db.user.update({
       where: { clerkId },

@@ -20,7 +20,7 @@ export default function TemplatePageContent({ templates }: Props) {
     templates.find((t) => t.name === "Basic Waiver") ?? templates[0];
 
   const [selectedTemplateId, setSelectedTemplateId] = useState(() => {
-    return defaultTemplate?.id ?? ""; // fallback to empty string if undefined
+    return defaultTemplate?.id ?? ""; 
   });
   const selectedTemplate = templates.find((t) => t.id === selectedTemplateId);
 

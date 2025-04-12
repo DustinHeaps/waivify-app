@@ -10,6 +10,7 @@ export async function SaveButton(data: { name: string; logo: string }) {
   await updateUser(userId, {
     companyName: data.name,
     logoUrl: data.logo,
+    slug: data.name
   });
 
   return { success: true };

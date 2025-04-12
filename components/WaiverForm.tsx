@@ -9,6 +9,7 @@ import { saveWaiver } from "@/app/actions/waiver";
 import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import { uploadSignature } from "@/app/actions/signature";
+import { getNameFieldValue } from '@/lib/utils';
 
 // const WaiverSchema = z.object({
 //   name: z.string().min(1, "Name is required"),
@@ -109,8 +110,9 @@ export default function WaiverForm({ slug, fields, templateId }: Props) {
 
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("name", "test name");
 
+      const name = getNameFieldValue(data);
+      formData.append("name", name as string);
 
       const waiverId = uuidv4();
 
@@ -185,8 +187,9 @@ export default function WaiverForm({ slug, fields, templateId }: Props) {
       <button
         type='submit'
         className='bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition'
+        disabled={isLoading}
       >
-        Submit Waiver
+        {isLoading ? "Submitting..." : "Submit Waiver"}
       </button>
     </form>
   );

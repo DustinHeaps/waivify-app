@@ -7,7 +7,7 @@ import { getWaiverLimit } from "@/lib/waiverUsage";
 import { TemplateSelector } from "@/components/TemplateSelector";
 import { getDefaultTemplates } from "../actions/template";
 import TemplatePageContent from '@/components/TemplatePageContent';
-// import { markWaiverViewed } from "../actions/waiver";
+
 
 export const metadata = {
   title: "Sign Your Waiver – Fast & Secure | Powered by Waivify",
@@ -41,7 +41,7 @@ export default async function WaiverPage() {
   return (
     <div className='min-h-screen flex items-center justify-center bg-gray-50 p-4'>
       <WaiverGuard>
-      <TemplatePageContent templates={templates} />
+        <TemplatePageContent templates={templates} />
       </WaiverGuard>
     </div>
   );

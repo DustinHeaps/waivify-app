@@ -2,16 +2,13 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { format } from "date-fns";
-import { Progress } from "@radix-ui/react-progress";
-import { Badge } from "@/components/ui/badge";
 import CompanyInfo from "./components/CompanyInfo";
 import { redirect, useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
-import { checkout } from "../actions/stripe";
-import { getUserById } from "../actions/user";
+import { Suspense, useEffect, useRef, useState } from "react";
+import { getUserById, updateUser } from "../actions/user";
 import { useUser } from "@clerk/nextjs";
-import { Button } from "@/components/ui/button";
 import { YourBrand } from "./components/YourBrand";
+import { getDefaultTemplates } from "../actions/template";
 
 export default function AccountPage() {
   return (
@@ -24,7 +21,7 @@ export default function AccountPage() {
 function AccountPageContent() {
   const [dbUser, setDBUser] = useState<any>(null);
   const [currentPlan, setCurrentPlan] = useState<string>("");
-
+  const [templates, setTemplates] = useState<any[]>([]);
   const { user } = useUser();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -59,6 +56,15 @@ function AccountPageContent() {
 
     fetchUser();
   }, [user?.id]);
+
+  useEffect(() => {
+    const fetchTemplates = async () => {
+      const res = await getDefaultTemplates(); 
+      setTemplates(res);
+    };
+  
+    fetchTemplates();
+  }, []);
 
   return (
     <div className='max-w-screen-md mx-auto py-10 space-y-6'>
@@ -115,107 +121,24 @@ function AccountPageContent() {
       </Card>
 
       <CompanyInfo />
-      <YourBrand
-        logoUrl={dbUser?.logoUrl}
-        companyName={dbUser?.companyName}
-        slug={dbUser?.slug}
-        plan={(dbUser?.plan || "free") as "free" | "starter" | "pro"}
-      />
+
+        <YourBrand
+          logoUrl={dbUser?.logoUrl}
+          companyName={dbUser?.companyName}
+          slug={dbUser?.slug}
+          templates={templates}
+          plan={(dbUser?.plan || "free") as "free" | "starter" | "pro"}
+          selectedTemplateId={dbUser?.publicTemplateId} 
+          onSelectTemplate={async (newId) => {
+ 
+
+            await updateUser(dbUser.clerkId, {
+              publicTemplateId: newId,
+            });
+
+            router.refresh();
+          }}
+        />
     </div>
   );
 }
-// import Image from "next/image";
-// import Link from "next/link";
-// import { Button } from "@/components/ui/button";
-// import { Input } from "@/components/ui/input";
-// import { Label } from "@/components/ui/label";
-// import { Card, CardContent } from "@/components/ui/card";
-
-// export default function BrandSettings({
-//   logoUrl,
-//   companyName,
-//   slug,
-//   plan,
-// }: {
-//   logoUrl?: string;
-//   companyName?: string;
-//   slug?: string;
-//   plan: "free" | "starter" | "pro";
-// }) {
-//   const publicUrl = `https://waivify.com/${slug || "undefined"}`;
-//   const hasBrand = !!logoUrl && !!companyName;
-
-//   return (
-//     // <Card>
-//     //   <CardContent className="p-6 space-y-4">
-//     <div className='max-w-screen-md mx-auto py-10 space-y-6'>
-//         <h2 className="text-lg font-semibold">Brand Settings</h2>
-
-//         {/* Editable Info */}
-        // <div className="space-y-2">
-        //   <Label htmlFor="companyName">Company Name</Label>
-        //   <Input
-        //     id="companyName"
-        //     defaultValue={companyName}
-        //     placeholder="Enter your company name"
-        //   />
-
-        //   <Label htmlFor="logo">Logo Upload</Label>
-        //   <Input id="logo" type="file" />
-        //   <Button variant="default">Save Info</Button>
-        // </div>
-
-//         <hr className="my-4" />
-
-        {/* Preview Section */}
-       
-
-          {/* <div className="flex flex-col items-center gap-2">
-            {hasBrand ? (
-              <Image
-                src={`https://api.qrserver.com/v1/create-qr-code/?data=${publicUrl}&size=160x160`}
-                alt="QR Code"
-                width={120}
-                height={120}
-              />
-            ) : (
-              <div className="w-[120px] h-[120px] bg-gray-100 rounded flex items-center justify-center text-xs text-muted-foreground text-center px-2">
-                QR preview
-              </div>
-            )}
-            <p className="text-xs text-muted-foreground">Scan to view waiver</p>
-          </div>
-        </div> 
-
-
-//         <div className="flex flex-wrap gap-2">
-//           <Link
-//             href={publicUrl}
-//             target="_blank"
-//             className="text-sm px-3 py-1.5 bg-black text-white rounded hover:bg-gray-800"
-//           >
-//             View Public Waiver
-//           </Link>
-
-//           <Link
-//             href="/account"
-//             className="text-sm px-3 py-1.5 bg-gray-100 rounded hover:bg-gray-200"
-//           >
-//             Customize Branding
-//           </Link>
-//         </div>
-
-//         {/* Waivify attribution */}
-//         <p className="text-xs text-muted-foreground mt-2">
-//           “Powered by Waivify” will be visible to clients.{" "}
-//           {plan !== "pro" && (
-//             <Link href="/upgrade" className="text-blue-600 underline">
-//               Upgrade to remove
-//             </Link>
-//           )}
-//         </p>
-//         </div>
-//     //   </CardContent>
-//     // </Card>
-//   );
-// }
