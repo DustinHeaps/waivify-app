@@ -10,14 +10,7 @@ import { YourBrand } from "./components/YourBrand";
 import { getDefaultTemplates } from "../actions/template";
 
 export default function AccountPage() {
-  return (
-    <Suspense fallback={null}>
-      <AccountPageContent />
-    </Suspense>
-  );
-}
-
-function AccountPageContent() {
+  
   const [dbUser, setDBUser] = useState<any>(null);
   const [currentPlan, setCurrentPlan] = useState<string>("");
   const [templates, setTemplates] = useState<any[]>([]);

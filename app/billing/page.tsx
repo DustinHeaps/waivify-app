@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { Suspense, useEffect, useState, useTransition } from "react";
 import { useUser } from "@clerk/nextjs";
 import {
   checkout,
@@ -11,20 +11,29 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { getUserById } from "../actions/user";
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function BillingPage() {
+return (
+    <Suspense fallback={null}>
+      <BillingPageContent />
+    </Suspense>
+  );
+}
+
+
+
+  const BillingPageContent = () => {
   const [plan, setPlan] = useState<"free" | "starter" | "pro">("free");
   const [isPending, startTransition] = useTransition();
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [card, setCard] = useState<any>(null);
   const { user } = useUser();
-    const router = useRouter();
-    const searchParams = useSearchParams();
-    const success = searchParams.get("success");
-    const canceled = searchParams.get("canceled");
-
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const success = searchParams.get("success");
+  const canceled = searchParams.get("canceled");
 
   useEffect(() => {
     if (success || canceled) {
@@ -34,7 +43,6 @@ export default function BillingPage() {
       return () => clearTimeout(timeout);
     }
   }, [success, canceled, router]);
-
 
   useEffect(() => {
     if (!user?.id) return;
@@ -97,94 +105,96 @@ export default function BillingPage() {
   ];
 
   return (
-    <div className='max-w-screen-md mx-auto py-10 space-y-6'>
-      <div className='space-y-1'>
-        <h1 className='text-xl font-semibold'>Billing & Subscription</h1>
-        <p className='text-muted-foreground text-sm'>
-          Manage your current plan or upgrade for more features.
-        </p>
-      </div>
-     {/* ✅ Feedback Banner */}
-     {success && (
-        <div className='rounded-lg border border-green-500 bg-green-50 p-4 text-center'>
-          <h2 className='text-lg font-semibold text-green-600'>
-            ✅ Payment Successful!
-          </h2>
-          <p className='text-sm text-green-700 mt-1'>
-            Your account has been upgraded.
+
+      <div className='max-w-screen-md mx-auto py-10 space-y-6'>
+        <div className='space-y-1'>
+          <h1 className='text-xl font-semibold'>Billing & Subscription</h1>
+          <p className='text-muted-foreground text-sm'>
+            Manage your current plan or upgrade for more features.
           </p>
         </div>
-      )}
-
-      {canceled && (
-        <div className='rounded-lg border border-red-500 bg-red-50 p-4 text-center'>
-          <h2 className='text-lg font-semibold text-red-600'>
-            ❌ Checkout Canceled
-          </h2>
-          <p className='text-sm text-red-700 mt-1'>
-            You can try again anytime.
-          </p>
-        </div>
-      )}
-
-      {error && (
-        <div className='text-sm text-red-500 border border-red-300 bg-red-50 rounded p-3'>
-          {error}
-        </div>
-      )}
-      {card && (
-        <div className='border border-gray-200 rounded px-4 py-3 bg-gray-50 mb-4'>
-          <div className='text-sm text-muted-foreground'>
-            <p>
-              💳 {card.brand.toUpperCase()} ending in {card.last4}
-            </p>
-            <p>
-              Expires {card.exp_month}/{card.exp_year}
+        {/* ✅ Feedback Banner */}
+        {success && (
+          <div className='rounded-lg border border-green-500 bg-green-50 p-4 text-center'>
+            <h2 className='text-lg font-semibold text-green-600'>
+              ✅ Payment Successful!
+            </h2>
+            <p className='text-sm text-green-700 mt-1'>
+              Your account has been upgraded.
             </p>
           </div>
-        </div>
-      )}
-      {plans.map((p) => (
-        <Card key={p.id}>
-          <CardContent className='p-5 space-y-3'>
-            <h2 className='font-medium'>
-              {p.name} - {p.price}
+        )}
+
+        {canceled && (
+          <div className='rounded-lg border border-red-500 bg-red-50 p-4 text-center'>
+            <h2 className='text-lg font-semibold text-red-600'>
+              ❌ Checkout Canceled
             </h2>
-            <ul className='text-sm text-muted-foreground space-y-1'>
-              {p.features.map((f) => (
-                <li key={f}>✅ {f}</li>
-              ))}
-            </ul>
+            <p className='text-sm text-red-700 mt-1'>
+              You can try again anytime.
+            </p>
+          </div>
+        )}
 
-            {plan === p.id ? (
-              <Badge variant='outline' className='mt-2'>
-                Current Plan
-              </Badge>
-            ) : (
-              <Button
-                disabled={!!loadingPlan}
-                onClick={() => handleSubscribe(p.id as "starter" | "pro")}
-              >
-                {loadingPlan === "starter"
-                  ? "Redirecting..."
-                  : plan === "pro"
-                    ? "Switch to Starter"
-                    : "Get Starter"}
-              </Button>
-            )}
-          </CardContent>
-        </Card>
-      ))}
+        {error && (
+          <div className='text-sm text-red-500 border border-red-300 bg-red-50 rounded p-3'>
+            {error}
+          </div>
+        )}
+        {card && (
+          <div className='border border-gray-200 rounded px-4 py-3 bg-gray-50 mb-4'>
+            <div className='text-sm text-muted-foreground'>
+              <p>
+                💳 {card.brand.toUpperCase()} ending in {card.last4}
+              </p>
+              <p>
+                Expires {card.exp_month}/{card.exp_year}
+              </p>
+            </div>
+          </div>
+        )}
+        {plans.map((p) => (
+          <Card key={p.id}>
+            <CardContent className='p-5 space-y-3'>
+              <h2 className='font-medium'>
+                {p.name} - {p.price}
+              </h2>
+              <ul className='text-sm text-muted-foreground space-y-1'>
+                {p.features.map((f) => (
+                  <li key={f}>✅ {f}</li>
+                ))}
+              </ul>
 
-      <div className='pt-4'>
-        <Button
-          onClick={handleManageSubscription}
-          disabled={isPending}
-          variant='outline'
-        >
-          {isPending ? "Opening Portal..." : "Manage Subscription in Stripe"}
-        </Button>
+              {plan === p.id ? (
+                <Badge variant='outline' className='mt-2'>
+                  Current Plan
+                </Badge>
+              ) : (
+                <Button
+                  disabled={!!loadingPlan}
+                  onClick={() => handleSubscribe(p.id as "starter" | "pro")}
+                >
+                  {loadingPlan === "starter"
+                    ? "Redirecting..."
+                    : plan === "pro"
+                      ? "Switch to Starter"
+                      : "Get Starter"}
+                </Button>
+              )}
+            </CardContent>
+          </Card>
+        ))}
+
+        <div className='pt-4'>
+          <Button
+            onClick={handleManageSubscription}
+            disabled={isPending}
+            variant='outline'
+          >
+            {isPending ? "Opening Portal..." : "Manage Subscription in Stripe"}
+          </Button>
+        </div>
       </div>
-    </div>
+
   );
 }
