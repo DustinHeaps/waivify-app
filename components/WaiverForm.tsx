@@ -9,7 +9,7 @@ import { saveWaiver } from "@/app/actions/waiver";
 import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import { uploadSignature } from "@/app/actions/signature";
-import { getNameFieldValue } from '@/lib/utils';
+import { getNameFieldValue } from "@/lib/utils";
 
 // const WaiverSchema = z.object({
 //   name: z.string().min(1, "Name is required"),
@@ -48,6 +48,14 @@ const buildSchema = (fields: any[]) => {
     }
   });
 
+  shape["terms"] = z.literal(true, {
+    errorMap: () => ({ message: "You must agree to the terms." }),
+  });
+
+  shape["liability"] = z.literal(true, {
+    errorMap: () => ({ message: "You must release liability." }),
+  });
+
   return z.object(shape);
 };
 export default function WaiverForm({ slug, fields, templateId }: Props) {
@@ -77,23 +85,11 @@ export default function WaiverForm({ slug, fields, templateId }: Props) {
   const sigPadRef = useRef<any>(null);
 
   const onSubmit = async (data: FormData) => {
+    debugger;
     setSignatureError("");
 
     const signatureDataURL = sigPadRef.current?.toDataURL();
 
-    // if (!signatureDataURL || sigPadRef.current?.isEmpty()) {
-    //   setError("signature" as keyof FormData, {
-    //     type: "manual",
-    //     message: "Signature is required",
-    //   });
-    // const signatureDataURL = sigPadRef.current?.toDataURL();
-
-    // if (!signatureDataURL) {
-    //   console.warn("No signature captured");
-    //   return;
-    // }
-
-    // data.signature = signatureDataURL;
     if (sigPadRef.current?.isEmpty()) {
       setSignatureError("Signature is required.");
       return;
@@ -122,8 +118,8 @@ export default function WaiverForm({ slug, fields, templateId }: Props) {
           id: waiverId,
           name: data.name,
           ipAddress: "192.168.1.1",
-          //   terms: data.terms,
-          //   liability: data.liability,
+          terms: data.terms,
+          liability: data.liability,
           date: new Date().toISOString(),
           templateId,
         },
@@ -155,15 +151,6 @@ export default function WaiverForm({ slug, fields, templateId }: Props) {
           </label>
           {field.type === "checkbox" ? (
             <input type='checkbox' {...register(field.label)} />
-          ) : field.type === "signature" ? (
-            <>
-              <div className='border rounded-md'>
-                <SignaturePad ref={sigPadRef} />
-              </div>
-              {signatureError && (
-                <p className='text-red-500 text-sm mt-1'>{signatureError}</p>
-              )}
-            </>
           ) : (
             <input
               type={field.type}
@@ -184,6 +171,41 @@ export default function WaiverForm({ slug, fields, templateId }: Props) {
         </div>
       ))}
 
+      <div>
+        <label className='flex items-center space-x-2'>
+          <input type='checkbox' {...register("terms" as const)} />
+          <span>I agree to the terms & conditions</span>
+        </label>
+        {errors.terms && (
+          <p className='text-red-500 text-sm'>
+            {(errors.terms as any)?.message}
+          </p>
+        )}
+      </div>
+
+      <div>
+        <label className='flex  items-center space-x-2'>
+          <input type='checkbox' {...register("liability" as const)} />
+          <span>I release liability for this service</span>
+        </label>
+        {errors.liability && (
+          <p className='text-red-500 text-sm'>
+            {(errors.liability as any)?.message}
+          </p>
+        )}
+      </div>
+
+      <div className='mt-4'>
+        <label className='block text-sm font-semibold text-gray-700 mb-1'>
+          Signature
+        </label>
+        <div className='border rounded-md'>
+          <SignaturePad ref={sigPadRef} />
+        </div>
+        {signatureError && (
+          <p className='text-red-500 text-sm mt-1'>{signatureError}</p>
+        )}
+      </div>
       <button
         type='submit'
         className='bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition'

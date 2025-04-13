@@ -11,11 +11,13 @@ import { ConfirmDeleteDialog } from './ConfirmDeleteDialog';
 
 type Props = {
   waivers: Waiver[];
+  onArchive: (ids: string[], clearSelection: () => void) => void;
   onDelete: (ids: string[]) => void;
   isLoading: boolean;
+  viewArchived: boolean;
 };
 
-export default function WaiverTable({ waivers, onDelete, isLoading }: Props) {
+export default function WaiverTable({ waivers, onDelete, isLoading, onArchive, viewArchived }: Props) {
   const [hasMounted, setHasMounted] = useState(false);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
@@ -25,6 +27,10 @@ export default function WaiverTable({ waivers, onDelete, isLoading }: Props) {
   useEffect(() => {
     setHasMounted(true);
   }, []);
+
+  useEffect(() => {
+    setSelectedIds([]);
+  }, [viewArchived]);
 
   const toggleSelectAll = () => {
     setSelectedIds(allSelected ? [] : waivers.map((w) => w.id));
@@ -36,9 +42,6 @@ export default function WaiverTable({ waivers, onDelete, isLoading }: Props) {
     );
   };
 
-  const handleArchive = async () => {
-    await archiveWaivers(selectedIds);
-  };
 
   return (
     <div className='bg-white shadow rounded-lg overflow-hidden mt-6'>
@@ -52,11 +55,11 @@ export default function WaiverTable({ waivers, onDelete, isLoading }: Props) {
             </ConfirmDeleteDialog>
             
             <button
-              onClick={() => handleArchive()}
+              onClick={() => onArchive(selectedIds, () => setSelectedIds([]) )}
               className='text-gray-600 hover:underline'
             >
-              Archive
-            </button>
+              {viewArchived ? "Unarchive" : "Archive"}
+              </button>
           </div>
         </div>
       )}
@@ -101,10 +104,10 @@ export default function WaiverTable({ waivers, onDelete, isLoading }: Props) {
                       />
                     </td>
                     <td className='px-4 py-3 text-sm whitespace-nowrap '>
-                      {waiver.name}
+                      {waiver.signature?.name}
                     </td>
                     <td className='px-4 py-3 text-sm whitespace-nowrap'>
-                      {new Date(waiver.date).toLocaleString()}
+                    {waiver.date ? new Date(waiver.date).toLocaleString() : "N/A"}
                     </td>
                     <td className='px-4 py-3 text-sm text-gray-500 whitespace-nowrap '>
                       <span title={waiver.id}>

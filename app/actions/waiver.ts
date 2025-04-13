@@ -7,20 +7,20 @@ import jwt from "jsonwebtoken";
 import { db } from "@/lib/prisma";
 
 import { headers } from "next/headers";
+import { getUserById } from "./user";
 
 const WaiverSchema = z.object({
   name: z.string().optional(),
   ipAddress: z.string(),
   signatureId: z.string().optional(),
-  terms: z.boolean().optional(),
-  liability: z.boolean().optional(),
+  terms: z.boolean(),
+  liability: z.boolean(),
   date: z.string().transform((val) => new Date(val)),
   templateId: z.string(),
   fields: z.record(z.any()),
 });
 
 export async function saveWaiver(data: unknown, slug: string) {
-
   const forwardedFor = (await headers()).get("x-forwarded-for");
   const ip = forwardedFor?.split(",")[0] ?? "Unknown";
 
@@ -55,8 +55,7 @@ export async function saveWaiver(data: unknown, slug: string) {
       userId: business.id,
       templateId: waiverData.templateId,
       fields: waiverData.fields,
-        // slug: waiverData.slug
-
+      // slug: waiverData.slug
     },
   });
 
@@ -85,14 +84,16 @@ export async function getAllWaivers() {
   }
 }
 
-export async function getAllWaiversByUser(userId: string) {
+export async function getAllWaiversByUser({ archived = false }: { archived: boolean }) {
+  const user = await getUserById();
+
   try {
     const waivers = await db.waiver.findMany({
       orderBy: { date: "desc" },
       include: {
         signature: true,
       },
-      where: { archived: false, userId },
+      where: { archived, userId: user?.id },
     });
 
     return waivers;
@@ -154,12 +155,24 @@ export async function getWaiverByToken(token: string) {
   }
 }
 
-export async function archiveWaivers(ids: string[]) {
-  await db.waiver.updateMany({
-    where: { id: { in: ids } },
-    data: { archived: true },
-  });
+export async function archiveWaivers(ids: string[], unarchive = false) {
+  try {
+    await db.waiver.updateMany({
+      where: {
+        id: { in: ids },
+      },
+      data: {
+        archived: !unarchive,
+      },
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error("Archive error:", error);
+    return { success: false };
+  }
 }
+
 
 export async function deleteWaivers(ids: string[]) {
   try {

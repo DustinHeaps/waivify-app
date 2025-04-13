@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Dashboard from "./Dashboard";
-import { getAllWaivers } from "../actions/waiver";
+import { getAllWaivers, getAllWaiversByUser } from "../actions/waiver";
 
 export const metadata = {
   title: "Your Waivify Submissions – Digital Waivers Made Simple",
@@ -23,9 +23,9 @@ export default async function DashboardPage() {
     return redirect("/");
   }
 
-  const waivers = await getAllWaivers();
+  const waivers = await getAllWaiversByUser({archived: false});
 
-  return <div>DAbajdkme</div>
 
-  // return <Dashboard waivers={waivers} />;
+
+  return <Dashboard waivers={waivers} />;
 }

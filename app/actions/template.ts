@@ -26,27 +26,40 @@ export async function getDefaultTemplates() {
   });
 }
 
-export async function createTemplate(data: unknown) {
+export async function createTemplate() {
+  
   const { userId } = await auth();
   if (!userId) throw new Error("Not authenticated");
 
-  const parsed = TemplateSchema.safeParse(data);
-  if (!parsed.success) {
-    console.error("Invalid template data:", parsed.error.flatten());
-    throw new Error("Invalid form data");
-  }
+  // const parsed = TemplateSchema.safeParse(data);
+ 
+  // if (!parsed.success) {
+  //   console.error("Invalid template data:", parsed.error.flatten());
+  //   throw new Error("Invalid form data");
+  // }
 
-  const { name, fields } = parsed.data;
+  // const { name, fields } = parsed.data;
 
   const template = await db.template.create({
     data: {
-      name,
-      fields,
+      name: "Untitled Waiver",
+      fields: [],
       user: {
         connect: { clerkId: userId },
       },
+      isDefault: false
     },
   });
 
   return template;
+}
+
+export async function updateTemplate(id: string, name: string, fields: any[]) {
+  return await db.template.update({
+    where: { id },
+    data: {
+      name,
+      fields,
+    },
+  });
 }
