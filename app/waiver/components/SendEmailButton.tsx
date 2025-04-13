@@ -48,7 +48,7 @@ export function SendEmailButton({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
             transition={{ duration: 0.2 }}
-            className='absolute top-14 right-[154px] text-green-600 text-sm'
+            className='absolute top-[125px] right-[154px] text-green-600 text-sm'
           >
             ✅ Email sent!
           </motion.p>
@@ -60,7 +60,7 @@ export function SendEmailButton({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
             transition={{ duration: 0.2 }}
-            className='absolute top-14 right-16  text-red-600 text-sm'
+            className='absolute top-[125px] right-16  text-red-600 text-sm'
           >
             ❌ Failed to send email. Please try again.
           </motion.p>

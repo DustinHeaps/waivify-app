@@ -1,0 +1,9 @@
+{
+    "crons": [
+      {
+        "path": "/api/reset-waivers",
+        "schedule": "0 0 * * *"
+      }
+    ]
+  }
+  

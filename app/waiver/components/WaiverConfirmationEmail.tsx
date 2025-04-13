@@ -45,6 +45,7 @@ export default async function WaiverConfirmationEmail({
               width='80'
               className='mx-auto mb-6'
             />
+
             <Text className='text-green-600 text-2xl font-bold mb-4'>
               ✅ Waiver Submitted
             </Text>

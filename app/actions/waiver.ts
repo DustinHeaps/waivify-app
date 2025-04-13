@@ -8,6 +8,8 @@ import { db } from "@/lib/prisma";
 
 import { headers } from "next/headers";
 import { getUserById } from "./user";
+import { incrementWaiverUsage } from "@/lib/waiverUsage";
+import { auth } from "@clerk/nextjs/server";
 
 const WaiverSchema = z.object({
   name: z.string().optional(),
@@ -21,6 +23,7 @@ const WaiverSchema = z.object({
 });
 
 export async function saveWaiver(data: unknown, slug: string) {
+  const { userId } = await auth();
   const forwardedFor = (await headers()).get("x-forwarded-for");
   const ip = forwardedFor?.split(",")[0] ?? "Unknown";
 
@@ -63,7 +66,7 @@ export async function saveWaiver(data: unknown, slug: string) {
     event: "waiver_saved",
     distinctId: waiver.id,
   });
-
+  await incrementWaiverUsage(userId as string);
   return waiver;
 }
 
@@ -84,7 +87,11 @@ export async function getAllWaivers() {
   }
 }
 
-export async function getAllWaiversByUser({ archived = false }: { archived: boolean }) {
+export async function getAllWaiversByUser({
+  archived = false,
+}: {
+  archived: boolean;
+}) {
   const user = await getUserById();
 
   try {
@@ -172,7 +179,6 @@ export async function archiveWaivers(ids: string[], unarchive = false) {
     return { success: false };
   }
 }
-
 
 export async function deleteWaivers(ids: string[]) {
   try {

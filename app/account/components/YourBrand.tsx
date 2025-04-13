@@ -1,4 +1,4 @@
-import { getDefaultTemplates } from "@/app/actions/template";
+
 import Image from "next/image";
 import Link from "next/link";
 
@@ -7,19 +7,12 @@ export function YourBrand({
   companyName,
   slug,
   plan,
-  templates,
-  selectedTemplateId,
-  onSelectTemplate,
 }: {
   logoUrl?: string;
   companyName?: string;
   slug?: string;
   plan: "free" | "starter" | "pro";
-  templates: { id: string; name: string }[];
-  selectedTemplateId?: string | null;
-  onSelectTemplate?: (id: string) => void;
 }) {
-
   const publicUrl = `https://waivify.com/${slug || ""}`;
   const hasBrand = !!logoUrl && !!companyName;
 
@@ -43,27 +36,7 @@ export function YourBrand({
             </p>
           </div>
         </div>
-        {templates.length > 0 && onSelectTemplate && (
-          <div className='mt-3'>
-            <label className='text-sm font-medium text-gray-700 block mb-1'>
-              Public Template
-            </label>
-            <select
-              value={selectedTemplateId || ""}
-              onChange={(e) => onSelectTemplate(e.target.value)}
-              className='w-full border border-gray-300 rounded px-2 py-1 text-sm'
-            >
-              <option value='' disabled>
-                Select a template
-              </option>
-              {templates.map((t) => (
-                <option key={t.id} value={t.id}>
-                  {t.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
+
         <div className='flex gap-3 mt-2'>
           <Link
             href={publicUrl}

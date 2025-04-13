@@ -3,7 +3,6 @@
 import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { Prisma } from "@prisma/client";
-import { subMonths } from "date-fns";
 
 export async function createUser({
   clerkId,
@@ -24,20 +23,7 @@ export async function createUser({
         lastActiveAt: new Date(),
         companyName: "",
         name: name || "",
-        nextSteps: [
-          { id: "1", completed: false },
-          { id: "2", completed: false },
-          { id: "3", completed: false },
-          { id: "4", completed: false },
-          { id: "5", completed: false },
-          { id: "6", completed: false },
-          { id: "7", completed: false },
-          { id: "8", completed: false },
-          { id: "9", completed: false, current: 0, goal: 10 },
-          { id: "10", completed: false, current: 0, goal: 25 },
-          { id: "11", completed: false, current: 0, goal: 50 },
-          { id: "12", completed: false, current: 0, goal: 100 },
-        ],
+        nextSteps: [],
       },
       update: {},
     });
@@ -77,21 +63,36 @@ export async function getUserById() {
     return null;
   }
 }
-
 export async function resetMonthlyWaiverCounts() {
-  const oneMonthAgo = subMonths(new Date(), 1);
+  const now = new Date();
 
-  const result = await db.user.updateMany({
+  const users = await db.user.findMany({
     where: {
-      plan: "free",
-      lastActiveAt: { gte: oneMonthAgo },
-    },
-    data: {
-      waiverCount: 0,
+      plan: { in: ["starter"] },
+      renewalDate: {
+        not: null,
+      },
     },
   });
 
-  console.log(`✅ Reset ${result.count} active free users`);
+  let resetCount = 0;
 
-  return result.count;
+  for (const user of users) {
+    const last = user.renewalDate ?? new Date(0);
+    const diffInDays = (now.getTime() - last.getTime()) / (1000 * 60 * 60 * 24);
+
+    if (diffInDays >= 30) {
+      await db.user.update({
+        where: { id: user.id },
+        data: {
+          waiverCount: 0,
+          renewalDate: now,
+        },
+      });
+      resetCount++;
+    }
+  }
+
+  console.log(`✅ Reset ${resetCount} users based on rolling 30-day period`);
+  return resetCount;
 }

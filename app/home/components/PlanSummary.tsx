@@ -4,6 +4,7 @@ import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import { getUserById } from "@/app/actions/user";
 import { getWaiverLimit } from "@/lib/waiverUsage";
+import Link from "next/link";
 
 export function PlanSummary() {
   const { user } = useUser();
@@ -21,16 +22,17 @@ export function PlanSummary() {
     daysLeft = diff > 0 ? diff : 0;
   }
 
-  daysLeft = 20
+  // daysLeft = 20
 
   useEffect(() => {
     if (!user?.id) return;
 
     (async () => {
       const dbUser = await getUserById();
+
       setWaiversUsed(dbUser?.waiverCount || 0);
       setPlan((dbUser?.plan as "free" | "starter" | "pro") || "free");
-      setRenewDate(dbUser?.renewalDate?.toISOString() || null); 
+      setRenewDate(dbUser?.renewalDate?.toISOString() || null);
     })();
   }, [user?.id]);
 
@@ -69,9 +71,12 @@ export function PlanSummary() {
         </p>
       </div>
 
-      <button className='mt-4 w-full bg-black text-white py-2 rounded-md text-sm font-medium hover:bg-gray-800 transition'>
-        {plan === "pro" ? "Manage Plan" : "Upgrade Plan"}
-      </button>
+      <Link
+        href={"/billing"}
+        className='mt-4 block w-full bg-black text-white py-2 rounded-md text-sm font-medium text-center hover:bg-gray-800 transition'
+      >
+        Manage Plan
+      </Link>
     </div>
   );
 }

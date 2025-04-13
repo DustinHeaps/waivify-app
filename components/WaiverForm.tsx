@@ -10,17 +10,7 @@ import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import { uploadSignature } from "@/app/actions/signature";
 import { getNameFieldValue } from "@/lib/utils";
-
-// const WaiverSchema = z.object({
-//   name: z.string().min(1, "Name is required"),
-//   date: z.string().min(1, "Date is required"),
-//   terms: z.literal(true, {
-//     errorMap: () => ({ message: "You must agree to the terms." }),
-//   }),
-//   liability: z.literal(true, {
-//     errorMap: () => ({ message: "You must release liability." }),
-//   }),
-// });
+import { incrementWaiverUsage } from '@/lib/waiverUsage';
 
 type Props = {
   slug: string;
@@ -85,7 +75,6 @@ export default function WaiverForm({ slug, fields, templateId }: Props) {
   const sigPadRef = useRef<any>(null);
 
   const onSubmit = async (data: FormData) => {
-    debugger;
     setSignatureError("");
 
     const signatureDataURL = sigPadRef.current?.toDataURL();
@@ -128,6 +117,8 @@ export default function WaiverForm({ slug, fields, templateId }: Props) {
 
       const date = newWaiver.date;
       const signature = await uploadSignature(formData, newWaiver.id, date);
+
+      
 
       router.push(`/waiver/confirmation/${signature.id}`);
     } catch (error) {

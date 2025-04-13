@@ -2,9 +2,10 @@ import { getSignatureById } from "@/app/actions/signature";
 
 import { format } from "date-fns";
 import { notFound } from "next/navigation";
-import { ReturnHomeButton } from "../../components/ReturnHomeButton";
+
 import { SendEmailButton } from "../../components/SendEmailButton";
-import WaiverDownloadButton from '../../components/WaiverDownloadButton';
+import WaiverDownloadButton from "../../components/WaiverDownloadButton";
+import { CloseButton } from "../../components/CloseButton";
 
 export const metadata = {
   title: "Waiver Signed – Confirmation | Waivify",
@@ -55,18 +56,30 @@ export default async function ConfirmationPage({
           {format(new Date(signature.uploadedAt), "PPPpp")}
         </p>
         <hr className='my-6 border-t border-gray-200 max-w-xs mx-auto' />
-
-        <ReturnHomeButton />
       </div>
 
-      <div className='text-sm mt-5'>
-        <span>Need</span> a copy? <br />
-        <div className='flex justify-center relative'>
+      <div className='text-sm mt-5 text-gray-600'>
+        <p>Need a copy for your records?</p>
+        <div className='flex justify-center items-center gap-2 mt-2 relative'>
           <WaiverDownloadButton waiverId={signature.waiverId} />
-          or
+          <span className='text-gray-400'>or</span>
           <SendEmailButton id={signature.id} waiverId={signature.waiverId} />
         </div>
       </div>
+      <p className='mt-6 text-xs text-gray-400'>
+        You’re all set. You may now close this page.
+      </p>
+
+      <p className='text-xs text-gray-400 text-center mt-2'>
+        Want to collect your own digital waivers?{" "}
+        <a
+          href='https://waivify.com'
+          className='text-blue-600 hover:underline'
+          target='_blank'
+        >
+          Try Waivify
+        </a>
+      </p>
     </div>
   );
 }

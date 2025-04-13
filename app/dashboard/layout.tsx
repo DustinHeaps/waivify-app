@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function AdminLayout({
   children,
 }: {
@@ -7,8 +9,12 @@ export default function AdminLayout({
     <div className='p-4'>
       <header className='flex justify-between items-center mb-4'>
         <div className='flex items-center space-x-2 font-bold text-lg'>
-          <img src='/logo.png' alt='Waivify Logo' className='w-6 h-6' />
-          <span>Waivify</span>
+          <div className='flex items-center'>
+            <Link href={"/home"}>
+              <img src='/logo2.png' alt='Waivify Logo' className='w-10 h-10' />
+            </Link>
+            <Link href={"/home"}>Waivify</Link>
+          </div>
         </div>
       </header>
       <main>{children}</main>

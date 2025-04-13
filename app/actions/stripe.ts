@@ -31,13 +31,15 @@ export async function checkout({
     mode: "subscription",
     payment_method_types: ["card"],
     line_items: [{ price: priceId, quantity: 1 }],
-    success_url: `${process.env.NEXT_PUBLIC_APP_URL}/account?success=1`,
-    cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/account?canceled=1`,
+    success_url: `${process.env.NEXT_PUBLIC_APP_URL}/billing?success=1`,
+    cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/billing?canceled=1`,
     customer: user?.stripeCustomerId ?? undefined,
     metadata: { userId, plan },
   });
 
   redirect(session.url!);
+
+  
 }
 
 export async function createCustomerPortalSession() {

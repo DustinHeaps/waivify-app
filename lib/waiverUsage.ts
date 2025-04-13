@@ -30,6 +30,7 @@ export async function incrementWaiverUsage(userId: string): Promise<void> {
   if (!dbUser) return;
 
   const currentCount = dbUser.waiverCount ?? 0;
+  
   await updateUser(userId, {
     waiverCount: currentCount + 1,
   });

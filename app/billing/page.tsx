@@ -11,6 +11,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { getUserById } from "../actions/user";
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function BillingPage() {
   const [plan, setPlan] = useState<"free" | "starter" | "pro">("free");
@@ -19,6 +20,21 @@ export default function BillingPage() {
   const [error, setError] = useState<string | null>(null);
   const [card, setCard] = useState<any>(null);
   const { user } = useUser();
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const success = searchParams.get("success");
+    const canceled = searchParams.get("canceled");
+
+
+  useEffect(() => {
+    if (success || canceled) {
+      const timeout = setTimeout(() => {
+        router.replace("/billing");
+      }, 3000); // clears after 3 seconds
+      return () => clearTimeout(timeout);
+    }
+  }, [success, canceled, router]);
+
 
   useEffect(() => {
     if (!user?.id) return;
@@ -88,6 +104,28 @@ export default function BillingPage() {
           Manage your current plan or upgrade for more features.
         </p>
       </div>
+     {/* ✅ Feedback Banner */}
+     {success && (
+        <div className='rounded-lg border border-green-500 bg-green-50 p-4 text-center'>
+          <h2 className='text-lg font-semibold text-green-600'>
+            ✅ Payment Successful!
+          </h2>
+          <p className='text-sm text-green-700 mt-1'>
+            Your account has been upgraded.
+          </p>
+        </div>
+      )}
+
+      {canceled && (
+        <div className='rounded-lg border border-red-500 bg-red-50 p-4 text-center'>
+          <h2 className='text-lg font-semibold text-red-600'>
+            ❌ Checkout Canceled
+          </h2>
+          <p className='text-sm text-red-700 mt-1'>
+            You can try again anytime.
+          </p>
+        </div>
+      )}
 
       {error && (
         <div className='text-sm text-red-500 border border-red-300 bg-red-50 rounded p-3'>

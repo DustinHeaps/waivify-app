@@ -1,7 +1,7 @@
 import { db } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import WaiverForm from "@/components/WaiverForm";
-import SimpleWaiverForm from "@/components/SimpleWaiverForm";
+
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -10,7 +10,6 @@ type PageProps = {
 export default async function PublicWaiverPage({ params }: PageProps) {
   const { slug } = await params;
 
-  // Find user by slug
   const business = await db.user.findFirst({
     where: { slug },
     include: {
@@ -44,7 +43,7 @@ export default async function PublicWaiverPage({ params }: PageProps) {
 
       {/* Waiver form */}
       <WaiverForm slug={slug} templateId={business.Template[0].id } fields={business.Template[0].fields} />
-      {/* <SimpleWaiverForm slug={slug} /> */}
+    
     </div>
   );
 }
