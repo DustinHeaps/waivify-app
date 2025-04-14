@@ -1,4 +1,3 @@
-
 import Image from "next/image";
 import Link from "next/link";
 
@@ -13,7 +12,7 @@ export function YourBrand({
   slug?: string;
   plan: "free" | "starter" | "pro";
 }) {
-  const publicUrl = `https://waivify.com/${slug || ""}`;
+  const publicUrl: string = `https://waivify.com/${slug}`;
   const hasBrand = !!logoUrl && !!companyName;
 
   return (
@@ -53,17 +52,17 @@ export function YourBrand({
           </p>
         )}
 
-        <p className='text-xs text-muted-foreground mt-2'>
+        {/* <p className='text-xs text-muted-foreground mt-2'>
           “Powered by Waivify” will be visible to clients.{" "}
           {plan !== "pro" && (
             <Link href='/upgrade' className='text-blue-600 underline'>
               Upgrade to remove
             </Link>
           )}
-        </p>
+        </p> */}
       </div>
 
-      <div className='hidden md:flex items-center flex-col justify-center w-40 h-40 bg-gray-100 rounded'>
+      <div className='hidden md:flex flex-col items-center justify-center w-40 bg-gray-50 p-3 rounded'>
         {hasBrand ? (
           <>
             <Image
@@ -71,10 +70,20 @@ export function YourBrand({
               alt='QR Code'
               width={160}
               height={160}
+              className='rounded border'
             />
-            <p className='text-xs text-muted-foreground text-center mt-2'>
-              Scan to view your waiver
+            <p className='text-xs text-muted-foreground text-center px-2 mt-2'>
+              Scan this code to sign your waiver. Share it with clients or print
+              for in-store use.
             </p>
+            <a
+              href={`https://api.qrserver.com/v1/create-qr-code/?data=${publicUrl}&size=160x160`}
+              download='waivify-qr.png'
+              className='mt-2 text-xs font-medium text-blue-600 hover:underline hover:text-blue-700 transition'
+              target='_blank'
+            >
+              Download QR Code
+            </a>
           </>
         ) : (
           <p className='text-xs text-muted-foreground text-center px-2'>

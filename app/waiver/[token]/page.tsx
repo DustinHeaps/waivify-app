@@ -66,22 +66,7 @@ export default async function ViewWaiverPage({ params }: PageProps) {
         </div>
       )}
 
-      {/* <p className='py-2'>
-        <strong>Name:</strong> {waiver.name}
-      </p>
-      <p className='py-2'>
-        <strong>Date:</strong> {new Date(waiver.date).toLocaleString()}
-      </p>
-      <p className='py-2'>
-        <strong>IP Address:</strong> {waiver.ipAddress}
-      </p>
-      <p className='py-2'>
-        <strong>Terms:</strong> {waiver.terms ? "✅ Yes" : "❌ No"}
-      </p>
-      <p className='py-2'>
-        <strong>Liability:</strong> {waiver.liability ? "✅ Yes" : "❌ No"}
-      </p>
-       */}
+
       <p className='font-medium'>Signature:</p>
       <img
         src={`https://uploadthing.com/f/${waiver.signature?.fileKey}`}

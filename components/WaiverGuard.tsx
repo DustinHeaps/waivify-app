@@ -26,23 +26,17 @@ export default function WaiverLimitGuard({
     })();
   }, [user?.id]);
 
-
   if (loading) return null;
 
   const limit = getWaiverLimit(plan as string);
 
   if (waiversUsed >= limit) {
     return (
-      <div className='p-4 border border-red-200 bg-red-50 rounded text-sm text-red-600 space-y-1'>
-        <p>
-          You've reached your monthly limit of {limit} waivers.
-        </p>
-        <a
-          href='/account'
-          className='inline-block text-blue-600 underline hover:text-blue-800 transition'
-        >
-          Upgrade your plan to unlock more →
-        </a>
+      <div className='flex justify-center items-center min-h-[50vh]'>
+        <div className='bg-red-50 border border-red-200 text-red-600 text-sm rounded px-6 py-4 text-center max-w-md w-full'>
+          This waiver form is currently unavailable. Please contact the
+          business.
+        </div>
       </div>
     );
   }

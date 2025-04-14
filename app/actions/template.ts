@@ -3,6 +3,8 @@
 import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { z } from "zod";
+import { v4 as uuidv4 } from "uuid";
+import { getUserById, updateUser } from "./user";
 
 const TemplateSchema = z.object({
   name: z.string().min(1),
@@ -27,12 +29,11 @@ export async function getDefaultTemplates() {
 }
 
 export async function createTemplate() {
-  
   const { userId } = await auth();
   if (!userId) throw new Error("Not authenticated");
 
   // const parsed = TemplateSchema.safeParse(data);
- 
+
   // if (!parsed.success) {
   //   console.error("Invalid template data:", parsed.error.flatten());
   //   throw new Error("Invalid form data");
@@ -47,7 +48,7 @@ export async function createTemplate() {
       user: {
         connect: { clerkId: userId },
       },
-      isDefault: false
+      isDefault: false,
     },
   });
 
@@ -62,4 +63,44 @@ export async function updateTemplate(id: string, name: string, fields: any[]) {
       fields,
     },
   });
+}
+
+export async function getOrCreateUserTemplate() {
+  const { userId } = await auth();
+  const dbUser = await getUserById();
+  if (!userId) throw new Error("Not authenticated");
+
+
+  if (dbUser?.publicTemplateId) {
+    const existing = await db.template.findFirst({
+      where: { userId: dbUser?.id },
+      orderBy: { createdAt: "desc" },
+    });
+    return existing;
+  }
+
+  const newTemplate = await db.template.create({
+    data: {
+      name: "Untitled Waiver",
+      user: {
+        connect: { clerkId: userId },
+      },
+      isDefault: false,
+      fields: [
+        {
+          id: uuidv4(),
+          type: "text",
+          label: "Full Name",
+          required: true,
+          disabled: true,
+        },
+      ],
+    },
+  });
+
+  await updateUser(userId, {
+    publicTemplateId: newTemplate.id,
+  });
+
+  return newTemplate;
 }

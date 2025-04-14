@@ -10,12 +10,13 @@ import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import { uploadSignature } from "@/app/actions/signature";
 import { getNameFieldValue } from "@/lib/utils";
-import { incrementWaiverUsage } from '@/lib/waiverUsage';
+import { incrementWaiverUsage } from "@/lib/waiverUsage";
 
 type Props = {
   slug: string;
   fields: any;
   templateId: string;
+  isOwner?: boolean;
 };
 
 const buildSchema = (fields: any[]) => {
@@ -48,7 +49,12 @@ const buildSchema = (fields: any[]) => {
 
   return z.object(shape);
 };
-export default function WaiverForm({ slug, fields, templateId }: Props) {
+export default function WaiverForm({
+  slug,
+  fields,
+  templateId,
+  isOwner,
+}: Props) {
   const [formError, setFormError] = useState("");
   const [signatureError, setSignatureError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -117,8 +123,6 @@ export default function WaiverForm({ slug, fields, templateId }: Props) {
 
       const date = newWaiver.date;
       const signature = await uploadSignature(formData, newWaiver.id, date);
-
-      
 
       router.push(`/waiver/confirmation/${signature.id}`);
     } catch (error) {
@@ -197,13 +201,23 @@ export default function WaiverForm({ slug, fields, templateId }: Props) {
           <p className='text-red-500 text-sm mt-1'>{signatureError}</p>
         )}
       </div>
-      <button
-        type='submit'
-        className='bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition'
-        disabled={isLoading}
-      >
-        {isLoading ? "Submitting..." : "Submit Waiver"}
-      </button>
+      {isOwner ? (
+        <button
+          type='button'
+          disabled
+          className='bg-gray-100 text-gray-500 px-4 py-2 rounded cursor-not-allowed border border-gray-300 w-full text-sm'
+        >
+          This form is disabled for owners
+        </button>
+      ) : (
+        <button
+          type='submit'
+          className='bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition'
+          disabled={isLoading}
+        >
+          {isLoading ? "Submitting..." : "Submit Waiver"}
+        </button>
+      )}
     </form>
   );
 }

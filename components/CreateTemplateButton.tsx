@@ -1,19 +1,14 @@
 "use client";
 
-import { createTemplate } from "@/app/actions/template";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function CreateTemplateButton() {
-  const router = useRouter();
-
-  const handleClick = async () => {
-    const template = await createTemplate();
-    router.push(`/waiver/${template.id}/edit`);
-  };
-
   return (
-    <button onClick={handleClick} className='btn btn-primary'>
-      Create New Waiver
-    </button>
+    <Link
+      href={"/waiver/edit"}
+      className='btn btn-primary px-4 py-2 bg-teal-500 rounded text-white text-sm hover:opacity-90 transition'
+    >
+      Edit Template
+    </Link>
   );
 }

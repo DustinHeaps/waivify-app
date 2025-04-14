@@ -39,7 +39,7 @@ export default function TemplatePageContent({ templates }: Props) {
       />
       {/* <SimpleWaiverForm slug='' fields={selectedTemplate.fields} /> */}
       {selectedTemplate && (
-        <WaiverForm slug='' templateId={selectedTemplateId}  fields={selectedTemplate.fields as any[]} />
+        <WaiverForm slug='' templateId={selectedTemplateId}  fields={selectedTemplate.fields as any[]}  />
       )}
     </div>
   );

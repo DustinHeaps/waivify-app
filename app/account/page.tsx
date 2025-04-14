@@ -42,7 +42,8 @@ export default function AccountPage() {
   }, []);
 
   return (
-    <div className='max-w-screen-md mx-auto py-10 space-y-6'>
+    <div className='max-w-screen-md mx-auto px-4 sm:px-6 py-6 space-y-6'>
+
       {/* Header */}
       <div className='space-y-1'>
         <h2 className='text-lg font-semibold'>Brand Settings</h2>
@@ -54,7 +55,7 @@ export default function AccountPage() {
 
       {/* Profile */}
       <Card>
-        <CardContent className='p-5 space-y-3'>
+        <CardContent className='p-4 sm:p-5 space-y-3'>
           <div className='flex items-center space-x-4'>
             <div className='h-10 w-10 rounded-full bg-muted flex items-center justify-center text-sm font-medium uppercase'>
               {user?.firstName?.[0]}

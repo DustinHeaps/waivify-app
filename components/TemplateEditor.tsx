@@ -5,9 +5,11 @@ import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 export default function TemplateEditor({ template }: { template: any }) {
+    debugger
   const [name, setName] = useState(template.name);
   const [fields, setFields] = useState<any[]>(template.fields || []);
   const [fullNameAdded, setFullNameAdded] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   const addTextField = () => {
     setFields([
@@ -62,82 +64,98 @@ export default function TemplateEditor({ template }: { template: any }) {
     //     ...fields,
     //     { type: "checkbox", label: "I release liability for this service", id: uuidv4(), required: true },
     //   ]);
-    await updateTemplate(template.id, name, fields);
+    try {
+      setIsSaving(true);
+      await updateTemplate(template.id, name, fields);
+    } catch (err) {
+      setIsSaving(false);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
-    <div className='space-y-4'>
-      <label className='block'>
-        <span className='text-sm font-medium'>Template Name</span>
+    <>
+      <div>
+        <label className='block text-sm font-medium mb-1'>Template Name</label>
         <input
           type='text'
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className='w-full p-2 border rounded'
+          className='w-full px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring focus:ring-teal-200'
         />
-      </label>
+      </div>
 
-      <div className='text-sm text-muted-foreground'>
-        {fields.length === 0 ? "No fields yet." : `${fields.length} field(s)`}
-        <div className='space-x-2 mt-4'>
+      <div>
+        <p className='text-sm mb-2 font-medium'>{fields.length} field(s)</p>
+        <div className='flex flex-wrap gap-2'>
           <button
-            className='px-3 py-1 bg-gray-100 rounded'
             onClick={addTextField}
+            className='btn border bg-gray-50 text-sm'
           >
-            Add Text Field
+            ➕ Add Text Field
           </button>
           <button
-            className='px-3 py-1 bg-gray-100 rounded'
             onClick={addDateField}
+            className='btn border bg-gray-50 text-sm'
           >
-            Add Date Field
+            📅 Add Date Field
           </button>
           <button
-            className='px-3 py-1 bg-gray-100 rounded'
             onClick={addCheckbox}
+            className='btn border bg-gray-50 text-sm'
           >
-            Add Checkbox
+            ☑️ Add Checkbox
           </button>
-          <div className='space-y-4 mt-6'>
-            {fields.map((field, index) => (
-              <div key={field.id} className='flex items-center justify-between'>
-                <div>
-                  <input
-                    type='text'
-                    value={field.label}
-                    onChange={(e) => {
-                      const updated = [...fields];
-                      updated[index].label = e.target.value;
-                      setFields(updated);
-                    }}
-                    className={`mt-2 border px-2 py-1 rounded w-full text-sm ${
-                      field.label === "Full Name"
-                        ? "cursor-not-allowed pointer-events-none"
-                        : ""
-                    }`}
-                    placeholder='Field Label'
-                  />
-                </div>
-
-                {field.label !== "Full Name" && (
-                  <button
-                    className='text-red-500 text-sm'
-                    onClick={() => {
-                      setFields(fields.filter((f) => f.id !== field.id));
-                    }}
-                  >
-                    Remove
-                  </button>
-                )}
-              </div>
-            ))}
-          </div>
         </div>
       </div>
 
-      <button onClick={handleSave} className='btn btn-primary'>
-        Save Changes
-      </button>
-    </div>
+      <div className='space-y-4'>
+        {fields.map((field, index) => (
+          <div
+            key={field.id}
+            className='bg-white p-4 rounded border shadow-sm flex items-center justify-between'
+          >
+            <input
+              type='text'
+              value={field.label}
+              onChange={(e) => {
+                const updated = [...fields];
+                updated[index].label = e.target.value;
+                setFields(updated);
+              }}
+              className={`w-full text-sm px-3 py-1.5 border rounded ${
+                field.label === "Full Name"
+                  ? "cursor-not-allowed pointer-events-none bg-gray-100 text-gray-500"
+                  : ""
+              }`}
+            />
+
+            {field.label !== "Full Name" && (
+              <button
+                className='ml-4 text-sm text-red-600 hover:underline'
+                onClick={() => {
+                  setFields(fields.filter((f) => f.id !== field.id));
+                }}
+              >
+                Remove
+              </button>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <div>
+        <button
+          onClick={handleSave}
+          className={`btn bg-black text-white px-4 py-2 rounded hover:bg-gray-700 transition ${
+            isSaving ? " cursor-not-allowed" : " hover:bg-gray-700"
+          }`}
+          disabled={isSaving}
+        >
+          {isSaving ? "Saving..." : "Save Changes"}
+        </button>
+      </div>
+    </>
   );
 }
