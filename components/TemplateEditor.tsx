@@ -1,36 +1,66 @@
 "use client";
 
-import { updateTemplate } from "@/app/actions/template";
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { updateTemplate } from "@/app/actions/template";
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { SortableItem } from "./SortableItem";
 
 export default function TemplateEditor({ template }: { template: any }) {
-    debugger
   const [name, setName] = useState(template.name);
   const [fields, setFields] = useState<any[]>(template.fields || []);
-  const [fullNameAdded, setFullNameAdded] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
-  const addTextField = () => {
-    setFields([
-      ...fields,
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: { distance: 5 },
+    })
+  );
+
+  const autoSave = async (newFields: any[]) => {
+    setFields(newFields);
+    await updateTemplate(template.id, name, newFields);
+  };
+
+  const handleDragEnd = async (event: any) => {
+    const { active, over } = event;
+    if (active.id !== over.id) {
+      const oldIndex = fields.findIndex((f) => f.id === active.id);
+      const newIndex = fields.findIndex((f) => f.id === over.id);
+      setFields((prev) => arrayMove(prev, oldIndex, newIndex));
+      const reordered = arrayMove(fields, oldIndex, newIndex);
+      await autoSave(reordered);
+    }
+  };
+
+  const addTextField = () =>
+    setFields((prev) => [
+      ...prev,
       { type: "text", label: "Text Field", id: uuidv4(), required: true },
     ]);
-  };
 
-  const addDateField = () => {
-    setFields([
-      ...fields,
+  const addDateField = () =>
+    setFields((prev) => [
+      ...prev,
       { type: "date", label: "Date", id: uuidv4(), required: true },
     ]);
-  };
 
-  const addCheckbox = () => {
-    setFields([
-      ...fields,
+  const addCheckbox = () =>
+    setFields((prev) => [
+      ...prev,
       { type: "checkbox", label: "I agree", id: uuidv4(), required: true },
     ]);
-  };
 
   useEffect(() => {
     if (!template?.fields) return;
@@ -38,6 +68,7 @@ export default function TemplateEditor({ template }: { template: any }) {
     const hasFullName = template.fields.some(
       (f: any) => f.label === "Full Name"
     );
+
     const updatedFields = hasFullName
       ? template.fields
       : [
@@ -52,23 +83,14 @@ export default function TemplateEditor({ template }: { template: any }) {
         ];
 
     setFields(updatedFields);
-    setFullNameAdded(true);
   }, [template?.fields]);
 
   const handleSave = async () => {
-    // setFields([
-    //     ...fields,
-    //     { type: "checkbox", label: "I agree to the terms & conditions", id: uuidv4(), required: true },
-    //   ]);
-    //   setFields([
-    //     ...fields,
-    //     { type: "checkbox", label: "I release liability for this service", id: uuidv4(), required: true },
-    //   ]);
     try {
       setIsSaving(true);
       await updateTemplate(template.id, name, fields);
     } catch (err) {
-      setIsSaving(false);
+      console.error("Save failed", err);
     } finally {
       setIsSaving(false);
     }
@@ -86,8 +108,8 @@ export default function TemplateEditor({ template }: { template: any }) {
         />
       </div>
 
-      <div>
-        <p className='text-sm mb-2 font-medium'>{fields.length} field(s)</p>
+      <div className='mb-2'>
+        <p className='text-sm font-medium mb-1'>{fields.length} field(s)</p>
         <div className='flex flex-wrap gap-2'>
           <button
             onClick={addTextField}
@@ -110,42 +132,36 @@ export default function TemplateEditor({ template }: { template: any }) {
         </div>
       </div>
 
-      <div className='space-y-4'>
-        {fields.map((field, index) => (
-          <div
-            key={field.id}
-            className='bg-white p-4 rounded border shadow-sm flex items-center justify-between'
-          >
-            <input
-              type='text'
-              value={field.label}
-              onChange={(e) => {
-                const updated = [...fields];
-                updated[index].label = e.target.value;
-                setFields(updated);
-              }}
-              className={`w-full text-sm px-3 py-1.5 border rounded ${
-                field.label === "Full Name"
-                  ? "cursor-not-allowed pointer-events-none bg-gray-100 text-gray-500"
-                  : ""
-              }`}
-            />
-
-            {field.label !== "Full Name" && (
-              <button
-                className='ml-4 text-sm text-red-600 hover:underline'
-                onClick={() => {
-                  setFields(fields.filter((f) => f.id !== field.id));
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext
+          items={fields.map((f) => f.id)}
+          strategy={verticalListSortingStrategy}
+        >
+          <div className='space-y-4'>
+            {fields.map((field, index) => (
+              <SortableItem
+                key={field.id}
+                field={field}
+                index={index}
+                handleLabelChange={(i, val) => {
+                  const updated = [...fields];
+                  updated[i].label = val;
+                  setFields(updated);
                 }}
-              >
-                Remove
-              </button>
-            )}
+                handleRemove={(id) =>
+                  setFields(fields.filter((f) => f.id !== id))
+                }
+              />
+            ))}
           </div>
-        ))}
-      </div>
+        </SortableContext>
+      </DndContext>
 
-      <div>
+      <div className='mt-4'>
         <button
           onClick={handleSave}
           className={`btn bg-black text-white px-4 py-2 rounded hover:bg-gray-700 transition ${
