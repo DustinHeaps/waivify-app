@@ -9,9 +9,10 @@ import {
 } from "../actions/stripe";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { getUserById } from "../actions/user";
 import { useRouter, useSearchParams } from "next/navigation";
+
+import { posthog } from 'posthog-js';
 
 export default function BillingPage() {
   return (
@@ -60,6 +61,9 @@ const BillingPageContent = () => {
   }, [user?.id]);
 
   const handleSubscribe = async (selected: "starter" | "pro") => {
+    posthog.capture('clicked_upgrade_button', {
+      plan: selected
+    })
     setError(null);
     setLoadingPlan(selected);
     try {
@@ -164,18 +168,24 @@ const BillingPageContent = () => {
 
             {plan === p.id ? (
               <span className='inline-block mt-2 rounded-full bg-green-100 text-green-700 text-xs font-medium px-3 py-1'>
-                 Current Plan
+                Current Plan
               </span>
             ) : (
               <Button
                 disabled={!!loadingPlan}
                 onClick={() => handleSubscribe(p.id as "starter" | "pro")}
               >
-                {loadingPlan === "starter"
+                {loadingPlan === p.id
                   ? "Redirecting..."
-                  : plan === "pro"
-                    ? "Switch to Starter"
-                    : "Get Starter"}
+                  : plan === p.id
+                    ? "Current Plan"
+                    : plan === "free" && p.id === "pro"
+                      ? "Get Pro"
+                      : plan === "pro" && p.id === "starter"
+                        ? "Switch to Starter"
+                        : p.id === "starter"
+                          ? "Get Starter"
+                          : "Upgrade to Pro"}
               </Button>
             )}
           </CardContent>

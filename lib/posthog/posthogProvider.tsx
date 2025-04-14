@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import posthog from "@/lib/posthog/posthog.client";
+
 
 export default function PostHogProvider({
   children,
@@ -14,6 +14,11 @@ export default function PostHogProvider({
         posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
           api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
           capture_pageview: false,
+          loaded: (ph) => {
+            // Optional: Load Web Vitals if you care about performance metrics
+            // Remove this if you don't want it
+            (ph as any).loadWebVitals?.();
+          },
         });
         posthog.capture("page_loaded");
       });

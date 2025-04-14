@@ -1,6 +1,7 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
+import { useEffect, useState } from "react";
 
 export function SortableItem({
   field,
@@ -13,6 +14,12 @@ export function SortableItem({
   handleLabelChange: (index: number, value: string) => void;
   handleRemove: (id: string) => void;
 }) {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+  
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: field.id });
 
@@ -20,6 +27,8 @@ export function SortableItem({
     transform: CSS.Transform.toString(transform),
     transition,
   };
+  
+  if (!isMounted) return null
 
   return (
     <Tooltip>

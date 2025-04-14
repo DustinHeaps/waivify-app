@@ -5,6 +5,7 @@ import { auth } from "@clerk/nextjs/server";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { getUserById, updateUser } from "./user";
+import { trackEvent } from '@/lib/posthog/posthog.server';
 
 const TemplateSchema = z.object({
   name: z.string().min(1),
@@ -56,6 +57,12 @@ export async function createTemplate() {
 }
 
 export async function updateTemplate(id: string, name: string, fields: any[]) {
+
+  await trackEvent({
+    event: "template_updated",
+    distinctId: id,
+  });
+
   return await db.template.update({
     where: { id },
     data: {
@@ -70,6 +77,10 @@ export async function getOrCreateUserTemplate() {
   const dbUser = await getUserById();
   if (!userId) throw new Error("Not authenticated");
 
+  await trackEvent({
+    event: "template_created",
+    distinctId: "server",
+  });
 
   if (dbUser?.publicTemplateId) {
     const existing = await db.template.findFirst({
@@ -101,6 +112,11 @@ export async function getOrCreateUserTemplate() {
   await updateUser(userId, {
     publicTemplateId: newTemplate.id,
   });
+
+   await trackEvent({
+      event: "template_created",
+      distinctId: newTemplate.id,
+    });
 
   return newTemplate;
 }

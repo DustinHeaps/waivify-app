@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import WaiverForm from "@/components/WaiverForm";
 import WaiverLimitGuard from "@/components/WaiverGuard";
 import { auth } from "@clerk/nextjs/server";
+import { markWaiverViewed } from "../actions/analytics";
 
 export const metadata = {
   title: "Sign Your Waiver – Fast & Secure | Powered by Waivify",
@@ -22,6 +23,8 @@ type PageProps = {
 };
 
 export default async function PublicWaiverPage({ params }: PageProps) {
+  await markWaiverViewed("Slug");
+
   const { slug } = await params;
   const { userId } = await auth();
 
@@ -33,7 +36,7 @@ export default async function PublicWaiverPage({ params }: PageProps) {
         take: 1,
         where: {
           fields: {
-            not: []
+            not: [],
           },
         },
       },

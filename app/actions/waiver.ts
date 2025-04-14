@@ -127,23 +127,6 @@ export async function getWaiverById(waiverId: string) {
   }
 }
 
-export async function markWaiverViewed(waiverId?: string) {
-  if (!waiverId) {
-    await trackEvent({
-      event: "waiver_viewed",
-      distinctId: "server",
-    });
-
-    return { success: false };
-  }
-
-  await db.waiver.update({
-    where: { id: waiverId },
-    data: { viewedAt: new Date() },
-  });
-
-  return { success: true };
-}
 
 export async function getWaiverByToken(token: string) {
   try {
@@ -194,3 +177,5 @@ export async function deleteWaivers(ids: string[]) {
     return { success: false };
   }
 }
+
+

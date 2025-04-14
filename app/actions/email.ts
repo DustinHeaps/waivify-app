@@ -5,6 +5,7 @@ import { Resend } from 'resend';
 import { getUserById } from './user';
 import { getSignatureById } from './signature';
 import WaiverConfirmationEmail from '../waiver/components/WaiverConfirmationEmail';
+import { trackEvent } from '@/lib/posthog/posthog.server';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -36,6 +37,11 @@ export async function sendEmail(id: string, waiverId: string) {
     console.error("Resend failed:", response.error);
     throw new Error("Email send failed");
   }
+
+  await trackEvent({
+    event: "waiver_email_sent",
+    distinctId: id,
+  });
   return { status: "success" };
 }
 

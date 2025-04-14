@@ -2,7 +2,7 @@
 
 import { db } from "@/lib/prisma";
 import { utapi } from "../api/uploadthing/core";
-// import { trackEvent } from '@/lib/posthog/posthog.server';
+import { trackEvent } from '@/lib/posthog/posthog.server';
 // import { revalidatePath } from 'next/cache';
 
 export async function uploadSignature(formData: FormData, waiverId: string, date: Date) {
@@ -36,6 +36,10 @@ export async function uploadSignature(formData: FormData, waiverId: string, date
   });
 
   // revalidatePath("/admin");
+  await trackEvent({
+    event: "signature_saved",
+    distinctId: file.key,
+  });
   return saved;
 }
 

@@ -2,7 +2,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "./AuthProvider";
 import ClerkButtons from "@/components/ClerkButtons";
-import PostHogWrapper from '@/lib/posthog/posthogWrapper';
+import PostHogWrapper from "@/lib/posthog/posthogWrapper";
+import { PostHogIdentify } from "@/lib/posthog/posthogIdentify";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -82,6 +83,7 @@ export default function RootLayout({
   return (
     <AuthProvider>
       <PostHogWrapper>
+        <PostHogIdentify />
         <html lang='en'>
           <body className={inter.className}>
             <ClerkButtons />
