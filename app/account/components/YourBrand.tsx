@@ -1,5 +1,8 @@
+import CopyButton from "@/app/dashboard/components/CopyButton";
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 export function YourBrand({
   logoUrl,
@@ -12,8 +15,16 @@ export function YourBrand({
   slug?: string;
   plan: "free" | "starter" | "pro";
 }) {
+  const [copied, setCopied] = useState(false);
+
   const publicUrl: string = `https://waivify.com/${slug}`;
   const hasBrand = !!logoUrl && !!companyName;
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(publicUrl);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <div className='flex flex-col md:flex-row justify-between items-start gap-6 p-5 border rounded-lg bg-white shadow-sm'>
@@ -31,7 +42,7 @@ export function YourBrand({
           <div>
             <p className='font-semibold'>{companyName || "The Company"}</p>
             <p className='text-sm text-muted-foreground'>
-              waivify.com/{slug || "undefined"}
+              waivify.com/{slug || companyName}
             </p>
           </div>
         </div>
@@ -44,6 +55,10 @@ export function YourBrand({
           >
             View Public Waiver
           </Link>
+
+          <Button variant='outline' size='sm' onClick={handleCopy}>
+            {!copied ? "Copy Link" : "Copied"}
+          </Button>
         </div>
 
         {!hasBrand && (
@@ -52,6 +67,10 @@ export function YourBrand({
           </p>
         )}
 
+        <p className='text-sm text-muted-foreground mt-2'>
+          Want to start collecting signatures? Share your link or display your
+          QR code at your location.
+        </p>
         {/* <p className='text-xs text-muted-foreground mt-2'>
           “Powered by Waivify” will be visible to clients.{" "}
           {plan !== "pro" && (

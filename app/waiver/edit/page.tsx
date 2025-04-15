@@ -1,7 +1,7 @@
 import { db } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import TemplateEditor from '@/components/TemplateEditor'; 
-import { getOrCreateUserTemplate } from '@/app/actions/template';
+import { getDefaultTemplates, getOrCreateUserTemplate } from '@/app/actions/template';
 
 type EditWaiverPageProps = {
   params: Promise<{ token: string }>;
@@ -10,7 +10,11 @@ type EditWaiverPageProps = {
 export default async function EditWaiverPage({ params }: EditWaiverPageProps) {
   const { token } = await params;
 
-const template = await getOrCreateUserTemplate();
+// const template = await getOrCreateUserTemplate();
+
+const templates = await getDefaultTemplates()
+
+const template = templates[0]
 
 
   if (!template) return notFound();

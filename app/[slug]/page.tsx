@@ -4,6 +4,8 @@ import WaiverForm from "@/components/WaiverForm";
 import WaiverLimitGuard from "@/components/WaiverGuard";
 import { auth } from "@clerk/nextjs/server";
 import { markWaiverViewed } from "../actions/analytics";
+import SimpleWaiverForm from '@/components/SimpleWaiverForm';
+
 
 export const metadata = {
   title: "Sign Your Waiver – Fast & Secure | Powered by Waivify",
@@ -47,10 +49,10 @@ export default async function PublicWaiverPage({ params }: PageProps) {
 
   if (!business) return notFound();
 
-  const template = business.Template;
 
   return (
-    <WaiverLimitGuard>
+    <>
+    
       {isOwner && (
         <div className='mb-4 rounded bg-blue-50 border border-blue-200 text-blue-700 p-3 text-sm text-center'>
           You're viewing your own public waiver form as a visitor would.
@@ -71,13 +73,21 @@ export default async function PublicWaiverPage({ params }: PageProps) {
 
         {/* Waiver form */}
 
-        <WaiverForm
+<SimpleWaiverForm  
+          slug={slug}
+          templateId={business.Template[0].id}
+          fields={business.Template[0].fields} />
+
+        {/* <WaiverForm
           slug={slug}
           templateId={business.Template[0].id}
           fields={business.Template[0].fields}
           isOwner={isOwner}
-        />
+        /> */}
       </div>
-    </WaiverLimitGuard>
+    
+    </>
   );
 }
+
+

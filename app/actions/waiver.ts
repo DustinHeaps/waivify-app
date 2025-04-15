@@ -23,6 +23,7 @@ const WaiverSchema = z.object({
 });
 
 export async function saveWaiver(data: unknown, slug: string) {
+
   const { userId } = await auth();
   const forwardedFor = (await headers()).get("x-forwarded-for");
   const ip = forwardedFor?.split(",")[0] ?? "Unknown";
@@ -31,6 +32,7 @@ export async function saveWaiver(data: unknown, slug: string) {
 
   const token = jwt.sign({ waiverId: id }, process.env.JWT_SECRET as string);
 
+  
   const parsed = WaiverSchema.safeParse(data);
   if (!parsed.success) {
     console.error("Zod error:", parsed.error.flatten());

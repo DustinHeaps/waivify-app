@@ -18,6 +18,7 @@ import {
 import { SortableItem } from "./SortableItem";
 
 export default function TemplateEditor({ template }: { template: any }) {
+    debugger
   const [name, setName] = useState(template.name);
   const [fields, setFields] = useState<any[]>(template.fields || []);
   const [isSaving, setIsSaving] = useState(false);
@@ -171,6 +172,10 @@ export default function TemplateEditor({ template }: { template: any }) {
         >
           {isSaving ? "Saving..." : "Save Changes"}
         </button>
+        <p className='text-xs text-muted-foreground text-center mt-2'>
+          Next: Share your public signing link or preview how this looks for
+          clients.
+        </p>
       </div>
     </>
   );

@@ -1,8 +1,15 @@
 "use client";
 
+import clsx from "clsx";
 import { useState } from "react";
 
-export default function CopyButton({ text }: { text: string }) {
+export default function CopyButton({
+  text,
+  className,
+}: {
+  text: string;
+  className?: string;
+}) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -13,7 +20,8 @@ export default function CopyButton({ text }: { text: string }) {
 
   return (
     <button
-      className='text-blue-600 text-sm hover:underline focus:outline-none ml-2'
+      className={clsx(className)}
+
       onClick={handleCopy}
     >
       {copied ? "Copied!" : "Copy"}

@@ -55,6 +55,7 @@ export default function WaiverForm({
   templateId,
   isOwner,
 }: Props) {
+  
   const [formError, setFormError] = useState("");
   const [signatureError, setSignatureError] = useState("");
   const [isLoading, setIsLoading] = useState(false);

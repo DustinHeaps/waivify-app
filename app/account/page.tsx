@@ -8,12 +8,16 @@ import { getUserById, updateUser } from "../actions/user";
 import { useUser } from "@clerk/nextjs";
 import { YourBrand } from "./components/YourBrand";
 import { getDefaultTemplates } from "../actions/template";
+import { User } from '@prisma/client';
+
 
 export default function AccountPage() {
-  
-  const [dbUser, setDBUser] = useState<any>(null);
+  const [companyName, setCompanyName] = useState("");
+  const [logoUrl, setLogoUrl] = useState("");
+  const [slug, setSlug] = useState("");
+  const [dbUser, setDBUser] = useState<User | null>();
   const [currentPlan, setCurrentPlan] = useState<string>("");
-  const [templates, setTemplates] = useState<any[]>([]);
+
   const { user } = useUser();
 
   const createdAt = user?.createdAt
@@ -24,26 +28,21 @@ export default function AccountPage() {
     const fetchUser = async () => {
       if (user?.id) {
         const result = await getUserById();
+        console.log("User" , result)
         setDBUser(result);
         setCurrentPlan(result?.plan as string);
+        setCompanyName(result?.companyName as string);
+        setLogoUrl(result?.logoUrl as string);
       }
     };
 
     fetchUser();
   }, [user?.id]);
 
-  useEffect(() => {
-    const fetchTemplates = async () => {
-      const res = await getDefaultTemplates();
-      setTemplates(res);
-    };
-
-    fetchTemplates();
-  }, []);
+  
 
   return (
     <div className='max-w-screen-md mx-auto px-4 sm:px-6 py-6 space-y-6'>
-
       {/* Header */}
       <div className='space-y-1'>
         <h2 className='text-lg font-semibold'>Brand Settings</h2>
@@ -73,12 +72,18 @@ export default function AccountPage() {
         </CardContent>
       </Card>
 
-      <CompanyInfo />
+      <CompanyInfo companyName={companyName}
+        logoUrl={logoUrl}
+        onChange={(name: string, logo: string, updatedSlug: string) => {
+          setCompanyName(name);
+          setLogoUrl(logo);
+          setSlug(updatedSlug);
+        }} />
 
       <YourBrand
-        logoUrl={dbUser?.logoUrl}
-        companyName={dbUser?.companyName}
-        slug={dbUser?.slug}
+        logoUrl={logoUrl}
+        companyName={companyName}
+        slug={slug}
         plan={(dbUser?.plan || "free") as "free" | "starter" | "pro"}
       />
     </div>

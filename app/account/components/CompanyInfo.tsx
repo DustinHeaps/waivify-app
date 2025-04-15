@@ -4,17 +4,23 @@ import { useEffect, useState, useTransition } from "react";
 import { useUser } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-// import { markStepIfEligible } from "@/lib/utils";
 import { SaveButton } from "./SaveButton";
 import { uploadFile } from "@/app/actions/account";
 import { getUserById } from "@/app/actions/user";
-import Image from "next/image";
 import { Label } from "@/components/ui/label";
 
-export default function CompanyInfo() {
-  const { user } = useUser();
+export default function CompanyInfo({
+  companyName,
+  logoUrl,
+  onChange,
+}: {
+  companyName: string;
+  logoUrl: string;
+  onChange: (name: string, logo: string, slug: string) => void;
+}) {
   const [name, setName] = useState<string>("");
   const [logo, setLogo] = useState<string>("");
+  const { user } = useUser();
   const [isPending, startTransition] = useTransition();
   const [status, setStatus] = useState<
     "idle" | "saving" | "saved" | "uploading"
@@ -33,29 +39,21 @@ export default function CompanyInfo() {
   }, [user?.id]);
 
   const handleSave = async () => {
-    if (!user) return;
     setStatus("saving");
-    startTransition(async () => {
-      try {
-        await SaveButton({ name, logo });
-
-        // auto mark step if they saved company info
-        if (name.trim() || logo.trim()) {
-          // await markStepIfEligible("5");
-        }
-
-        setStatus("saved");
-      } catch (err) {
-        setStatus("idle");
-      }
-    });
+    await SaveButton({ name, logo });
+    const slug = name
+    onChange(name, logo, slug );
+    setStatus("saved");
   };
+
+
 
   return (
     <div className='border rounded-lg p-4 space-y-4 bg-white'>
       <h3 className='text-sm font-semibold'>Company Info</h3>
       <p className='text-sm text-muted-foreground'>
-        Setup your brand details to personalize waivers.
+        Customize how your brand appears on public waivers. This info shows up
+        on your share link and confirmation emails.
       </p>
 
       <div className='space-y-2'>

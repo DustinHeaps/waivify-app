@@ -25,10 +25,12 @@ type FormData = z.infer<typeof WaiverSchema>;
 
 type Props = {
   slug: string;
-  fields: any
+  fields: any;
+  templateId: string;
 };
 
-export default function SimpleWaiverForm({ slug, fields }: Props) {
+export default function SimpleWaiverForm({ slug, fields, templateId }: Props) {
+  debugger;
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -73,11 +75,17 @@ export default function SimpleWaiverForm({ slug, fields }: Props) {
           terms: data.terms,
           liability: data.liability,
           date: new Date().toISOString(),
+          templateId,
+          fields: data,
         },
         slug
       );
 
-      const signature = await uploadSignature(formData, newWaiver.id, newWaiver.date);
+      const signature = await uploadSignature(
+        formData,
+        newWaiver.id,
+        newWaiver.date
+      );
 
       router.push(`/waiver/confirmation/${signature.id}`);
     } catch (error) {
