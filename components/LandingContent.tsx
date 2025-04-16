@@ -171,15 +171,15 @@ export default function LandingContent() {
       <footer className='text-sm text-gray-400 text-center mt-10'>
         <p>
           © {new Date().getFullYear()} Waivify ·{" "}
-          <Link href='/policy' className='underline hover:text-white'>
+          <Link target='_blank' href='/policy' className='underline hover:text-white'>
             Digital Signature Policy
           </Link>{" "}
           ·{" "}
-          <Link href='/terms' className='underline hover:text-gray-700'>
+          <Link target='_blank' href='/terms' className='underline hover:text-gray-700'>
             Terms of Service
           </Link>{" "}
           ·{" "}
-          <Link href='/privacy' className='underline hover:text-gray-700'>
+          <Link target='_blank' href='/privacy' className='underline hover:text-gray-700'>
             Privacy Policy
           </Link>{" "}
         </p>

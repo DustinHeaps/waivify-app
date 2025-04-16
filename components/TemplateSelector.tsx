@@ -13,7 +13,7 @@ export function TemplateSelector({
     <div>
       <label className='text-sm font-medium'>Choose a Template</label>
       <select
-        className='w-full border p-2 rounded'
+        className='w-[83%] border p-2 rounded'
         value={selectedId}
         onChange={(e) => {
           onChange(e.target.value);

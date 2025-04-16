@@ -1,5 +1,6 @@
 import CopyButton from "@/app/dashboard/components/CopyButton";
 import { Button } from "@/components/ui/button";
+import { slugify } from '@/lib/utils';
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -16,8 +17,9 @@ export function YourBrand({
   plan: "free" | "starter" | "pro";
 }) {
   const [copied, setCopied] = useState(false);
+  const sluggified = slugify(companyName as string)
 
-  const publicUrl: string = `https://waivify.com/${slug}`;
+  const publicUrl: string = `https://waivify.com/${sluggified}`;
   const hasBrand = !!logoUrl && !!companyName;
 
   const handleCopy = async () => {
@@ -42,7 +44,7 @@ export function YourBrand({
           <div>
             <p className='font-semibold'>{companyName || "The Company"}</p>
             <p className='text-sm text-muted-foreground'>
-              waivify.com/{slug || companyName}
+              waivify.com/{sluggified || "undefined"}
             </p>
           </div>
         </div>
@@ -71,14 +73,14 @@ export function YourBrand({
           Want to start collecting signatures? Share your link or display your
           QR code at your location.
         </p>
-        {/* <p className='text-xs text-muted-foreground mt-2'>
-          “Powered by Waivify” will be visible to clients.{" "}
+        <p className='text-xs text-muted-foreground mt-2'>
+          “Powered by Waivify.com” will be visible to clients.{" "}
           {plan !== "pro" && (
             <Link href='/upgrade' className='text-blue-600 underline'>
               Upgrade to remove
             </Link>
           )}
-        </p> */}
+        </p>
       </div>
 
       <div className='hidden md:flex flex-col items-center justify-center w-40 bg-gray-50 p-3 rounded'>

@@ -11,9 +11,8 @@ async function main() {
         fields: [
           { label: "Full Name", type: "text", required: true },
           { label: "Date", type: "date", required: true },
-          { label: "I agree to the terms", type: "checkbox", required: true },
-          { label: "I release liability", type: "checkbox", required: true },
-          { label: "Signature", type: "signature", required: true },
+        
+         
         ],
         isDefault: true,
       },
@@ -27,7 +26,7 @@ async function main() {
           { label: "Drop-Off Date", type: "date", required: true },
           { label: "Emergency Contact", type: "text", required: true },
           { label: "I release liability", type: "checkbox", required: true },
-          { label: "Signature", type: "signature", required: true },
+         
         ],
         isDefault: true,
       },
@@ -44,7 +43,7 @@ async function main() {
             type: "checkbox",
             required: true,
           },
-          { label: "Signature", type: "signature", required: true },
+         
         ],
         isDefault: true,
       },
@@ -70,7 +69,7 @@ async function main() {
           },
 
           { label: "Date", type: "date", required: true },
-          { label: "Signature", type: "signature", required: true },
+         
         ],
       },
       {
@@ -98,7 +97,7 @@ async function main() {
           },
 
           { label: "Date", type: "date", required: true },
-          { label: "Signature", type: "signature", required: true },
+         
         ],
       },
       {
@@ -125,7 +124,7 @@ async function main() {
             type: "checkbox",
             required: true,
           },
-          { label: "Signature", type: "signature", required: true },
+         
           { label: "Date", type: "date", required: true },
         ],
       },

@@ -1,4 +1,5 @@
 import { Card } from "@/components/ui/card";
+import { slugify } from "@/lib/utils";
 import { User } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,10 +9,12 @@ export default function YourBrand({
   user,
 }: {
   plan: "free" | "starter" | "pro";
-  user?: User;
+  user: User;
 }) {
-  const hasBrand = !!user?.logoUrl && !!user?.companyName;
-  const publicUrl = `https://waivify.com/${user?.slug}`;
+  
+  const { companyName, logoUrl} = user
+  const sluggified = slugify(companyName as string);
+  const hasBrand = !!logoUrl && !!companyName;
 
   return (
     <Card className='p-4 space-y-2 gap-0'>
@@ -22,8 +25,8 @@ export default function YourBrand({
       </p>
       <div className='flex items-center gap-4 py-1'>
         <div className='h-12 w-12 rounded-full bg-gray-100 overflow-hidden'>
-          {user?.logoUrl ? (
-            <Image src={user?.logoUrl} alt='Logo' width={48} height={48} />
+          {logoUrl ? (
+            <Image src={logoUrl} alt='Logo' width={48} height={48} />
           ) : (
             <div className='flex items-center justify-center text-sm text-muted'>
               Logo
@@ -31,9 +34,9 @@ export default function YourBrand({
           )}
         </div>
         <div>
-          <p className='font-medium'>{user?.companyName || "The Company"}</p>
+          <p className='font-medium'>{companyName || "The Company"}</p>
           <p className='text-sm text-muted-foreground'>
-            waivify.com/{user?.slug || "undefined"}
+            waivify.com/{sluggified || "undefined"}
           </p>
         </div>
       </div>

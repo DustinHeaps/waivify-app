@@ -8,8 +8,8 @@ import { getUserById, updateUser } from "../actions/user";
 import { useUser } from "@clerk/nextjs";
 import { YourBrand } from "./components/YourBrand";
 import { getDefaultTemplates } from "../actions/template";
-import { User } from '@prisma/client';
-
+import { User } from "@prisma/client";
+import { slugify } from "@/lib/utils";
 
 export default function AccountPage() {
   const [companyName, setCompanyName] = useState("");
@@ -28,18 +28,17 @@ export default function AccountPage() {
     const fetchUser = async () => {
       if (user?.id) {
         const result = await getUserById();
-        console.log("User" , result)
+        console.log("User", result);
         setDBUser(result);
         setCurrentPlan(result?.plan as string);
         setCompanyName(result?.companyName as string);
         setLogoUrl(result?.logoUrl as string);
+     
       }
     };
 
     fetchUser();
   }, [user?.id]);
-
-  
 
   return (
     <div className='max-w-screen-md mx-auto px-4 sm:px-6 py-6 space-y-6'>
@@ -72,13 +71,15 @@ export default function AccountPage() {
         </CardContent>
       </Card>
 
-      <CompanyInfo companyName={companyName}
+      <CompanyInfo
+        companyName={companyName}
         logoUrl={logoUrl}
         onChange={(name: string, logo: string, updatedSlug: string) => {
           setCompanyName(name);
           setLogoUrl(logo);
-          setSlug(updatedSlug);
-        }} />
+          setSlug(slugify(name));
+        }}
+      />
 
       <YourBrand
         logoUrl={logoUrl}

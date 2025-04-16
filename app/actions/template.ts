@@ -17,9 +17,26 @@ const TemplateSchema = z.object({
     })
   ),
 });
+export async function getAllUserTemplates(userId: string) {
+
+  const templates = await db.template.findMany({
+    where: {
+      OR: [
+        { isDefault: true },
+        { userId: userId },
+      ],
+    },
+    orderBy: {
+      name: "asc",
+    },
+  });
+
+  return templates
+  
+}
 
 export async function getDefaultTemplates() {
-  return await db.template.findMany({
+  const templates = await db.template.findMany({
     where: {
       isDefault: true,
     },
@@ -27,6 +44,8 @@ export async function getDefaultTemplates() {
       name: "asc",
     },
   });
+
+  return templates
 }
 
 export async function createTemplate() {

@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   watermark: {
-    fontSize: 60,
+    fontSize: 30,
     color: "#000",
     opacity: 0.08,
     transform: "rotate(-45deg)",
@@ -142,7 +142,8 @@ export default function WaiverPDF({
         {/* Main Card */}
         <View style={styles.card}>
           <View style={styles.watermarkWrapper}>
-            <Text style={styles.watermark}>Waivify</Text>
+   
+            <Text style={styles.watermark}>Powered by Waivify.com</Text>
           </View>
 
           {logoUrl && companyName && (

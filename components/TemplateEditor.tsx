@@ -18,7 +18,7 @@ import {
 import { SortableItem } from "./SortableItem";
 
 export default function TemplateEditor({ template }: { template: any }) {
-    debugger
+    
   const [name, setName] = useState(template.name);
   const [fields, setFields] = useState<any[]>(template.fields || []);
   const [isSaving, setIsSaving] = useState(false);

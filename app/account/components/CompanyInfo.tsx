@@ -8,6 +8,7 @@ import { SaveButton } from "./SaveButton";
 import { uploadFile } from "@/app/actions/account";
 import { getUserById } from "@/app/actions/user";
 import { Label } from "@/components/ui/label";
+import { slugify } from '@/lib/utils';
 
 export default function CompanyInfo({
   companyName,
@@ -41,7 +42,7 @@ export default function CompanyInfo({
   const handleSave = async () => {
     setStatus("saving");
     await SaveButton({ name, logo });
-    const slug = name
+    const slug = slugify(name)
     onChange(name, logo, slug );
     setStatus("saved");
   };

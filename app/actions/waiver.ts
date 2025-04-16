@@ -8,7 +8,7 @@ import { db } from "@/lib/prisma";
 
 import { headers } from "next/headers";
 import { getUserById } from "./user";
-import { incrementWaiverUsage } from "@/lib/waiverUsage";
+import { getWaiverLimit, incrementWaiverUsage } from "@/lib/waiverUsage";
 import { auth } from "@clerk/nextjs/server";
 
 const WaiverSchema = z.object({
@@ -51,6 +51,16 @@ export async function saveWaiver(data: unknown, slug: string) {
   if (!business) {
     throw new Error("Business not found for this slug");
   }
+
+
+  const waiverLimit = getWaiverLimit(business.plan || "free");
+  const currentCount = business.waiverCount || 0;
+
+
+  if (currentCount >= waiverLimit) {
+    throw new Error("Waiver Limit");
+  }
+
   const waiver = await db.waiver.create({
     data: {
       ...waiverData,
@@ -60,7 +70,7 @@ export async function saveWaiver(data: unknown, slug: string) {
       userId: business.id,
       templateId: waiverData.templateId,
       fields: waiverData.fields,
-      // slug: waiverData.slug
+    
     },
   });
 
@@ -68,7 +78,7 @@ export async function saveWaiver(data: unknown, slug: string) {
     event: "waiver_saved",
     distinctId: waiver.id,
   });
-  await incrementWaiverUsage(userId as string);
+  await incrementWaiverUsage(slug);
   return waiver;
 }
 

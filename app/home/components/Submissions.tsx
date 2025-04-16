@@ -14,7 +14,7 @@ export function Submissions() {
           <h2 className='text-base font-semibold text-gray-900'>
             See All Submissions 📄
           </h2>
-          <p className='text-sm text-muted-foreground pb-4'>
+          <p className='text-sm text-muted-foreground pb-[18px]'>
             View and manage every signed waiver in one place—search by name,
             filter by date, and export when needed.
           </p>

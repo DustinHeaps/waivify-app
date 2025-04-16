@@ -41,7 +41,7 @@ export default async function ConfirmationPage({
         <p className='text-sm text-gray-500 mt-4 text-center'>
           Your waiver has been securely submitted. All waivers are legally
           binding under our{" "}
-          <a href='/policy' className='underline hover:text-teal-400'>
+          <a target='_blank' href='/policy' className='underline hover:text-teal-400'>
             Digital Signature Policy
           </a>
           .

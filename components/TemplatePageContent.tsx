@@ -4,10 +4,13 @@ import { useState } from "react";
 import { TemplateSelector } from "@/components/TemplateSelector";
 import SimpleWaiverForm from "@/components/SimpleWaiverForm";
 import { JsonValue } from "@prisma/client/runtime/library";
-import WaiverForm from './WaiverForm';
-
+import WaiverForm from "./WaiverForm";
+import { updateUser } from "@/app/actions/user";
 
 type Props = {
+  isOwner: boolean;
+  selectedId: string;
+  clerkId: string;
   templates: {
     id: string;
     name: string;
@@ -15,32 +18,48 @@ type Props = {
   }[];
 };
 
-export default function TemplatePageContent({ templates }: Props) {
+export default function TemplatePageContent({
+  templates,
+  isOwner,
+  selectedId,
+  clerkId,
+}: Props) {
   const defaultTemplate =
-    templates.find((t) => t.name === "Basic Waiver") ?? templates[0];
+    templates.find((t) => t.id === selectedId) ?? templates[0];
 
   const [selectedTemplateId, setSelectedTemplateId] = useState(() => {
-    return defaultTemplate?.id ?? ""; 
+    return defaultTemplate?.id ?? "";
   });
   const selectedTemplate = templates.find((t) => t.id === selectedTemplateId);
 
   return (
     <div className='flex flex-col gap-6'>
+      {isOwner && (
+        <div className='mb-4 rounded bg-blue-50 border border-blue-200 text-blue-700 p-3 text-sm text-center'>
+          This template will be shown at your public link.
+        </div>
+      )}
       <TemplateSelector
         templates={templates.map((t) => ({
           ...t,
           fields: (t.fields ?? []) as any[],
         }))}
         selectedId={selectedTemplateId}
-        onChange={(id) => {
-          console.log("Selected ID:", id);
+        onChange={async (id) => {
+          await updateUser(clerkId, {
+            publicTemplateId: id,
+          });
           setSelectedTemplateId(id);
         }}
       />
-  
+
       {selectedTemplate && (
-            <SimpleWaiverForm slug=''  templateId={selectedTemplateId} fields={selectedTemplate.fields} />
-        // <WaiverForm slug='' templateId={selectedTemplateId}  fields={selectedTemplate.fields as any[]}  />
+        <WaiverForm
+          slug=''
+          templateId={selectedTemplateId}
+          fields={selectedTemplate.fields as any[]}
+          isOwner={isOwner}
+        />
       )}
     </div>
   );

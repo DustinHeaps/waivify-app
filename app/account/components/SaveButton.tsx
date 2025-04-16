@@ -1,6 +1,7 @@
 "use server";
 
 import { updateUser } from "@/app/actions/user";
+import { slugify } from '@/lib/utils';
 import { auth } from "@clerk/nextjs/server";
 
 export async function SaveButton(data: { name: string; logo: string }) {
@@ -10,7 +11,7 @@ export async function SaveButton(data: { name: string; logo: string }) {
   await updateUser(userId, {
     companyName: data.name,
     logoUrl: data.logo,
-    slug: data.name
+    slug: slugify(data.name)
   });
 
   return { success: true };

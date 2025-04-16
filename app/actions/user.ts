@@ -63,6 +63,30 @@ export async function getUserById() {
     return null;
   }
 }
+export async function getUserBySlug(slug: string) {
+  const normalizedSlug = slug.replace(/\s+/g, "-").toLowerCase();
+
+  try {
+    const user = await db.user.findFirst({
+      where: { slug: normalizedSlug },
+      include: {
+        Template: {
+          orderBy: [{ createdAt: "desc" }],
+          take: 1,
+          where: {
+            fields: {
+              not: [],
+            },
+          },
+        },
+      },
+    });
+    return user;
+  } catch (error) {
+    console.error("Failed to get user by Slug:", error);
+    return null;
+  }
+}
 export async function resetMonthlyWaiverCounts() {
   const now = new Date();
 

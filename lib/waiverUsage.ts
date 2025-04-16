@@ -1,4 +1,4 @@
-import { getUserById, updateUser } from "@/app/actions/user";
+import { getUserById, getUserBySlug, updateUser } from "@/app/actions/user";
 
 // --- Configurable per plan ---
 export const WAIVER_LIMITS: Record<string, number> = {
@@ -25,13 +25,14 @@ export async function hasAvailableWaivers(userId: string): Promise<boolean> {
 }
 
 // --- Increment usage ---
-export async function incrementWaiverUsage(userId: string): Promise<void> {
-  const dbUser = await getUserById();
+export async function incrementWaiverUsage(slug: string): Promise<void> {
+  
+  const dbUser = await getUserBySlug(slug)
   if (!dbUser) return;
 
   const currentCount = dbUser.waiverCount ?? 0;
-  
-  await updateUser(userId, {
+
+  await updateUser(dbUser.clerkId, {
     waiverCount: currentCount + 1,
   });
 }

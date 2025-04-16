@@ -26,11 +26,17 @@ type FormData = z.infer<typeof WaiverSchema>;
 type Props = {
   slug: string;
   fields: any;
+  isOwner: boolean;
   templateId: string;
 };
 
-export default function SimpleWaiverForm({ slug, fields, templateId }: Props) {
-  debugger;
+export default function SimpleWaiverForm({
+  slug,
+  fields,
+  templateId,
+  isOwner,
+}: Props) {
+  debugger
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -88,8 +94,13 @@ export default function SimpleWaiverForm({ slug, fields, templateId }: Props) {
       );
 
       router.push(`/waiver/confirmation/${signature.id}`);
-    } catch (error) {
-      setError("Something went wrong. Please try again.");
+    } catch (err: any) {
+      if (err.message.includes("Waiver Limit")) {
+        setError("Sorry, this business has reached their submission limit.");
+      } else {
+        setError("Something went wrong. Please try again.");
+      }
+
       console.error("Upload failed:", error);
     } finally {
       setIsLoading(false);
@@ -148,14 +159,23 @@ export default function SimpleWaiverForm({ slug, fields, templateId }: Props) {
           <p className='text-red-500 text-sm'>{errors.liability.message}</p>
         )}
       </div>
-
-      <button
-        type='submit'
-        className='bg-teal-500 hover:bg-teal-600 text-white px-6 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed'
-        disabled={isLoading}
-      >
-        {isLoading ? "Submitting..." : "Submit Waiver"}
-      </button>
+      {isOwner ? (
+        <button
+          type='button'
+          disabled
+          className='bg-gray-100 text-gray-500 px-4 py-2 rounded cursor-not-allowed border border-gray-300 w-full text-sm'
+        >
+          This form is disabled for owners
+        </button>
+      ) : (
+        <button
+          type='submit'
+          className='bg-teal-500 hover:bg-teal-600 text-white px-6 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed'
+          disabled={isLoading}
+        >
+          {isLoading ? "Submitting..." : "Submit Waiver"}
+        </button>
+      )}
       {error && <p className='text-red-500 text-sm mt-2'>{error}</p>}
     </form>
   );

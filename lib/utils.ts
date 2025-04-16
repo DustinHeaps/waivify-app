@@ -48,3 +48,14 @@ export function getNameFieldValue(form: Record<string, string>) {
   );
   return fullName ? fullName[1] : null;
 }
+
+
+export function slugify(input: string): string {
+  
+  return input
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-") // replace spaces with dashes
+    .replace(/[^a-z0-9\-]/g, "") // remove special chars except dashes
+    .replace(/-+/g, "-"); // collapse multiple dashes
+}

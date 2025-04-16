@@ -90,7 +90,7 @@ const BillingPageContent = () => {
     {
       id: "starter",
       name: "Starter",
-      price: "$9/mo",
+      price: "$12/mo",
       features: ["50 waivers/month", "1 team member", "Download PDFs"],
     },
     {

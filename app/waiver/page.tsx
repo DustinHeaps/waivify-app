@@ -1,12 +1,11 @@
 
-import SimpleWaiverForm from "@/components/SimpleWaiverForm";
 import WaiverGuard from "@/components/WaiverGuard";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { getUserById } from "../actions/user";
 import { getWaiverLimit } from "@/lib/waiverUsage";
 import { TemplateSelector } from "@/components/TemplateSelector";
-import { getDefaultTemplates } from "../actions/template";
+import { getAllUserTemplates, getDefaultTemplates } from "../actions/template";
 import TemplatePageContent from '@/components/TemplatePageContent';
 
 
@@ -24,13 +23,17 @@ export const metadata = {
 };
 
 export default async function WaiverPage() {
-  const templates = await getDefaultTemplates();
+
 
   const { userId } = await auth();
   if (!userId) throw new Error("Not authenticated");
 
   const dbUser = await getUserById();
   if (!dbUser) throw new Error("User not found");
+
+  const templates = await getAllUserTemplates(dbUser.id);
+
+  const isOwner = dbUser?.clerkId === userId;
 
   const waiversUsed = dbUser.waiverCount ?? 0;
   const plan = dbUser.plan ?? "free";
@@ -41,9 +44,9 @@ export default async function WaiverPage() {
   }
   return (
     <div className='min-h-screen flex items-center justify-center bg-gray-50 p-4'>
-      <WaiverGuard>
-        <TemplatePageContent templates={templates} />
-      </WaiverGuard>
+      {/* <WaiverGuard> */}
+        <TemplatePageContent clerkId={userId} selectedId={dbUser.publicTemplateId as string} isOwner={isOwner} templates={templates} />
+      {/* </WaiverGuard> */}
     </div>
   );
 }
