@@ -39,13 +39,6 @@ export default async function WaiverConfirmationEmail({
       <Tailwind>
         <Body className='bg-gray-100 font-sans'>
           <Container className='bg-white max-w-xl mx-auto p-6 rounded-lg shadow-md text-center px-4'>
-            <Img
-              src='https://waivify.com/logo.png'
-              alt='Waivify'
-              width='80'
-              className='mx-auto mb-6'
-            />
-
             <Text className='text-green-600 text-2xl font-bold mb-4'>
               ✅ Waiver Submitted
             </Text>
