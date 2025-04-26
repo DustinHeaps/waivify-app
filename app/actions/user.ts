@@ -33,7 +33,7 @@ export async function createUser({
     });
     return newUser;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 }
@@ -42,7 +42,7 @@ export async function updateUser(
   clerkId: string,
   data: Prisma.UserUpdateInput
 ) {
-  console.log("🔧 Updating user with data:", data);
+  
 
   try {
     await db.user.update({

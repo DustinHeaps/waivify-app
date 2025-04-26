@@ -53,8 +53,7 @@ export async function createTemplate() {
 
   const currentCount = user?.Template.length;
   const maxAllowed = getMaxCustomTemplatesByPlan(user?.plan as string);
-console.log('max', maxAllowed)
-console.log("currrntr", currentCount)
+
   if (Number(currentCount) >= maxAllowed) {
     throw new Error("Template limit reached for your current plan.");
   }

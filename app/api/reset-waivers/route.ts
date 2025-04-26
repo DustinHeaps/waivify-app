@@ -23,8 +23,6 @@ export async function POST(req: Request) {
       html: `<p>✅ Successfully reset ${count} free users on ${new Date().toLocaleString()}</p>`,
     });
 
-    console.log(`✅ Cron Success | Reset ${count} users`);
-
     return new Response("Reset successful + Email Sent");
   } catch (err: any) {
     console.error("❌ Cron Failed", err);

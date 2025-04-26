@@ -49,7 +49,7 @@ export async function POST(req: Request) {
   }
 
   const eventType = evt.type;
-console.log(eventType)
+
   if (eventType === "user.created") {
     const { id, email_addresses, first_name } = evt.data;
     await createUser({
@@ -57,8 +57,6 @@ console.log(eventType)
       email: email_addresses[0]?.email_address || "",
       name: first_name || "",
     });
-
-    console.log("✅ User created:", id);
   }
   return new Response("Webhook received", { status: 200 });
 }

@@ -28,7 +28,7 @@ export default function AccountPage() {
     const fetchUser = async () => {
       if (user?.id) {
         const result = await getUserById();
-        console.log("User", result);
+       
         setDBUser(result);
         setCurrentPlan(result?.plan as string);
         setCompanyName(result?.companyName as string);

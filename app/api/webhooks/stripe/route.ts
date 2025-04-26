@@ -55,19 +55,13 @@ export async function POST(req: Request) {
       );
 
       const renewalDate = new Date(subscription.current_period_end * 1000);
-      console.log("📦 Updating user", {
-        clerkId,
-        customerId,
-        plan,
-        renewalDate,
-      });
+
       await updateUser(clerkId, {
         plan,
         renewalDate,
         stripeCustomerId: customerId,
       });
 
-      console.log(`Updated user ${clerkId} to plan: ${plan}`);
       break;
 
     case "customer.subscription.updated":
@@ -76,24 +70,18 @@ export async function POST(req: Request) {
       if (sub.cancel_at_period_end) {
         const customerId = sub.customer;
 
-        console.log("🛑 Sub scheduled to cancel for:", customerId);
-
         const user = await db.user.findFirst({
           where: { stripeCustomerId: customerId },
         });
 
         if (user) {
           await updateUser(user.clerkId, { plan: "free", renewalDate: null });
-          console.log(
-            `⬇️ Downgraded ${user.clerkId} to free plan (scheduled cancel)`
-          );
         }
       }
       break;
     case "customer.subscription.deleted":
       // ✅ Downgrade on cancel
       customerId = (event.data.object as any).customer;
-      console.log("Deleting sub for customer:", customerId);
 
       const user = await db.user.findFirst({
         where: { stripeCustomerId: customerId },
@@ -101,7 +89,6 @@ export async function POST(req: Request) {
 
       if (user) {
         await updateUser(user.clerkId, { plan: "free", renewalDate: null });
-        console.log(`🔁 Downgraded user ${user.clerkId} to free plan`);
       }
       break;
 

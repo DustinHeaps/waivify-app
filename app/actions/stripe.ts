@@ -21,7 +21,7 @@ export async function checkout({
     plan === "starter"
       ? process.env.STRIPE_STARTER_PRICE_ID!
       : process.env.STRIPE_PRO_PRICE_ID!;
-  console.log("Plan", plan);
+
   if (!priceId) {
     console.error("Missing Stripe Price ID for plan:", plan);
     throw new Error("Missing Stripe Price ID for plan: " + plan);

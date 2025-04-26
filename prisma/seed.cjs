@@ -126,9 +126,62 @@ async function main() {
           },
          
           { label: "Date", type: "date", required: true },
+
         ],
+        
       },
-    
+      {
+        "name": "Photography & Media Release",
+        "description": "Consent form allowing photographers/videographers to use images for promotional purposes.",
+        "isDefault": true,
+        "fields": [
+          { "label": "Full Name", "type": "text", "required": true },
+          { "label": "Event/Session Name", "type": "text", "required": true },
+          { "label": "Date", "type": "date", "required": true },
+          { "label": "I grant permission to use my images/videos", "type": "checkbox", "required": true },
+          { "label": "I waive any rights to royalties or compensation", "type": "checkbox", "required": true }
+        ]
+      },
+      {
+        "name": "Group Fitness Class Waiver",
+        "description": "Waiver for yoga, pilates, spin classes, or group fitness activities.",
+        "isDefault": true,
+        "fields": [
+          { "label": "Full Name", "type": "text", "required": true },
+          { "label": "Class Name", "type": "text", "required": true },
+          { "label": "Emergency Contact", "type": "text", "required": true },
+          { "label": "I acknowledge the risks of group exercise", "type": "checkbox", "required": true },
+          { "label": "I release liability for injuries sustained during class", "type": "checkbox", "required": true },
+          { "label": "Date", "type": "date", "required": true }
+        ]
+      },
+      {
+        "name": "Minor Participation Waiver",
+        "description": "Consent form for activities involving minors, signed by a parent or guardian.",
+        "isDefault": true,
+        "fields": [
+          { "label": "Child's Full Name", "type": "text", "required": true },
+          { "label": "Parent/Guardian Full Name", "type": "text", "required": true },
+          { "label": "Activity/Event Name", "type": "text", "required": true },
+          { "label": "Date", "type": "date", "required": true },
+          { "label": "I authorize my child's participation", "type": "checkbox", "required": true },
+          { "label": "I release liability for any injuries or incidents", "type": "checkbox", "required": true }
+        ]
+      },
+      {
+        "name": "Salon Services Consent",
+        "description": "Consent and waiver form for hair, nail, or beauty salon services.",
+        "isDefault": true,
+        "fields": [
+          { "label": "Client Full Name", "type": "text", "required": true },
+          { "label": "Service Requested", "type": "text", "required": true },
+          { "label": "Known Allergies or Sensitivities", "type": "textarea", "required": false },
+          { "label": "I consent to the requested salon services", "type": "checkbox", "required": true },
+          { "label": "I understand the potential risks or reactions", "type": "checkbox", "required": true },
+          { "label": "Date", "type": "date", "required": true }
+        ]
+      }
+      
     ],
   });
 

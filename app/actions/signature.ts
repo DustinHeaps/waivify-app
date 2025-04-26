@@ -6,7 +6,7 @@ import { trackEvent } from '@/lib/posthog/posthog.server';
 // import { revalidatePath } from 'next/cache';
 
 export async function uploadSignature(formData: FormData, waiverId: string, date: Date) {
-    console.log('date', date)
+   
   const files = formData.getAll("file") as File[];
 
   if (!files || files.length === 0) {

@@ -30,8 +30,6 @@ export default async function PublicWaiverPage({ params }: PageProps) {
   const { slug } = await params;
   const { userId } = await auth();
   const business = await getUserBySlug(slug);
-  
-  console.log(business)
 
   const isOwner = business?.clerkId === userId;
 

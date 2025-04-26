@@ -19,4 +19,5 @@ if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = db;
 
 // const db = globalForPrisma.prisma;
 
+
 // module.exports = { db };
