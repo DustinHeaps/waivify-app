@@ -55,7 +55,6 @@ export default function WaiverForm({
   templateId,
   isOwner,
 }: Props) {
-  
   const [formError, setFormError] = useState("");
   const [signatureError, setSignatureError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -141,22 +140,31 @@ export default function WaiverForm({
       className='w-full max-w-md bg-white shadow-md rounded-md p-6 space-y-4'
     >
       {fields.map((field: any) => (
-        <div key={field.label}>
-          <label className='block text-sm font-semibold text-gray-700 mb-1'>
-            {field.label}
-          </label>
+        <div key={field.label} className='mb-4'>
           {field.type === "checkbox" ? (
-            <input type='checkbox' {...register(field.label)} />
+            <label className='flex items-center gap-2 text-xs font-medium text-gray-700'>
+              <input
+                type='checkbox'
+                {...register(field.label)}
+                className='h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary'
+              />
+              {field.label}
+            </label>
           ) : (
-            <input
-              type={field.type}
-              {...register(field.label)}
-              className={`w-full px-3 py-2 border rounded-md shadow-sm ${
-                (errors as Record<string, any>)[field.label]
-                  ? "border-red-500"
-                  : "border-gray-300"
-              }`}
-            />
+            <>
+              <label className='text-sm font-normal text-black mb-1 block'>
+                {field.label}
+              </label>
+              <input
+                type={field.type}
+                {...register(field.label)}
+                className={`w-full px-3 py-2 border rounded-md shadow-sm ${
+                  (errors as Record<string, any>)[field.label]
+                    ? "border-red-500"
+                    : "border-gray-300"
+                }`}
+              />
+            </>
           )}
 
           {(errors as Record<string, any>)[field.label] && (
@@ -168,7 +176,7 @@ export default function WaiverForm({
       ))}
 
       <div>
-        <label className='flex items-center space-x-2'>
+        <label className='flex text-xs items-center space-x-2'>
           <input type='checkbox' {...register("terms" as const)} />
           <span>I agree to the terms & conditions</span>
         </label>
@@ -180,7 +188,7 @@ export default function WaiverForm({
       </div>
 
       <div>
-        <label className='flex  items-center space-x-2'>
+        <label className='flex text-xs items-center space-x-2'>
           <input type='checkbox' {...register("liability" as const)} />
           <span>I release liability for this service</span>
         </label>
@@ -192,7 +200,7 @@ export default function WaiverForm({
       </div>
 
       <div className='mt-4'>
-        <label className='block text-sm font-semibold text-gray-700 mb-1'>
+        <label className='block text-sm font-normal text-black mb-1'>
           Signature
         </label>
         <div className='border rounded-md'>
