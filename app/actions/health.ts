@@ -1,6 +1,8 @@
 "use server";
 
-import { db } from "../../lib/prisma.js";
+import { db } from '@/lib/prisma';
+
+
 
 export async function pingDb() {
   try {
