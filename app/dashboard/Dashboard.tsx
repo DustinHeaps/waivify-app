@@ -16,6 +16,9 @@ import Pagination from "./components/Pagination";
 import { Filters } from "./components/Filters";
 import { downloadCSV } from "@/lib/utils";
 import { LockedFeature } from "./components/LockedFeature";
+import { Card } from "@/components/ui/card";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 type Props = {
   waivers: Waiver[];
@@ -124,6 +127,11 @@ export default function Dashboard({ waivers, plan }: Props) {
   return (
     <div className='max-w-5xl mx-auto mt-10'>
       <div className='mb-6'>
+        <Link href='/dashboard/analytics'>
+          <span className='mt-2 md:mt-0 text-sm text-blue-600 hover:underline hover:opacity-80 transition cursor-pointer'>
+            View Analytics →
+          </span>
+        </Link>
         <h1 className='text-2xl font-semibold text-gray-900'>
           Your Waivify Submissions
         </h1>
@@ -131,6 +139,7 @@ export default function Dashboard({ waivers, plan }: Props) {
           Collect. Confirm. Keep it simple.
         </p>
       </div>
+
       <div className='mt-4 flex gap-2'>
         <button
           onClick={() => setViewArchived(false)}
@@ -177,7 +186,6 @@ export default function Dashboard({ waivers, plan }: Props) {
             </button>
           </LockedFeature>
         </div>
-        {/* <WeeklyCount waivers={waivers} /> */}
       </motion.div>
 
       <AnimatePresence>

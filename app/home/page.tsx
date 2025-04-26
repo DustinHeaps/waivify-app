@@ -67,7 +67,7 @@ export default function HomePage() {
         transition={{ delay: 0.3 }}
         className='grid grid-cols-1 md:grid-cols-3 gap-8 border-t pt-8'
       >
-        <Tips />
+        <Tips plan={dbUser?.plan as "free" | "starter" | "pro"} />
         <Links />
         <Changelog />
       </motion.div>

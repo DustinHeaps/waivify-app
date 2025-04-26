@@ -73,6 +73,7 @@ export const PricingContent = ({ user }: Props) => {
             <li>✅ Unlimited waivers</li>
             <li>✅ Remove watermark</li>
             <li>✅ Priority support</li>
+            <li>✅ Access to Advanced Analytics</li>
           </ul>
           {currentPlan === "pro" ? (
             <Button disabled className='mt-6 w-full cursor-default'>

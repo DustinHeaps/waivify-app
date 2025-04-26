@@ -124,7 +124,12 @@ const BillingPageContent = () => {
       name: "Pro",
       price: "$29/mo",
       preface: "Everything in Starter, plus:",
-      features: ["Unlimited waivers", "Remove Watermark", "Priority support"],
+      features: [
+        "Unlimited waivers",
+        "Remove Watermark",
+        "Access to Advanced Analytics",
+        "Priority support",
+      ],
     },
   ];
 

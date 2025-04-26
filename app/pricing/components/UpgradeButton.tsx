@@ -9,7 +9,7 @@ import { User } from "@prisma/client";
 type UpgradeButtonProps = {
   plan: "free" | "starter" | "pro";
   user: User;
-  setError: any;
+  setError: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
 export default function UpgradeButton({
