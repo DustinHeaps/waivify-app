@@ -252,12 +252,7 @@ export default function Dashboard({ waivers, plan }: Props) {
               <p className='text-lg font-medium text-gray-500'>
                 You haven’t submitted any waivers yet.
               </p>
-              <a
-                href='/waiver'
-                className='inline-block mt-2 text-blue-600 hover:underline text-sm'
-              >
-                Submit a waiver →
-              </a>
+             
             </motion.div>
           ) : filteredWaivers.length === 0 ? (
             <div className='text-center bg-gray-50 p-6 rounded-lg'>
