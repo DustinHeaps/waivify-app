@@ -1,11 +1,11 @@
 "use server";
 
-import { auth, currentUser } from '@clerk/nextjs/server';
-import { Resend } from 'resend';
-import { getUserById } from './user';
-import { getSignatureById } from './signature';
-import WaiverConfirmationEmail from '../waiver/components/WaiverConfirmationEmail';
-import { trackEvent } from '@/lib/posthog/posthog.server';
+import { auth, currentUser } from "@clerk/nextjs/server";
+import { Resend } from "resend";
+import { getUserById } from "./user";
+import { getSignatureById } from "./signature";
+import WaiverConfirmationEmail from "../waiver/components/WaiverConfirmationEmail";
+import { trackEvent } from "@/lib/posthog/posthog.server";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -45,6 +45,37 @@ export async function sendEmail(id: string, waiverId: string) {
   return { status: "success" };
 }
 
+export async function sendSupportEmail({
+  name,
+  email,
+  message,
+  subject
+}: {
+  name: string;
+  email: string;
+  message: string;
+  subject: string;
+}) {
+  
+  try {
+    await resend.emails.send({
+      from: "support@waivify.com",
+      to: "dustinheaps89@gmail.com",
+      subject: "📝 New Waivify Support",
+      replyTo: email,
+      html: `
+      <p><strong>From:</strong> ${name} (${email})</p>
+      <p><strong>Message:</strong></p>
+      <p>${message}</p>
+    `,
+    });
+
+    return { success: true };
+  } catch (err) {
+    console.error("Support send error:", err);
+    return { success: false, error: "Something went wrong." };
+  }
+}
 
 export async function submitFeedback(message: string) {
   const user = await currentUser();
@@ -58,7 +89,7 @@ export async function submitFeedback(message: string) {
   try {
     await resend.emails.send({
       from: "feedback@waivify.com",
-      to: "dustinheaps89@gmail.com", // 👈 where you want the feedback
+      to: "dustinheaps89@gmail.com",
       subject: "📝 New Waivify Feedback",
       html: `
         <p><strong>From:</strong> ${name} (${email})</p>
