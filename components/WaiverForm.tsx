@@ -55,6 +55,7 @@ export default function WaiverForm({
   templateId,
   isOwner,
 }: Props) {
+
   const [formError, setFormError] = useState("");
   const [signatureError, setSignatureError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -142,7 +143,7 @@ export default function WaiverForm({
       {fields.map((field: any) => (
         <div key={field.label} className='mb-4'>
           {field.type === "checkbox" ? (
-            <label className='flex items-center gap-2 text-xs font-medium text-gray-700'>
+            <label className='flex items-center gap-2 text-sm font-medium text-gray-700'>
               <input
                 type='checkbox'
                 {...register(field.label)}
@@ -176,7 +177,7 @@ export default function WaiverForm({
       ))}
 
       <div>
-        <label className='flex text-xs items-center space-x-2'>
+        <label className='flex text-sm items-center space-x-2'>
           <input type='checkbox' {...register("terms" as const)} />
           <span>I agree to the terms & conditions</span>
         </label>
@@ -188,7 +189,7 @@ export default function WaiverForm({
       </div>
 
       <div>
-        <label className='flex text-xs items-center space-x-2'>
+        <label className='flex text-sm items-center space-x-2'>
           <input type='checkbox' {...register("liability" as const)} />
           <span>I release liability for this service</span>
         </label>

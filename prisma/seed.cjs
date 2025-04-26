@@ -155,19 +155,7 @@ async function main() {
           { "label": "Date", "type": "date", "required": true }
         ]
       },
-      {
-        "name": "Minor Participation Waiver",
-        "description": "Consent form for activities involving minors, signed by a parent or guardian.",
-        "isDefault": true,
-        "fields": [
-          { "label": "Child's Full Name", "type": "text", "required": true },
-          { "label": "Parent/Guardian Full Name", "type": "text", "required": true },
-          { "label": "Activity/Event Name", "type": "text", "required": true },
-          { "label": "Date", "type": "date", "required": true },
-          { "label": "I authorize my child's participation", "type": "checkbox", "required": true },
-          { "label": "I release liability for any injuries or incidents", "type": "checkbox", "required": true }
-        ]
-      },
+     
       {
         "name": "Salon Services Consent",
         "description": "Consent and waiver form for hair, nail, or beauty salon services.",

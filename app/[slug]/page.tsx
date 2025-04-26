@@ -1,4 +1,4 @@
-import { db } from "@/lib/prisma";
+
 import { notFound } from "next/navigation";
 import WaiverForm from "@/components/WaiverForm";
 import WaiverLimitGuard from "@/components/WaiverGuard";

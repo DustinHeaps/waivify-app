@@ -1,6 +1,6 @@
 "use server";
 
-import { db } from "@/lib/prisma";
+import { db } from "../../lib/prisma.js";
 
 export async function pingDb() {
   try {
@@ -11,4 +11,3 @@ export async function pingDb() {
     return { status: "Error" };
   }
 }
-
