@@ -10,7 +10,7 @@ export function JoinWaitlistButton() {
 
       className='bg-teal-500 transform transition duration-200 ease-in-out hover:bg-teal-400 hover:scale-105 hover:shadow-xl'
     >
-      Join Waitlist 
+      Join Waitlist  
     </Button>
   );
 }
