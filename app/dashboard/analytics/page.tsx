@@ -8,6 +8,8 @@ import { getUserById } from "@/app/actions/user";
 
 export default async function AnalyticsPage() {
   const user = await getUserById();
+
+  const isPro = user?.plan === "pro";
   return (
     <div className='p-6'>
       <div className='mb-4'>
@@ -21,7 +23,7 @@ export default async function AnalyticsPage() {
         Track your waiver activity over time.
       </p>
 
-      {user?.plan !== "pro" ? (
+      {isPro ? (
         <div className='space-y-8'>
           <HighlightCards />
           <WaiverOverTimeChart />
