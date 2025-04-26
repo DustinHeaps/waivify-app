@@ -32,16 +32,6 @@ Waivify lets businesses easily create customizable waivers, collect digital sign
 
 ---
 
-## 📸 Screenshots
-
-| Dashboard | Waiver Form | Admin Health |
-|:---------|:------------|:------------|
-| ![Dashboard Screenshot](link-placeholder) | ![Waiver Form Screenshot](link-placeholder) | ![Admin Health Screenshot](link-placeholder) |
-
-> _(Update these with real screenshots!)_
-
----
-
 ## ⚡ Quick Start
 
 ```bash
