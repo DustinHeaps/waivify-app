@@ -22,6 +22,7 @@ const WaiverSchema = z.object({
   fields: z.record(z.any()),
 });
 
+
 export async function saveWaiver(data: unknown, slug: string) {
 
   const { userId } = await auth();

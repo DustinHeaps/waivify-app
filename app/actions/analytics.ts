@@ -21,6 +21,33 @@ export async function getWeeklyWaiverCount() {
   return count;
 }
 
+export async function getWeeklyWaivers() {
+  const start = startOfWeek(new Date(), { weekStartsOn: 0 }); // Sunday
+  const end = endOfWeek(new Date(), { weekStartsOn: 0 }); // Saturday
+
+  const waivers = await db.waiver.findMany({
+    where: {
+      date: {
+        gte: start,
+        lte: end,
+      },
+    },
+    select: {
+      date: true,
+    },
+  });
+
+  const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const dayCounts = Array(7).fill(0);
+
+  waivers.forEach((w) => {
+    const dayIndex = new Date(w.date).getDay();
+    dayCounts[dayIndex]++;
+  });
+
+  return { labels: daysOfWeek, counts: dayCounts };
+}
+
 export async function getWaiversPerDay(mode: "week" | "7days" = "week") {
   let start: Date;
   let end: Date = new Date(); // always today
@@ -104,8 +131,6 @@ export async function getWaiversPerHour() {
 
   return filledData;
 }
-
-
 
 export async function getHighlightStats() {
   const start = startOfWeek(new Date(), { weekStartsOn: 0 });
