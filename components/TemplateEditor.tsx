@@ -150,10 +150,10 @@ export default function TemplateEditor({
     (user.plan === "starter" && customTemplates.length < 1) ||
     (user.plan === "pro" && customTemplates.length < 5);
 
-    const sortedTemplates = [
-        ...templateList.filter((t) => !t.isDefault), // custom first
-        ...templateList.filter((t) => t.isDefault),  // then defaults
-      ];
+  const sortedTemplates = [
+    ...templateList.filter((t: any) => !t.isDefault), // custom first
+    ...templateList.filter((t: any) => t.isDefault), // then defaults
+  ];
   return (
     <>
       <div>
@@ -178,8 +178,10 @@ export default function TemplateEditor({
       )}
       {!canCreateTemplate && user.plan === "starter" && (
         <p className='mt-2 text-xs text-gray-500 italic'>
-          Starter plan supports 1 custom template. <Link className='underline' href={'/billing'}>Uprgade for more.</Link>
-          
+          Starter plan supports 1 custom template.{" "}
+          <Link className='underline' href={"/billing"}>
+            Uprgade for more.
+          </Link>
         </p>
       )}
       {!canCreateTemplate && user.plan === "pro" && (
