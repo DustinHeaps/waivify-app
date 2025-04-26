@@ -23,6 +23,7 @@ export function useFilteredWaivers(
 
       if (dateFilter === "7days") {
         matchesDate = isAfter(waiverDate, startOfWeek(now));
+
       } else if (dateFilter === "month") {
         matchesDate = isAfter(waiverDate, startOfMonth(now));
       }

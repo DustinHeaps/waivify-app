@@ -12,7 +12,15 @@ import { Button } from "@/components/ui/button";
 import { getUserById } from "../actions/user";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { posthog } from 'posthog-js';
+import { posthog } from "posthog-js";
+
+type Plan = {
+  id: "free" | "starter" | "pro";
+  name: string;
+  features: string[];
+  preface?: string;
+  price: string;
+};
 
 export default function BillingPage() {
   return (
@@ -61,9 +69,9 @@ const BillingPageContent = () => {
   }, [user?.id]);
 
   const handleSubscribe = async (selected: "starter" | "pro") => {
-    posthog.capture('clicked_upgrade_button', {
-      plan: selected
-    })
+    posthog.capture("clicked_upgrade_button", {
+      plan: selected,
+    });
     setError(null);
     setLoadingPlan(selected);
     try {
@@ -86,23 +94,37 @@ const BillingPageContent = () => {
     });
   };
 
-  const plans = [
+  const plans: Plan[] = [
+    {
+      id: "free",
+      name: "Free",
+      price: "$0/mo",
+
+      features: [
+        "10 total waivers",
+        "Use default templates",
+        "Add logo, Company name, and QR code",
+        "Email confirmations",
+      ],
+    },
     {
       id: "starter",
       name: "Starter",
       price: "$12/mo",
-      features: ["50 waivers/month", "1 team member", "Download PDFs"],
+      preface: "Everything in Free, plus:",
+      features: [
+        "Everything in Free, plus:",
+        "50 waivers/month",
+        "Download PDFs",
+        "Access to waiver table (search, filter, archive, delete, export)",
+      ],
     },
     {
       id: "pro",
       name: "Pro",
       price: "$29/mo",
-      features: [
-        "Unlimited waivers",
-        "Up to 5 team members",
-        "Custom branding",
-        "Priority support",
-      ],
+      preface: "Everything in Starter, plus:",
+      features: ["Unlimited waivers", "Remove Watermark", "Priority support"],
     },
   ];
 
@@ -154,12 +176,18 @@ const BillingPageContent = () => {
           </div>
         </div>
       )}
+
       {plans.map((p) => (
         <Card key={p.id}>
           <CardContent className='p-5  space-y-3'>
             <h2 className='font-medium'>
               {p.name} - {p.price}
             </h2>
+            {p.preface && (
+              <p className='text-sm text-gray-500 font-medium mb-1'>
+                {p.preface}
+              </p>
+            )}
             <ul className='text-sm text-muted-foreground space-y-1'>
               {p.features.map((f) => (
                 <li key={f}>✅ {f}</li>

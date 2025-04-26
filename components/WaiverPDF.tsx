@@ -112,6 +112,7 @@ const styles = StyleSheet.create({
 });
 
 export default function WaiverPDF({
+  plan,
   name,
   date,
   signatureUrl,
@@ -124,6 +125,7 @@ export default function WaiverPDF({
   fields,
 }: {
   name: string;
+  plan: string;
   date: string;
   signatureUrl: string;
   waiverId: string;
@@ -139,12 +141,12 @@ export default function WaiverPDF({
       <Page size='A4' style={styles.page} wrap={false}>
         <View style={styles.brandBar} />
 
-        {/* Main Card */}
         <View style={styles.card}>
-          <View style={styles.watermarkWrapper}>
-   
-            <Text style={styles.watermark}>Powered by Waivify.com</Text>
-          </View>
+          {plan !== "pro" && (
+            <View style={styles.watermarkWrapper}>
+              <Text style={styles.watermark}>Powered by Waivify.com</Text>
+            </View>
+          )}
 
           {logoUrl && companyName && (
             <View style={styles.companyBlock}>

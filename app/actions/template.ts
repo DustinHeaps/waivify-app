@@ -5,7 +5,8 @@ import { auth } from "@clerk/nextjs/server";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { getUserById, updateUser } from "./user";
-import { trackEvent } from '@/lib/posthog/posthog.server';
+import { trackEvent } from "@/lib/posthog/posthog.server";
+import { getMaxCustomTemplatesByPlan } from "@/lib/waiverUsage";
 
 const TemplateSchema = z.object({
   name: z.string().min(1),
@@ -18,21 +19,16 @@ const TemplateSchema = z.object({
   ),
 });
 export async function getAllUserTemplates(userId: string) {
-
   const templates = await db.template.findMany({
     where: {
-      OR: [
-        { isDefault: true },
-        { userId: userId },
-      ],
+      OR: [{ isDefault: true }, { userId: userId }],
     },
     orderBy: {
       name: "asc",
     },
   });
 
-  return templates
-  
+  return templates;
 }
 
 export async function getDefaultTemplates() {
@@ -45,21 +41,23 @@ export async function getDefaultTemplates() {
     },
   });
 
-  return templates
+  return templates;
 }
 
 export async function createTemplate() {
   const { userId } = await auth();
   if (!userId) throw new Error("Not authenticated");
 
-  // const parsed = TemplateSchema.safeParse(data);
 
-  // if (!parsed.success) {
-  //   console.error("Invalid template data:", parsed.error.flatten());
-  //   throw new Error("Invalid form data");
-  // }
+  const user = await getUserById();
 
-  // const { name, fields } = parsed.data;
+  const currentCount = user?.Template.length;
+  const maxAllowed = getMaxCustomTemplatesByPlan(user?.plan as string);
+console.log('max', maxAllowed)
+console.log("currrntr", currentCount)
+  if (Number(currentCount) >= maxAllowed) {
+    throw new Error("Template limit reached for your current plan.");
+  }
 
   const template = await db.template.create({
     data: {
@@ -76,7 +74,6 @@ export async function createTemplate() {
 }
 
 export async function updateTemplate(id: string, name: string, fields: any[]) {
-
   await trackEvent({
     event: "template_updated",
     distinctId: id,
@@ -132,10 +129,10 @@ export async function getOrCreateUserTemplate() {
     publicTemplateId: newTemplate.id,
   });
 
-   await trackEvent({
-      event: "template_created",
-      distinctId: newTemplate.id,
-    });
+  await trackEvent({
+    event: "template_created",
+    distinctId: newTemplate.id,
+  });
 
   return newTemplate;
 }

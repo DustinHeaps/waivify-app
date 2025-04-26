@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TemplateSelector } from "@/components/TemplateSelector";
 import SimpleWaiverForm from "@/components/SimpleWaiverForm";
 import { JsonValue } from "@prisma/client/runtime/library";
@@ -30,6 +30,8 @@ export default function TemplatePageContent({
   const [selectedTemplateId, setSelectedTemplateId] = useState(() => {
     return defaultTemplate?.id ?? "";
   });
+
+
   const selectedTemplate = templates.find((t) => t.id === selectedTemplateId);
 
   return (
@@ -40,6 +42,7 @@ export default function TemplatePageContent({
         </div>
       )}
       <TemplateSelector
+    
         templates={templates.map((t) => ({
           ...t,
           fields: (t.fields ?? []) as any[],

@@ -2,6 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Dashboard from "./Dashboard";
 import { getAllWaivers, getAllWaiversByUser } from "../actions/waiver";
+import { getUserById } from "../actions/user";
 
 export const metadata = {
   title: "Your Waivify Submissions – Digital Waivers Made Simple",
@@ -20,12 +21,16 @@ export default async function DashboardPage() {
   const { userId } = await auth();
 
   if (!userId) {
-    return redirect("/");
+    return redirect("/home");
   }
 
-  const waivers = await getAllWaiversByUser({archived: false});
+  const waivers = await getAllWaiversByUser({ archived: false });
+  const user = await getUserById();
 
-
-
-  return <Dashboard waivers={waivers} />;
+  return (
+    <Dashboard
+      plan={user?.plan as "free" | "starter" | "pro"}
+      waivers={waivers}
+    />
+  );
 }

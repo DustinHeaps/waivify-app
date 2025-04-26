@@ -13,10 +13,9 @@ export async function GET(req: Request) {
   const user = await getUserById();
   let logoUrl: string = "";
   let companyName: string = "";
-  if (user?.plan === "pro") {
-    logoUrl = user.logoUrl as string;
-    companyName = user.companyName as string;
-  }
+
+  logoUrl = user?.logoUrl as string;
+  companyName = user?.companyName as string;
 
   if (!waiverId) return new NextResponse("Missing waiverId", { status: 400 });
 
@@ -32,6 +31,7 @@ export async function GET(req: Request) {
 
   const pdfBuffer = await renderToBuffer(
     <WaiverPDF
+      plan={user?.plan as string}
       name={waiver.signature.name}
       date={formattedDate}
       waiverId={waiver.signature.id}

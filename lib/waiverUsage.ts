@@ -43,3 +43,10 @@ export async function resetWaiverUsage(userId: string): Promise<void> {
     waiverCount: 0,
   });
 }
+
+
+export function getMaxCustomTemplatesByPlan(plan: string): number {
+  if (plan === "pro") return 5;
+  if (plan === "starter") return 1;
+  return 0; 
+}

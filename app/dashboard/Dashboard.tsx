@@ -15,15 +15,16 @@ import {
 import Pagination from "./components/Pagination";
 import { Filters } from "./components/Filters";
 import { downloadCSV } from "@/lib/utils";
-
+import { LockedFeature } from "./components/LockedFeature";
 
 type Props = {
   waivers: Waiver[];
+  plan: string;
 };
 
 const ITEMS_PER_PAGE = 10;
 
-export default function Dashboard({ waivers }: Props) {
+export default function Dashboard({ waivers, plan }: Props) {
   const [searchQuery, setSearchQuery] = useState("");
   const [dateFilter, setDateFilter] = useState("all");
   const [waiverList, setWaiverList] = useState(waivers);
@@ -53,8 +54,8 @@ export default function Dashboard({ waivers }: Props) {
 
   const currentWaivers = useMemo(() => {
     const start = (page - 1) * ITEMS_PER_PAGE;
-    return waiverList.slice(start, start + ITEMS_PER_PAGE);
-  }, [page, waiverList]);
+    return filteredWaivers.slice(start, start + ITEMS_PER_PAGE);
+  }, [page, filteredWaivers]);
 
   useEffect(() => {
     const fetchWaivers = async () => {
@@ -66,7 +67,7 @@ export default function Dashboard({ waivers }: Props) {
   }, [viewArchived]);
 
   const handleArchive = async (ids: string[], clearSelection: () => void) => {
-    const previousList = [...waiverList];
+    const previousList = [...filteredWaivers];
 
     try {
       // Server-side archive first
@@ -158,19 +159,23 @@ export default function Dashboard({ waivers }: Props) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, delay: 0.1 }}
       >
-        <Filters
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          dateFilter={dateFilter}
-          setDateFilter={setDateFilter}
-        />
+        <LockedFeature plan={plan as "free" | "starter" | "pro"}>
+          <Filters
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            dateFilter={dateFilter}
+            setDateFilter={setDateFilter}
+          />
+        </LockedFeature>
         <div className='flex justify-end mb-2'>
-          <button
-            onClick={() => downloadCSV(waiverList)}
-            className='text-sm text-blue-600 hover:underline self-start sm:self-auto'
-          >
-            Export all as CSV
-          </button>
+          <LockedFeature plan={plan as "free" | "starter" | "pro"}>
+            <button
+              onClick={() => downloadCSV(waiverList)}
+              className='text-sm text-nowrap text-blue-600 hover:underline self-end sm:self-auto'
+            >
+              Export all as CSV
+            </button>
+          </LockedFeature>
         </div>
         {/* <WeeklyCount waivers={waivers} /> */}
       </motion.div>
@@ -262,6 +267,7 @@ export default function Dashboard({ waivers }: Props) {
                 onArchive={handleArchive}
                 isLoading={isLoading}
                 viewArchived={viewArchived}
+                plan={plan}
               />
 
               {totalPages > 1 && (

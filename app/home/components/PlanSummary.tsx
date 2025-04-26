@@ -73,7 +73,7 @@ export function PlanSummary() {
 
       <Link
         href={"/billing"}
-        className='mt-4 block w-full bg-black text-white py-2 rounded-md text-sm font-medium text-center hover:bg-gray-800 transition'
+        className='mt-4 block w-full bg-black text-white py-2 rounded-md text-sm font-medium text-center hover:bg-gray-700 transition'
       >
         Manage Plan
       </Link>

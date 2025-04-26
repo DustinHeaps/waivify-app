@@ -10,7 +10,7 @@ export function Submissions() {
       exit={{ opacity: 0, y: -20 }}
     >
       <Card className='transition-all duration-200 py-0'>
-        <CardContent className='p-6 md:p-8 text-center space-y-3'>
+        <CardContent className='p-6 md:p-8 space-y-3'>
           <h2 className='text-base font-semibold text-gray-900'>
             See All Submissions 📄
           </h2>
@@ -20,7 +20,7 @@ export function Submissions() {
           </p>
           <Link
             href='/dashboard'
-            className='inline-block bg-black text-white text-sm px-4 py-2 rounded hover:bg-gray-800'
+            className='inline-block bg-black text-white text-sm px-4 py-2 rounded hover:bg-gray-700'
           >
             Go to Dashboard
           </Link>

@@ -43,7 +43,7 @@ export default function HomePage() {
       >
         {/* <GetMoreDone /> */}
         {dbUser && <DefaultTemplatePicker user={dbUser} />}
-        <BestPractices />
+        {dbUser && <BestPractices user={dbUser} />}
         {dbUser && <YourBrand plan='free' user={dbUser} />}
       </motion.div>
 

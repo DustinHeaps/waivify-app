@@ -30,20 +30,8 @@ export default async function PublicWaiverPage({ params }: PageProps) {
   const { slug } = await params;
   const { userId } = await auth();
   const business = await getUserBySlug(slug);
-  // const business = await db.user.findFirst({
-  //   where: { slug },
-  //   include: {
-  //     Template: {
-  //       orderBy: [{ isDefault: "desc" }, { createdAt: "desc" }],
-  //       take: 1,
-  //       where: {
-  //         fields: {
-  //           not: [],
-  //         },
-  //       },
-  //     },
-  //   },
-  // });
+  
+  console.log(business)
 
   const isOwner = business?.clerkId === userId;
 
@@ -57,7 +45,7 @@ export default async function PublicWaiverPage({ params }: PageProps) {
         </div>
       )}
       <div className='max-w-xl mx-auto p-6 space-y-6'>
-        {/* Branding */}
+       
         <div className='flex items-center gap-3'>
           {business.logoUrl && (
             <img
@@ -69,18 +57,14 @@ export default async function PublicWaiverPage({ params }: PageProps) {
           <h1 className='text-xl font-semibold'>{business.companyName}</h1>
         </div>
 
-        {/* Waiver form */}
+    
 
-        {/* <SimpleWaiverForm
-          slug={slug}
-          templateId={business.Template[0].id}
-          fields={business.Template[0].fields}
-        /> */}
+        
 
         <WaiverForm
           slug={slug}
-          templateId={business.Template[0].id}
-          fields={business.Template[0].fields}
+          templateId={business.publicTemplateId as string}
+          fields={business.Template?.fields}
           isOwner={isOwner}
         />
       </div>

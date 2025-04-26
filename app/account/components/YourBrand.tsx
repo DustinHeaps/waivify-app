@@ -53,7 +53,7 @@ export function YourBrand({
           <Link
             href={publicUrl}
             target='_blank'
-            className='text-sm px-3 py-1.5 bg-black text-white rounded hover:bg-gray-800'
+            className='text-sm px-3 py-1.5 bg-black text-white rounded hover:bg-gray-700'
           >
             View Public Waiver
           </Link>
@@ -76,8 +76,8 @@ export function YourBrand({
         <p className='text-xs text-muted-foreground mt-2'>
           “Powered by Waivify.com” will be visible to clients.{" "}
           {plan !== "pro" && (
-            <Link href='/upgrade' className='text-blue-600 underline'>
-              Upgrade to remove
+            <Link href='/billing' className='text-blue-600 underline'>
+              Upgrade to pro to remove
             </Link>
           )}
         </p>

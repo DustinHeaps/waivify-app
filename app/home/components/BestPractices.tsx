@@ -1,38 +1,55 @@
-import Link from 'next/link';
+import { User } from "@prisma/client";
+import Link from "next/link";
 import React from "react";
 
-export const BestPractices = () => {
+export const BestPractices = ({ user }: { user: User }) => {
   return (
-    // <div className="rounded-xl border p-6 shadow-sm bg-yellow-50">
-
-    //   <h2 className='text-sm font-medium text-gray-900 mb-3'>
-    //     💡 Boost Your Waiver Flow
-    //   </h2>
-    //   <ul className='text-sm text-gray-700 space-y-2 list-disc list-inside'>
-    //     <li>📸 Add your logo to make it feel official</li>
-    //     <li>📲 Share your link before appointments</li>
-    //     <li>🧾 Export waivers weekly for record keeping</li>
-    //   </ul>
-    // </div>
-    <div className='rounded-xl border p-6 shadow-sm bg-white'>
-      <h2 className='text-lg font-semibold text-gray-900 mb-2'>
-        Go Pro & Unlock More 💎
-      </h2>
-      <p className='text-sm text-gray-600 mb-4'>
-        Upgrade to Pro for more flexibility and features designed to scale with
-        your business.
-      </p>
-      <ul className='text-sm text-gray-700 space-y-2'>
-        <li>🧾 Use up to 5 custom templates</li>
-        <li>👥 Invite up to 5 team members</li>
-        <li>🎨 Add branding & priority support</li>
-      </ul>
-      <Link
-        href='/billing'
-        className='mt-4 inline-block text-sm underline text-gray-600 hover:text-gray-800'
-      >
-        See Pro Features
-      </Link>
-    </div>
+    <>
+      {user.plan === "free" ? (
+        <div className='rounded-xl border p-6 shadow-sm'>
+          <h3 className='font-semibold text-gray-900 mb-3'>
+            💡 Boost Your Waiver Flow
+          </h3>
+          <ul className='text-sm text-gray-700 space-y-2 list-disc list-inside'>
+            <li>📸 Add your logo to make it feel official</li>
+            <li>📲 Share your link before appointments</li>
+            <li>🧾 Export waivers weekly for record keeping</li>
+          </ul>
+        </div>
+      ) : user.plan === "starter" ? (
+        <div className='rounded-xl border p-6 shadow-sm'>
+          <h3 className='font-semibold text-gray-900 mb-3'>
+            🎯 Get Set Up for Success
+          </h3>
+          <ul className='text-sm text-gray-800 space-y-2'>
+            <li>🛠️ Tailor your waiver with flexible fields</li>
+            <li>📄 Keep clean records with PDF downloads</li>
+          </ul>
+        </div>
+      ) : (
+        <div className='rounded-xl border p-6 shadow-sm bg-white'>
+          <h3 className='font-semibold text-gray-900 mb-3'>
+            Level Up Your Waiver Game 💎
+          </h3>
+          <p className='text-sm text-gray-600 mb-4'>
+            You’ve unlocked the full toolkit for growing teams and busy
+            workflows.
+          </p>
+          <ul className='text-sm text-gray-800 space-y-2'>
+            <li>🧠 Save up to 5 reusable templates</li>
+            <li>👥 PDF Branding</li>
+            <li>⚡️ Get priority support when you need it</li>
+          </ul>
+          {/* <div className='mt-4'>
+            <Link
+              href='/account'
+              className='bg-black text-white text-sm font-medium px-4 py-2 rounded hover:bg-gray-700'
+            >
+              Manage Team & Settings
+            </Link>
+          </div> */}
+        </div>
+      )}
+    </>
   );
 };

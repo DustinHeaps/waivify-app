@@ -2,7 +2,11 @@
 
 import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
-import { Prisma } from "@prisma/client";
+import { Prisma, Template, User } from "@prisma/client";
+
+type UserWithTemplate = User & {
+  Template?: Template | null;
+};
 
 export async function createUser({
   clerkId,
@@ -54,6 +58,9 @@ export async function getUserById() {
   const { userId } = await auth();
   try {
     const user = await db.user.findUnique({
+      include: {
+        Template: true,
+      },
       where: { clerkId: userId as string },
     });
 
@@ -63,25 +70,47 @@ export async function getUserById() {
     return null;
   }
 }
-export async function getUserBySlug(slug: string) {
+
+export async function getUserBySlug(
+  slug: string
+): Promise<UserWithTemplate | null> {
   const normalizedSlug = slug.replace(/\s+/g, "-").toLowerCase();
 
   try {
     const user = await db.user.findFirst({
       where: { slug: normalizedSlug },
-      include: {
-        Template: {
-          orderBy: [{ createdAt: "desc" }],
-          take: 1,
-          where: {
-            fields: {
-              not: [],
-            },
-          },
-        },
+    });
+
+    if (!user?.publicTemplateId) return user;
+
+    const template = await db.template.findFirst({
+      where: {
+        id: user.publicTemplateId,
       },
     });
-    return user;
+
+    return {
+      ...user,
+      Template: template,
+    };
+
+    // try {
+    //   const user = await db.user.findFirst({
+    //     where: { slug: normalizedSlug },
+
+    //     include: {
+    //       Template: {
+    //         orderBy: [{ createdAt: "desc" }],
+    //         take: 1,
+    //         where: {
+    //           fields: {
+    //             not: [],
+    //           },
+    //         },
+    //       },
+    //     },
+    //   });
+    //   return user;
   } catch (error) {
     console.error("Failed to get user by Slug:", error);
     return null;

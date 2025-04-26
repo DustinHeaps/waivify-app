@@ -7,8 +7,9 @@ import { motion } from "framer-motion";
 import Logo from "@/public/logo.png";
 // import { Card, CardContent } from "../ui/card";
 import Link from "next/link";
-import { Card, CardContent } from './ui/card';
-import { JoinWaitlistButton } from './JoinWaitlistButton';
+import { Card, CardContent } from "./ui/card";
+import { JoinWaitlistButton } from "./JoinWaitlistButton";
+import { GetStartedButton } from "./GetStartedButton";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -60,7 +61,7 @@ export default function LandingContent() {
           A simple, mobile-friendly way for businesses to collect digital
           signatures — anywhere, anytime.
         </p>
-        <JoinWaitlistButton />
+        {/* <GetStartedButton /> */}
       </motion.section>
 
       <motion.section
@@ -162,24 +163,36 @@ export default function LandingContent() {
           Be among the first to simplify your waivers.
         </h2>
         <p className='mb-6 text-gray-300'>
-          Join the waitlist — it&apos;s free, and we’ll notify you as soon as we’re
-          live.
+          Join the waitlist — it&apos;s free, and we’ll notify you as soon as
+          we’re live.
         </p>
-        <JoinWaitlistButton />
+        {/* <GetStartedButton /> */}
       </motion.section>
 
       <footer className='text-sm text-gray-400 text-center mt-10'>
         <p>
           © {new Date().getFullYear()} Waivify ·{" "}
-          <Link target='_blank' href='/policy' className='underline hover:text-white'>
+          <Link
+            target='_blank'
+            href='/policy'
+            className='underline hover:text-white'
+          >
             Digital Signature Policy
           </Link>{" "}
           ·{" "}
-          <Link target='_blank' href='/terms' className='underline hover:text-gray-700'>
+          <Link
+            target='_blank'
+            href='/terms'
+            className='underline hover:text-gray-700'
+          >
             Terms of Service
           </Link>{" "}
           ·{" "}
-          <Link target='_blank' href='/privacy' className='underline hover:text-gray-700'>
+          <Link
+            target='_blank'
+            href='/privacy'
+            className='underline hover:text-gray-700'
+          >
             Privacy Policy
           </Link>{" "}
         </p>

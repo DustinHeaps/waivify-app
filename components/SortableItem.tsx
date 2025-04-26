@@ -38,7 +38,7 @@ export function SortableItem({
           style={style}
           {...attributes}
           {...listeners}
-          className='bg-white p-4 rounded border shadow-sm flex items-center justify-between'
+          className='w-full bg-white p-4 rounded border shadow-sm flex items-center justify-between'
         >
           <input
             type='text'

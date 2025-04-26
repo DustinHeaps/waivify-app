@@ -11,50 +11,42 @@ export default function YourBrand({
   plan: "free" | "starter" | "pro";
   user: User;
 }) {
-  
-  const { companyName, logoUrl} = user
+  const { companyName, logoUrl } = user;
   const sluggified = slugify(companyName as string);
   const hasBrand = !!logoUrl && !!companyName;
 
   return (
-    <Card className='p-4 space-y-2 gap-0'>
-      <h2 className='font-semibold'>Your Brand</h2>
-      <p className='text-xs text-muted-foreground'>
+    <div className='rounded-xl border p-6 shadow-sm bg-white'>
+      <h2 className='text-lg font-semibold text-gray-900 mb-2'>Your Brand</h2>
+      <p className='text-sm text-gray-600 mb-4'>
         This is how your business appears on public waivers. Update your logo,
         company name, and shareable link.
       </p>
-      <div className='flex items-center gap-4 py-1'>
-        <div className='h-12 w-12 rounded-full bg-gray-100 overflow-hidden'>
+
+      <div className='flex items-center gap-4 mb-12'>
+        <div className='h-12 w-12 rounded-full bg-gray-100 overflow-hidden flex items-center justify-center text-sm text-muted'>
           {logoUrl ? (
             <Image src={logoUrl} alt='Logo' width={48} height={48} />
           ) : (
-            <div className='flex items-center justify-center text-sm text-muted'>
-              Logo
-            </div>
+            <>Logo</>
           )}
         </div>
         <div>
-          <p className='font-medium'>{companyName || "The Company"}</p>
-          <p className='text-sm text-muted-foreground'>
+          <p className='font-medium text-gray-900'>
+            {companyName || "The Company"}
+          </p>
+          <p className='text-sm text-gray-600'>
             waivify.com/{sluggified || "undefined"}
           </p>
         </div>
       </div>
 
-      <div className='flex gap-2 mt-2'>
-        <Link
-          href='/account'
-          className='text-sm px-3 py-1.5 bg-gray-100 rounded hover:bg-gray-200'
-        >
-          Customize Branding
-        </Link>
-        {plan !== "pro" && (
-          <Link
-            href='/upgrade'
-            className='text-sm text-muted-foreground underline'
-          ></Link>
-        )}
-      </div>
-    </Card>
+      <Link
+        href='/account'
+        className='bg-black text-white text-sm font-medium px-4 py-2 rounded hover:bg-gray-700'
+      >
+        Customize Branding
+      </Link>
+    </div>
   );
 }
