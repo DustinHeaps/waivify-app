@@ -162,10 +162,10 @@ export default function WaiverPDF({
             <Text style={styles.value}>{name}</Text>
           </View> */}
 
-          <View style={styles.section}>
+          {/* <View style={styles.section}>
             <Text style={styles.label}>Date:</Text>
             <Text style={styles.value}>{date}</Text>
-          </View>
+          </View> */}
 
           <View style={styles.section}>
             <Text style={styles.label}>Waiver ID:</Text>
@@ -192,6 +192,13 @@ export default function WaiverPDF({
               typeof value === "string"
             ) {
               displayValue = format(new Date(value), "MMMM do, yyyy");
+            }
+
+            if (label.toLowerCase() === "terms") {
+              label = "Terms";
+            }
+            if (label.toLowerCase() === "liability") {
+              label = "Liability";
             }
 
             return (

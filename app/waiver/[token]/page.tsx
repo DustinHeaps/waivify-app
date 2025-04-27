@@ -50,18 +50,27 @@ export default async function ViewWaiverPage({ params }: PageProps) {
       </p>
       {waiver.fields && (
         <div className=''>
-          {Object.entries(waiver.fields).map(([label, value]) => (
-            <p className='py-2' key={label}>
-              <span className='font-medium'>{label}:</span>{" "}
-              <span className='text-sm'>
-                {typeof value === "boolean"
-                  ? value
-                    ? "✅ Yes"
-                    : "❌ No"
-                  : value}
-              </span>
-            </p>
-          ))}
+          {Object.entries(waiver.fields).map(([label, value]) => {
+            let displayLabel = label;
+
+            if (label.toLowerCase() === "terms") {
+              displayLabel = "Terms";
+            } else if (label.toLowerCase() === "liability") {
+              displayLabel = "Liability";
+            }
+            return (
+              <p className='py-2' key={label}>
+                <span className='font-medium'>{displayLabel}:</span>{" "}
+                <span className='text-sm'>
+                  {typeof value === "boolean"
+                    ? value
+                      ? "✅ Yes"
+                      : "❌ No"
+                    : value}
+                </span>
+              </p>
+            );
+          })}
         </div>
       )}
 

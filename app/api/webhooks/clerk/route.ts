@@ -29,9 +29,11 @@ export async function POST(req: Request) {
   }
 
   // Get body
-  const payload = await req.json();
-  const body = JSON.stringify(payload);
+  // const payload = await req.json();
+  // const body = JSON.stringify(payload);
 
+  const body = await req.text();
+  
   let evt: WebhookEvent;
 
   // Verify payload with headers
