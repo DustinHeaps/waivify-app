@@ -12,8 +12,9 @@ export default function AuthProvider({
       publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY as string}
       signInUrl='/sign-in'
       signUpUrl='/sign-up'
-      afterSignInUrl='/home'
-      afterSignUpUrl='/home'
+      signInFallbackRedirectUrl='/home'
+      signUpFallbackRedirectUrl='/home'
+    
     >
       {children}
     </ClerkProvider>
