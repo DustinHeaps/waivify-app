@@ -62,8 +62,8 @@ export default function LandingContent() {
           A simple, mobile-friendly way for businesses to collect digital
           signatures — anywhere, anytime.
         </p>
-        <GetStartedButton />
-        <ClerkButtons />
+        {/* <GetStartedButton /> */}
+
       </motion.section>
 
       <motion.section
