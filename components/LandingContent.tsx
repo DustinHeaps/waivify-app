@@ -2,15 +2,10 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-// import { TallyScript } from "@/components/TallyScript";
 
 import Logo from "@/public/logo.png";
-// import { Card, CardContent } from "../ui/card";
 import Link from "next/link";
 import { Card, CardContent } from "./ui/card";
-import { JoinWaitlistButton } from "./JoinWaitlistButton";
-import { GetStartedButton } from "./GetStartedButton";
-import ClerkButtons from './ClerkButtons';
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
