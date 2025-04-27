@@ -51,12 +51,14 @@ const body = decoder.decode(bodyBuffer);
       "svix-timestamp": svix_timestamp,
       "svix-signature": svix_signature,
     }) as WebhookEvent;
-  } catch (err) {
-    console.error("Error: Could not verify webhook:", err);
-    return new Response("Error: Verification error", {
-      status: 400,
-    });
-  }
+  } catch (err: any) {
+      console.error("Webhook verification error:", err?.message ?? err);
+      return new Response(
+        `Error verifying webhook: ${err?.message ?? "Unknown error"}`,
+        { status: 400 }
+      );
+    }
+    
 
   const eventType = evt.type;
   console.log("[Webhook Verified] Type:", evt.type);
