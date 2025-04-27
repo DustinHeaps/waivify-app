@@ -29,10 +29,10 @@ export async function POST(req: Request) {
   }
 
   // Get body
-  // const payload = await req.json();
-  // const body = JSON.stringify(payload);
+  const payload = await req.json();
+  const body = JSON.stringify(payload);
 
-  const body = await req.text(); 
+
 
   let evt: WebhookEvent;
 
@@ -65,8 +65,8 @@ export async function POST(req: Request) {
       });
       console.log("[Webhook] Successfully created user in DB");
     } catch (err) {
-      console.error("❌ [Webhook Error] Failed to create user:", err);
+      throw new Error("❌ Failed to verify webhook signature.");
     }
   }
-  return new Response("Webhook received", { status: 200 });
+  return new Response(`✅ Webhook received: ${evt.type}`, { status: 200 });
 }
