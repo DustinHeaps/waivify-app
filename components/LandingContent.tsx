@@ -10,6 +10,7 @@ import Link from "next/link";
 import { Card, CardContent } from "./ui/card";
 import { JoinWaitlistButton } from "./JoinWaitlistButton";
 import { GetStartedButton } from "./GetStartedButton";
+import ClerkButtons from './ClerkButtons';
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -61,7 +62,8 @@ export default function LandingContent() {
           A simple, mobile-friendly way for businesses to collect digital
           signatures — anywhere, anytime.
         </p>
-        {/* <GetStartedButton /> */}
+        <GetStartedButton />
+        <ClerkButtons />
       </motion.section>
 
       <motion.section
