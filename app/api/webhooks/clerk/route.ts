@@ -67,7 +67,6 @@ export async function POST(req: Request) {
       name: first_name || "",
     });
     console.log("[Webhook] Successfully created user in DB");
-
-    return new Response("Webhook received", { status: 200 });
   }
+  return new Response("Webhook received", { status: 200 });
 }
