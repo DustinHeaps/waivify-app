@@ -36,7 +36,7 @@ export default function SimpleWaiverForm({
   templateId,
   isOwner,
 }: Props) {
-  debugger
+
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
