@@ -56,11 +56,17 @@ export async function POST(req: Request) {
    
     const { id, email_addresses, first_name } = evt.data;
     console.log(`[Webhook Event] Creating user:`, { id, email: email_addresses[0]?.email_address });
-    await createUser({
-      clerkId: id,
-      email: email_addresses[0]?.email_address || "",
-      name: first_name || "",
-    });
+
+   try {
+      await createUser({
+        clerkId: id,
+        email: email_addresses[0]?.email_address || "",
+        name: first_name || "",
+      });
+      console.log("[Webhook] Successfully created user in DB");
+    } catch (err) {
+      console.error("❌ [Webhook Error] Failed to create user:", err);
+    }
   }
   return new Response("Webhook received", { status: 200 });
 }
