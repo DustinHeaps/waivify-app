@@ -250,7 +250,7 @@ export default function Dashboard({ waivers, plan }: Props) {
                 size={48}
               />
               <p className='text-lg font-medium text-gray-500'>
-                You haven’t submitted any waivers yet.
+              No waivers collected yet.
               </p>
              
             </motion.div>
@@ -258,7 +258,7 @@ export default function Dashboard({ waivers, plan }: Props) {
             <div className='text-center bg-gray-50 p-6 rounded-lg'>
               <p className='text-lg font-medium text-gray-500'>
                 {viewArchived
-                  ? "You haven’t archived any waivers yet."
+                  ? "No waivers collected yet."
                   : "No waivers match your filters."}
               </p>
             </div>
