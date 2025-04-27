@@ -10,7 +10,7 @@ export const config = {
 };
 
 export async function POST(req: Request) {
-  const SIGNING_SECRET = process.env.CLERK_WEBHOOK_SECRET;
+  const SIGNING_SECRET = process.env.CLERK_WEBHOOK_SECRET as string;
 
   if (!SIGNING_SECRET) {
     throw new Error(
