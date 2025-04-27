@@ -145,7 +145,7 @@ export default function TemplateEditor({
       setIsSaving(false);
     }
   };
-  const customTemplates = templates.filter((t: any) => !t.isDefault);
+  const customTemplates = templateList.filter((t: any) => !t.isDefault);
   const canCreateTemplate =
     (user.plan === "starter" && customTemplates.length < 1) ||
     (user.plan === "pro" && customTemplates.length < 5);
