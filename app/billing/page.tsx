@@ -68,18 +68,23 @@ const BillingPageContent = () => {
     })();
   }, [user?.id]);
 
-  const handleSubscribe = async (selected: "starter" | "pro") => {
+  const handleSubscribe = async (selected: "free" | "starter" | "pro") => {
     posthog.capture("clicked_upgrade_button", {
       plan: selected,
     });
-    setError(null);
     setLoadingPlan(selected);
-    try {
-      await checkout({ userId: user?.id, plan: selected } as any);
-    } catch (err: any) {
-      setError(err.message || "Something went wrong.");
-    } finally {
-      setLoadingPlan(null);
+    if (selected === "free") {
+      handleManageSubscription();
+    } else {
+      setError(null);
+
+      try {
+        await checkout({ userId: user?.id, plan: selected } as any);
+      } catch (err: any) {
+        setError(err.message || "Something went wrong.");
+      } finally {
+        setLoadingPlan(null);
+      }
     }
   };
 
@@ -212,13 +217,15 @@ const BillingPageContent = () => {
                   ? "Redirecting..."
                   : plan === p.id
                     ? "Current Plan"
-                    : plan === "free" && p.id === "pro"
-                      ? "Get Pro"
-                      : plan === "pro" && p.id === "starter"
-                        ? "Switch to Starter"
-                        : p.id === "starter"
-                          ? "Get Starter"
-                          : "Upgrade to Pro"}
+                    : plan !== "free" && p.id === "free"
+                      ? "Switch to Free"
+                      : plan === "free" && p.id === "pro"
+                        ? "Get Pro"
+                        : plan === "pro" && p.id === "starter"
+                          ? "Switch to Starter"
+                          : p.id === "starter"
+                            ? "Get Starter"
+                            : "Upgrade to Pro"}
               </Button>
             )}
           </CardContent>

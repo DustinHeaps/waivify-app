@@ -30,6 +30,7 @@ export default function AccountPage() {
         const result = await getUserById();
        
         setDBUser(result);
+        setSlug(result?.slug as string)
         setCurrentPlan(result?.plan as string);
         setCompanyName(result?.companyName as string);
         setLogoUrl(result?.logoUrl as string);
@@ -77,7 +78,7 @@ export default function AccountPage() {
         onChange={(name: string, logo: string, updatedSlug: string) => {
           setCompanyName(name);
           setLogoUrl(logo);
-          setSlug(slugify(name));
+          // setSlug(slugify(name));
         }}
       />
 

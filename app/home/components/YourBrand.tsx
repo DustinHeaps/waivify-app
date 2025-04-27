@@ -13,7 +13,7 @@ export default function YourBrand({
 }) {
   const companyName = user?.companyName || "The Company";
   const logoUrl = user?.logoUrl || "";
-  const sluggified = slugify(companyName as string);
+  // const sluggified = slugify(companyName as string);
   const hasBrand = !!logoUrl && !!companyName;
 
   return (
@@ -37,7 +37,7 @@ export default function YourBrand({
             {companyName || "The Company"}
           </p>
           <p className='text-sm text-gray-600'>
-            waivify.com/{sluggified || "undefined"}
+            waivify.com/{user?.slug || "undefined"}
           </p>
         </div>
       </div>

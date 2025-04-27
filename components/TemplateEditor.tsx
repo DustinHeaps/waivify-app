@@ -137,8 +137,26 @@ export default function TemplateEditor({
     try {
       const newTemplate = await createTemplate();
 
+      const updatedFields = [
+        {
+          id: uuidv4(),
+          type: "text",
+          label: "Full Name",
+          required: true,
+          disabled: true,
+        },
+      ];
+
+      setTemplateList((prev: any[]) => [
+        ...prev,
+        {
+          ...newTemplate,
+          fields: updatedFields,
+        },
+      ]);
+
       setSelectedTemplateId(newTemplate.id);
-      setTemplateList((prev: any[]) => [...prev, newTemplate]);
+      await handleSave();
     } catch (err) {
       console.error("Create failed", err);
     } finally {
@@ -273,10 +291,14 @@ export default function TemplateEditor({
         >
           {isSaving ? "Saving..." : "Save Changes"}
         </button>
-        <p className='text-xs text-muted-foreground text-center mt-2'>
+        <p className='text-xs text-center text-gray-500 italic mt-2'>
+          ✍️ Signature and legal consent fields (terms, liability waiver) will
+          be automatically included.
+        </p>
+        {/* <p className='text-xs text-muted-foreground text-center mt-2'>
           Next: Share your public signing link or preview how this looks for
           clients.
-        </p>
+        </p> */}
       </div>
     </>
   );

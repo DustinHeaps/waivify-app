@@ -3,6 +3,7 @@
 import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { Prisma, Template, User } from "@prisma/client";
+import { nanoid } from "nanoid";
 
 type UserWithTemplate = User & {
   Template?: Template | null;
@@ -18,12 +19,14 @@ export async function createUser({
   name?: string;
 }) {
   try {
+    const slug = `co-${nanoid(7)}`;
+
     const newUser = await db.user.upsert({
       where: { clerkId },
       create: {
         clerkId,
         email,
-        slug: "",
+        slug: slug,
         lastActiveAt: new Date(),
         companyName: "",
         name: name || "",
@@ -42,8 +45,6 @@ export async function updateUser(
   clerkId: string,
   data: Prisma.UserUpdateInput
 ) {
-  
-
   try {
     await db.user.update({
       where: { clerkId },
@@ -56,8 +57,8 @@ export async function updateUser(
 
 export async function getUserById() {
   const { userId } = await auth();
-  if (!userId) return null
-  
+  if (!userId) return null;
+
   try {
     const user = await db.user.findUnique({
       include: {

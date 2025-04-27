@@ -16,10 +16,11 @@ export function YourBrand({
   slug?: string;
   plan: "free" | "starter" | "pro";
 }) {
-  const [copied, setCopied] = useState(false);
-  const sluggified = slugify(companyName as string)
 
-  const publicUrl: string = `https://waivify.com/${sluggified}`;
+  const [copied, setCopied] = useState(false);
+  // const sluggified = slugify(companyName as string)
+
+  const publicUrl: string = `https://waivify.com/${slug as string}`;
   const hasBrand = !!logoUrl && !!companyName;
 
   const handleCopy = async () => {
@@ -44,7 +45,7 @@ export function YourBrand({
           <div>
             <p className='font-semibold'>{companyName || "The Company"}</p>
             <p className='text-sm text-muted-foreground'>
-              waivify.com/{sluggified || "undefined"}
+              waivify.com/{slug || "undefined"}
             </p>
           </div>
         </div>
