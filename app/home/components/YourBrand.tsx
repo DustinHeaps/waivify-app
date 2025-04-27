@@ -11,7 +11,7 @@ export default function YourBrand({
   plan: "free" | "starter" | "pro";
   user: User;
 }) {
-  const companyName = user?.companyName || "The Company";
+  const companyName = user?.companyName || "My Company";
   const logoUrl = user?.logoUrl || "";
   // const sluggified = slugify(companyName as string);
   const hasBrand = !!logoUrl && !!companyName;
@@ -34,10 +34,10 @@ export default function YourBrand({
         </div>
         <div>
           <p className='font-medium text-gray-900'>
-            {companyName || "The Company"}
+            {companyName || "My Company"}
           </p>
           <p className='text-sm text-gray-600'>
-            waivify.com/{user?.slug || "undefined"}
+            waivify.com/{user?.slug || ""}
           </p>
         </div>
       </div>

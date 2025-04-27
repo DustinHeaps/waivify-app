@@ -42,9 +42,9 @@ export function YourBrand({
             )}
           </div>
           <div>
-            <p className='font-semibold'>{companyName || "The Company"}</p>
+            <p className='font-semibold'>{companyName || "My Company"}</p>
             <p className='text-sm text-muted-foreground'>
-              waivify.com/{slug || "undefined"}
+              waivify.com/{slug || ""}
             </p>
           </div>
         </div>
