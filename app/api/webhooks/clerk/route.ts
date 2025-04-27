@@ -40,7 +40,10 @@ export async function POST(req: Request) {
 
   // const body = await req.text()
   const bodyBuffer = await req.arrayBuffer();
-  const body = Buffer.from(bodyBuffer).toString("utf8");
+  // const body = Buffer.from(bodyBuffer).toString("utf8");
+
+  const decoder = new TextDecoder();
+const body = decoder.decode(bodyBuffer);
 
   let evt: WebhookEvent;
 
