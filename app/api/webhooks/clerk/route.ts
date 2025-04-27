@@ -3,12 +3,6 @@ import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
 import { createUser } from "@/app/actions/user";
 
-export const config = {
-  api: {
-    bodyParser: false, 
-  },
-};
-
 export async function POST(req: Request) {
   const SIGNING_SECRET = process.env.CLERK_WEBHOOK_SECRET;
 
@@ -38,7 +32,9 @@ export async function POST(req: Request) {
   // const payload = await req.json();
   // const body = JSON.stringify(payload);
 
-  const body = await req.text()
+  // const body = await req.text()
+  const bodyBuffer = await req.arrayBuffer();
+  const body = Buffer.from(bodyBuffer).toString("utf8");
 
   let evt: WebhookEvent;
 
@@ -57,22 +53,21 @@ export async function POST(req: Request) {
   }
 
   const eventType = evt.type;
-  console.log("[Webhook Verified] Type:", evt.type)
+  console.log("[Webhook Verified] Type:", evt.type);
   if (eventType === "user.created") {
-   
     const { id, email_addresses, first_name } = evt.data;
-    console.log(`[Webhook Event] Creating user:`, { id, email: email_addresses[0]?.email_address });
+    console.log(`[Webhook Event] Creating user:`, {
+      id,
+      email: email_addresses[0]?.email_address,
+    });
 
-   try {
-      await createUser({
-        clerkId: id,
-        email: email_addresses[0]?.email_address || "",
-        name: first_name || "",
-      });
-      console.log("[Webhook] Successfully created user in DB");
-    } catch (err) {
-      throw new Error("❌ Failed to verify webhook signature.");
-    }
+    await createUser({
+      clerkId: id,
+      email: email_addresses[0]?.email_address || "",
+      name: first_name || "",
+    });
+    console.log("[Webhook] Successfully created user in DB");
+
+    return new Response("Webhook received", { status: 200 });
   }
-  return new Response(`✅ Webhook received: ${evt.type}`, { status: 200 });
 }
