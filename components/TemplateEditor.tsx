@@ -114,9 +114,10 @@ export default function TemplateEditor({
   }, [selectedTemplateId, templateList]);
 
   const handleSave = async () => {
+   
     try {
       setIsSaving(true);
-      await updateTemplate(template.id, name, fields);
+      await updateTemplate(selectedTemplateId, name, fields);
       await updateUser(user.clerkId, {
         publicTemplateId: selectedTemplateId,
       });
@@ -154,9 +155,13 @@ export default function TemplateEditor({
           fields: updatedFields,
         },
       ]);
-
+      
       setSelectedTemplateId(newTemplate.id);
-      await handleSave();
+  
+      await updateUser(user.clerkId, {
+        publicTemplateId: newTemplate.id,
+      });
+
     } catch (err) {
       console.error("Create failed", err);
     } finally {
