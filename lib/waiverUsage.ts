@@ -18,7 +18,7 @@ export async function hasAvailableWaivers(userId: string): Promise<boolean> {
   if (!dbUser) return false;
 
   const waiversUsed = dbUser.waiverCount ?? 0;
-  const plan = dbUser.plan ?? "free";
+  const plan = dbUser?.plan ?? "free";
   const limit = getWaiverLimit(plan);
 
   return waiversUsed < limit;

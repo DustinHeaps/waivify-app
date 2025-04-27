@@ -147,8 +147,8 @@ export default function TemplateEditor({
   };
   const customTemplates = templateList.filter((t: any) => !t.isDefault);
   const canCreateTemplate =
-    (user.plan === "starter" && customTemplates.length < 1) ||
-    (user.plan === "pro" && customTemplates.length < 5);
+    (user?.plan === "starter" && customTemplates.length < 1) ||
+    (user?.plan === "pro" && customTemplates.length < 5);
 
   const sortedTemplates = [
     ...templateList.filter((t: any) => !t.isDefault), // custom first
@@ -176,7 +176,7 @@ export default function TemplateEditor({
           ➕ Create Custom Template
         </button>
       )}
-      {!canCreateTemplate && user.plan === "starter" && (
+      {!canCreateTemplate && user?.plan === "starter" && (
         <p className='mt-2 text-xs text-gray-500 italic'>
           Starter plan supports 1 custom template.{" "}
           <Link className='underline' href={"/billing"}>
@@ -184,7 +184,7 @@ export default function TemplateEditor({
           </Link>
         </p>
       )}
-      {!canCreateTemplate && user.plan === "pro" && (
+      {!canCreateTemplate && user?.plan === "pro" && (
         <p className='mt-2 text-xs text-gray-500 italic'>
           Pro users can create up to 5 templates.
         </p>

@@ -7,7 +7,7 @@ export function DefaultTemplatePicker({ user }: { user: User }) {
 
   return (
     <>
-      {user.plan === "free" ? (
+      {user?.plan === "free" ? (
         <div className='rounded-xl border p-6 shadow-sm bg-white'>
           <h2 className='text-lg font-semibold text-gray-900 mb-2'>
             Your Waiver Template is Pre-Set
@@ -27,7 +27,7 @@ export function DefaultTemplatePicker({ user }: { user: User }) {
             Upgrade 
           </Link>
         </div>
-      ) : user.plan === "starter" ? (
+      ) : user?.plan === "starter" ? (
         <div className='rounded-xl border p-6 shadow-sm bg-white'>
           <h2 className='text-lg font-semibold text-gray-900 mb-2'>
             You’re Off to a Strong Start 💪
