@@ -15,14 +15,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const data = [
-  { date: "4/10", waivers: 3 },
-  { date: "4/11", waivers: 5 },
-  { date: "4/12", waivers: 2 },
-  { date: "4/13", waivers: 7 },
-  { date: "4/14", waivers: 4 },
-  { date: "4/15", waivers: 6 },
-];
+
 
 export function WaiverOverTimeChart() {
   const [data, setData] = useState<{ date: string; waivers: number }[]>([]);
@@ -66,7 +59,7 @@ export function WaiverOverTimeChart() {
         </div>
       ) : (
         <ResponsiveContainer width='100%' height={300}>
-          <LineChart data={data}>
+          <LineChart data={[...data].reverse()}>
             <CartesianGrid strokeDasharray='3 3' />
             <XAxis dataKey='date' />
             <YAxis allowDecimals={false} />
