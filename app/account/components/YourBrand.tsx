@@ -1,6 +1,6 @@
 import CopyButton from "@/app/dashboard/components/CopyButton";
 import { Button } from "@/components/ui/button";
-import { slugify } from '@/lib/utils';
+import { slugify } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -16,7 +16,6 @@ export function YourBrand({
   slug?: string;
   plan: "free" | "starter" | "pro";
 }) {
-
   const [copied, setCopied] = useState(false);
   // const sluggified = slugify(companyName as string)
 
@@ -64,28 +63,24 @@ export function YourBrand({
           </Button>
         </div>
 
-        {!hasBrand && (
-          <p className='text-xs text-muted-foreground border rounded px-3 py-2 mt-2'>
-            Add your logo and company name to unlock a sharable QR code.
-          </p>
-        )}
+      
 
         <p className='text-sm text-muted-foreground mt-2'>
           Want to start collecting signatures? Share your link or display your
           QR code at your location.
         </p>
-        <p className='text-xs text-muted-foreground mt-2'>
-          “Powered by Waivify.com” will be visible to clients.{" "}
-          {plan !== "pro" && (
+        {plan !== "pro" && (
+          <p className='text-xs text-muted-foreground mt-2'>
+            “Powered by Waivify.com” will be visible to clients.{" "}
             <Link href='/billing' className='text-blue-600 underline'>
               Upgrade to pro to remove
             </Link>
-          )}
-        </p>
+          </p>
+        )}
       </div>
 
       <div className='hidden md:flex flex-col items-center justify-center w-40 bg-gray-50 p-3 rounded'>
-        {hasBrand ? (
+      
           <>
             <Image
               src={`https://api.qrserver.com/v1/create-qr-code/?data=${publicUrl}&size=160x160`}
@@ -107,11 +102,7 @@ export function YourBrand({
               Download QR Code
             </a>
           </>
-        ) : (
-          <p className='text-xs text-muted-foreground text-center px-2'>
-            QR code preview will appear here
-          </p>
-        )}
+      
       </div>
     </div>
   );
