@@ -11,7 +11,8 @@ export default function YourBrand({
   plan: "free" | "starter" | "pro";
   user: User;
 }) {
-  const { companyName, logoUrl } = user;
+  const companyName = user?.companyName || "The Company";
+  const logoUrl = user?.logoUrl || "";
   const sluggified = slugify(companyName as string);
   const hasBrand = !!logoUrl && !!companyName;
 
