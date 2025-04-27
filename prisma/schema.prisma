@@ -15,7 +15,7 @@ model User {
   name             String?
   logoUrl          String?
   slug             String?
-  companyName      String?
+  companyName      String?   @default("")
   plan             String    @default("free")
   waiverCount      Int       @default(0)
   teamMembers      Int       @default(1)
