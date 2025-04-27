@@ -77,11 +77,11 @@ export async function getUserById() {
 export async function getUserBySlug(
   slug: string
 ): Promise<UserWithTemplate | null> {
-  const normalizedSlug = slug.replace(/\s+/g, "-").toLowerCase();
+  // const normalizedSlug = slug.replace(/\s+/g, "-").toLowerCase();
 
   try {
     const user = await db.user.findFirst({
-      where: { slug: normalizedSlug },
+      where: { slug: slug },
     });
 
     if (!user?.publicTemplateId) return user;
