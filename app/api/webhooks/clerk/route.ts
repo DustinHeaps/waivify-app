@@ -71,9 +71,7 @@ import { createUser } from "@/app/actions/user";
 //   return new Response("Webhook received", { status: 200 });
 // }
 
-
 export async function POST(req: Request) {
-  console.log("✅ Webhook hit at all");
-
-  return new Response("ok", { status: 200 });
+  console.error("✅ Webhook definitely hit!");
+  return new Response("Error on purpose", { status: 500 });
 }
