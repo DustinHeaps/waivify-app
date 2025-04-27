@@ -222,7 +222,7 @@ export default function WaiverForm({
       ) : (
         <button
           type='submit'
-          className='bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition'
+          className='w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition'
           disabled={isLoading}
         >
           {isLoading ? "Submitting..." : "Submit Waiver"}

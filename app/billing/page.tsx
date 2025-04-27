@@ -94,7 +94,7 @@ const BillingPageContent = () => {
         const url = await createCustomerPortalSession();
         if (url) window.location.href = url;
       } catch {
-        setError("Could not open Stripe portal.");
+        setError("Could not open Stripe, please try again.");
       }
     });
   };

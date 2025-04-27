@@ -1,4 +1,3 @@
-
 import { notFound } from "next/navigation";
 import WaiverForm from "@/components/WaiverForm";
 import WaiverLimitGuard from "@/components/WaiverGuard";
@@ -43,7 +42,6 @@ export default async function PublicWaiverPage({ params }: PageProps) {
         </div>
       )}
       <div className='max-w-xl mx-auto p-6 space-y-6'>
-       
         <div className='flex items-center gap-3'>
           {business.logoUrl && (
             <img
@@ -54,10 +52,6 @@ export default async function PublicWaiverPage({ params }: PageProps) {
           )}
           <h1 className='text-xl font-semibold'>{business.companyName}</h1>
         </div>
-
-    
-
-        
 
         <WaiverForm
           slug={slug}
