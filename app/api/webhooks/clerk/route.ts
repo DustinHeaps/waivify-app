@@ -32,7 +32,6 @@ export async function POST(req: Request) {
   const payload = await req.json();
   const body = JSON.stringify(payload);
 
-console.log("Body", body)
 
   let evt: WebhookEvent;
 
@@ -51,9 +50,11 @@ console.log("Body", body)
   }
 
   const eventType = evt.type;
-
+  console.log("[Webhook Verified] Type:", evt.type)
   if (eventType === "user.created") {
+   
     const { id, email_addresses, first_name } = evt.data;
+    console.log(`[Webhook Event] Creating user:`, { id, email: email_addresses[0]?.email_address });
     await createUser({
       clerkId: id,
       email: email_addresses[0]?.email_address || "",
