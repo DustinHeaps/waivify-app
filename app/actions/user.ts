@@ -56,6 +56,8 @@ export async function updateUser(
 
 export async function getUserById() {
   const { userId } = await auth();
+  if (!userId) return null
+  
   try {
     const user = await db.user.findUnique({
       include: {

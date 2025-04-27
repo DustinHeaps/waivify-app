@@ -6,6 +6,9 @@ import { notFound } from "next/navigation";
 import { SendEmailButton } from "../../components/SendEmailButton";
 import WaiverDownloadButton from "../../components/WaiverDownloadButton";
 import { CloseButton } from "../../components/CloseButton";
+import { getUserById } from "@/app/actions/user";
+import { User } from '@prisma/client';
+
 
 export const metadata = {
   title: "Waiver Signed – Confirmation | Waivify",
@@ -25,6 +28,9 @@ export default async function ConfirmationPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
+
+  const user: User | null = await getUserById(); 
+
   const { id } = await params;
   const signature = await getSignatureById(id);
 
@@ -34,6 +40,7 @@ export default async function ConfirmationPage({
 
   return (
     <div className='max-w-md mx-auto mt-20 bg-white p-6 rounded-xl shadow-md text-center'>
+      
       <div className='text-center mt-10'>
         <h1 className='text-2xl font-bold text-green-600'>
           ✅ Waiver Submitted
@@ -41,7 +48,11 @@ export default async function ConfirmationPage({
         <p className='text-sm text-gray-500 mt-4 text-center'>
           Your waiver has been securely submitted. All waivers are legally
           binding under our{" "}
-          <a target='_blank' href='/policy' className='underline hover:text-teal-400'>
+          <a
+            target='_blank'
+            href='/policy'
+            className='underline hover:text-teal-400'
+          >
             Digital Signature Policy
           </a>
           .
@@ -62,8 +73,16 @@ export default async function ConfirmationPage({
         <p>Need a copy for your records?</p>
         <div className='flex justify-center items-center gap-2 mt-2 relative'>
           <WaiverDownloadButton waiverId={signature.waiverId} />
-          <span className='text-gray-400'>or</span>
-          <SendEmailButton id={signature.id} waiverId={signature.waiverId} />
+
+          {user?.email && (
+            <>
+              <span className='text-gray-400'>or</span>
+              <SendEmailButton
+                id={signature.id}
+                waiverId={signature.waiverId}
+              />
+            </>
+          )}
         </div>
       </div>
       <p className='mt-6 text-xs text-gray-400'>
