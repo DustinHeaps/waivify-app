@@ -38,3 +38,7 @@ export async function POST(req: Request) {
     return new Response("Reset failed", { status: 500 });
   }
 }
+
+export async function GET(req: Request) {
+  return await POST(req);
+}
