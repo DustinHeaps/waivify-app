@@ -33,12 +33,12 @@ export default async function NotFound() {
 
         <div className='text-sm text-gray-500 mt-2'>
           <span>Think this is a mistake?</span>{" "}
-          <a
-            href='mailto:support@yourapp.com'
+          <Link
+            href='/support'
             className='text-blue-500 hover:underline'
           >
             Contact Support
-          </a>
+          </Link>
         </div>
       </div>
     </div>

@@ -20,7 +20,7 @@ export async function POST(req: Request) {
       from: "no-reply@waivify.com",
       to: "dustinheaps89@gmail.com",
       subject: "✅ Waivify Waiver Reset Completed",
-      html: `<p>✅ Successfully reset ${count} free users on ${new Date().toLocaleString()}</p>`,
+      html: `<p>✅ Successfully reset ${count} users on ${new Date().toLocaleString()}</p>`,
     });
 
     return new Response("Reset successful + Email Sent");
