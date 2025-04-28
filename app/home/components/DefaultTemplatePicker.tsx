@@ -4,15 +4,16 @@ import { User } from "@prisma/client";
 import Link from "next/link";
 
 export function DefaultTemplatePicker({ user }: { user: User }) {
-
+  // user.plan === "free";
+  const plan = 'free'
   return (
     <>
-      {user?.plan === "free" ? (
+      {plan === "free" ? (
         <div className='rounded-xl border p-6 shadow-sm bg-white'>
           <h2 className='text-lg font-semibold text-gray-900 mb-2'>
             Your Waiver Template is Pre-Set
           </h2>
-          
+
           <p className='text-sm text-gray-600 mb-28'>
             Upgrade to Starter or Pro to customize your default template, create
             new ones, and tailor forms for each client type.
@@ -24,10 +25,10 @@ export function DefaultTemplatePicker({ user }: { user: User }) {
             Choose Template
           </Link>
           <Link href='/billing' className='underline pl-5'>
-            Upgrade 
+            Upgrade
           </Link>
         </div>
-      ) : user?.plan === "starter" ? (
+      ) : plan === "starter" ? (
         <div className='rounded-xl border p-6 shadow-sm bg-white'>
           <h2 className='text-lg font-semibold text-gray-900 mb-2'>
             You’re Off to a Strong Start 💪
@@ -36,7 +37,7 @@ export function DefaultTemplatePicker({ user }: { user: User }) {
             You've unlocked the ability to customize your default waiver
             template and start collecting submissions faster.
           </p>
-         
+
           <div className='flex items-center gap-4 mt-4'>
             <Link
               href='/waiver/edit'

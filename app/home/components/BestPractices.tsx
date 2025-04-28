@@ -3,9 +3,10 @@ import Link from "next/link";
 import React from "react";
 
 export const BestPractices = ({ user }: { user: User }) => {
+    const plan = 'free'
   return (
     <>
-      {user?.plan === "free" ? (
+      {plan === "free" ? (
         <div className='rounded-xl border p-6 shadow-sm'>
           <h3 className='font-semibold text-gray-900 mb-3'>
             💡 Boost Your Waiver Flow
@@ -16,7 +17,7 @@ export const BestPractices = ({ user }: { user: User }) => {
             <li>🧾 Export waivers weekly for record keeping</li>
           </ul>
         </div>
-      ) : user?.plan === "starter" ? (
+      ) : plan === "starter" ? (
         <div className='rounded-xl border p-6 shadow-sm'>
           <h3 className='font-semibold text-gray-900 mb-3'>
             🎯 Get Set Up for Success

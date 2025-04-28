@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { getUserById } from "../actions/user";
 
-import { getAllUserTemplates } from "../actions/template";
+import { getAllUserTemplates, getDefaultTemplates } from "../actions/template";
 import TemplatePageContent from "@/components/TemplatePageContent";
 
 export const metadata = {
@@ -24,12 +24,14 @@ export default async function WaiverPage() {
   const dbUser = await getUserById();
   if (!dbUser) throw new Error("User not found");
 
-  const templates = await getAllUserTemplates(dbUser.id);
+  // const templates = await getAllUserTemplates(dbUser.id);
+
+  const templates = await getDefaultTemplates()
 
   const isOwner = dbUser?.clerkId === userId;
 
   return (
-    <div className='min-h-screen flex items-center justify-center bg-gray-50 p-4'>
+    <div className='flex items-center justify-center bg-gray-50 p-4'>
       <TemplatePageContent
         clerkId={userId}
         selectedId={dbUser.publicTemplateId as string}

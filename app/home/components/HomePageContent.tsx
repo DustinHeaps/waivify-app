@@ -20,7 +20,7 @@ type Props = {
 export const HomePageContent = ({ user }: Props) => {
   return (
     <div className='max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 space-y-12'>
-      <Hero />
+      {user && <Hero dbUser={user} /> }
       {/* --------------------- Row 1 --------------------- */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}

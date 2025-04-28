@@ -6,6 +6,7 @@ import SimpleWaiverForm from "@/components/SimpleWaiverForm";
 import { JsonValue } from "@prisma/client/runtime/library";
 import WaiverForm from "./WaiverForm";
 import { updateUser } from "@/app/actions/user";
+import { TemplatePicker } from "./TemplatePicker";
 
 type Props = {
   isOwner: boolean;
@@ -31,38 +32,38 @@ export default function TemplatePageContent({
     return defaultTemplate?.id ?? "";
   });
 
-
   const selectedTemplate = templates.find((t) => t.id === selectedTemplateId);
 
+  const handleSelectTemplate = async (id: string) => {
+    await updateUser(clerkId, { publicTemplateId: id });
+    setSelectedTemplateId(id);
+  };
+
   return (
-    <div className='flex flex-col gap-6'>
-      {isOwner && (
-        <div className='mb-4 rounded bg-blue-50 border border-blue-200 text-blue-700 p-3 text-sm text-center'>
-          This template will be shown at your public link.
-        </div>
-      )}
-      <TemplateSelector
-    
-        templates={templates.map((t) => ({
-          ...t,
-          fields: (t.fields ?? []) as any[],
-        }))}
-        selectedId={selectedTemplateId}
-        onChange={async (id) => {
-          await updateUser(clerkId, {
-            publicTemplateId: id,
-          });
-          setSelectedTemplateId(id);
-        }}
-      />
+    <div className='flex flex-col md:flex-row gap-6'>
+      <div className='md:w-1/2 space-y-4 md:max-h-[80vh] md:overflow-y-auto pr-2'>
+        {isOwner && (
+          <div className='mb-4 rounded bg-blue-50 border border-blue-200 text-blue-700 p-3 text-sm text-center'>
+            This template will be shown at your public link.
+          </div>
+        )}
+
+        <TemplatePicker
+          templates={templates}
+          selectedId={selectedTemplateId}
+          onSelect={handleSelectTemplate}
+        />
+      </div>
 
       {selectedTemplate && (
-        <WaiverForm
-          slug=''
-          templateId={selectedTemplateId}
-          fields={selectedTemplate.fields as any[]}
-          isOwner={isOwner}
-        />
+        <div className='md:w-1/2'>
+          <WaiverForm
+            slug=''
+            templateId={selectedTemplateId}
+            fields={selectedTemplate.fields as any[]}
+            isOwner={isOwner}
+          />
+        </div>
       )}
     </div>
   );
