@@ -8,7 +8,7 @@ export async function POST(req: Request) {
   const secret = req.headers.get("cron-secret");
   const url = new URL(req.url);
   const force = url.searchParams.get("force") === "1";
-  if (!force && secret !== process.env.CRON_SECRET) {
+  if (!force && secret !== process.env.CRON_SECRET as string) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
