@@ -17,6 +17,7 @@ type Props = {
     name: string;
     fields: JsonValue;
   }[];
+  plan: string;
 };
 
 export default function TemplatePageContent({
@@ -24,6 +25,7 @@ export default function TemplatePageContent({
   isOwner,
   selectedId,
   clerkId,
+  plan,
 }: Props) {
   const defaultTemplate =
     templates.find((t) => t.id === selectedId) ?? templates[0];
@@ -43,10 +45,34 @@ export default function TemplatePageContent({
     <div className='flex flex-col md:flex-row gap-6'>
       <div className='md:w-1/2 space-y-4 md:max-h-[80vh] md:overflow-y-auto pr-2'>
         {isOwner && (
-          <div className='mb-4 rounded bg-blue-50 border border-blue-200 text-blue-700 p-3 text-sm text-center'>
-            This template will be shown at your public link.
+          <div className='mb-4 rounded-md border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-700 text-center'>
+            📄{" "}
+            <span className='font-medium'>
+              This is your active public template.
+            </span>{" "}
+            Clients will see this at your shareable link.
           </div>
         )}
+        <div className='mb-6 space-y-1'>
+          <h2 className='text-lg font-semibold text-gray-900'>
+            Choose a Template
+          </h2>
+          <p className='text-sm text-muted-foreground'>
+            Pick a waiver template to use as your starting point. You can
+            customize it after selection.
+          </p>
+
+          {plan === "starter" && (
+            <p className='text-sm text-muted-foreground italic'>
+              Your plan includes 1 custom template. Upgrade to Pro for more.
+            </p>
+          )}
+          {plan === "pro" && (
+            <p className='text-xs text-muted-foreground mt-1 italic'>
+              You can create up to 5 custom templates with your Pro plan.
+            </p>
+          )}
+        </div>
 
         <TemplatePicker
           templates={templates}

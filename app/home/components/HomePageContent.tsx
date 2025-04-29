@@ -20,26 +20,38 @@ type Props = {
 export const HomePageContent = ({ user }: Props) => {
   return (
     <div className='max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 space-y-12'>
-      {user && <Hero dbUser={user} /> }
+      {user && <Hero dbUser={user} />}
       {/* --------------------- Row 1 --------------------- */}
+
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className='grid grid-cols-1 md:grid-cols-3 gap-8 border-t pt-8'
+        className='grid grid-cols-1 md:grid-cols-3 gap-8 border-t pt-6'
       >
+        {/* <div className='pt-10'>
+      <h2 className='text-xl font-semibold text-gray-900 mb-1'>🧾 Template</h2>
+        <p className='text-sm text-gray-600 mb-4'>
+          Manage how your waiver templates appear to clients.
+        </p>
+        </div> */}
+
         {/* <GetMoreDone /> */}
-        {<DefaultTemplatePicker user={user} />}
-        {<BestPractices user={user} />}
+        <div className='md:col-span-2'>
+          <DefaultTemplatePicker user={user} />
+        </div>
+        {/* { <DefaultTemplatePicker user={user} />} */}
+        {/* {<BestPractices user={user} />} */}
         {<YourBrand plan='free' user={user} />}
       </motion.div>
 
       {/* --------------------- Row 2 --------------------- */}
+    
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className='grid grid-cols-1 md:grid-cols-3 gap-8 border-t pt-8'
+        className='grid grid-cols-1 md:grid-cols-3 gap-8 border-t pt-8 '
       >
         <Submissions />
 

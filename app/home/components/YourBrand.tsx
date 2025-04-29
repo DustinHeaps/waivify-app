@@ -24,7 +24,7 @@ export default function YourBrand({
         company name, and shareable link.
       </p>
 
-      <div className='flex items-center gap-4 mb-12'>
+      <div className='flex items-center gap-4 mb-4'>
         <div className='h-12 w-12 rounded-full bg-gray-100 overflow-hidden flex items-center justify-center text-sm text-muted'>
           {logoUrl ? (
             <Image src={logoUrl} alt='Logo' width={48} height={48} />
@@ -44,7 +44,7 @@ export default function YourBrand({
 
       <Link
         href='/account'
-        className='bg-black text-white text-sm font-medium px-4 py-2 rounded hover:bg-gray-700'
+        className='block text-center w-full bg-black text-white text-sm font-medium px-4 py-2 rounded hover:bg-gray-700'
       >
         Customize Branding
       </Link>

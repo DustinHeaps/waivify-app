@@ -24,9 +24,9 @@ export default async function WaiverPage() {
   const dbUser = await getUserById();
   if (!dbUser) throw new Error("User not found");
 
-  // const templates = await getAllUserTemplates(dbUser.id);
+  const templates = await getAllUserTemplates(dbUser.id);
 
-  const templates = await getDefaultTemplates()
+  // const templates = await getDefaultTemplates()
 
   const isOwner = dbUser?.clerkId === userId;
 
@@ -37,6 +37,7 @@ export default async function WaiverPage() {
         selectedId={dbUser.publicTemplateId as string}
         isOwner={isOwner}
         templates={templates}
+        plan={dbUser?.plan}
       />
     </div>
   );

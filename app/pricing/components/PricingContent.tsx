@@ -23,6 +23,9 @@ export const PricingContent = ({ user }: Props) => {
         <p className='mt-2 text-lg text-gray-600 dark:text-gray-300'>
           Choose a plan that fits your business — no hidden fees.
         </p>
+        <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
+          No contracts, cancel anytime.
+        </p>
       </div>
 
       <div className='grid gap-8 sm:grid-cols-2 lg:grid-cols-3'>
@@ -37,6 +40,7 @@ export const PricingContent = ({ user }: Props) => {
           <ul className='flex-1 text-sm space-y-2 text-gray-700 dark:text-gray-300'>
             <li>Everything in Free, plus:</li>
             <li>✅ 50 waivers/month</li>
+            <li>✅ 1 Custom Template</li>
             <li>✅ Download signed PDFs</li>
             <li>
               ✅ Access waiver table (search, filter, archive, delete, export)
@@ -71,6 +75,7 @@ export const PricingContent = ({ user }: Props) => {
           <ul className='flex-1 text-sm space-y-2 text-gray-700 dark:text-gray-300'>
             <li>Everything in Starter, plus:</li>
             <li>✅ Unlimited waivers</li>
+            <li>✅ 5 Custom Templates</li>
             <li>✅ Remove watermark</li>
             <li>✅ Priority support</li>
             <li>✅ Access to Advanced Analytics</li>
@@ -97,7 +102,7 @@ export const PricingContent = ({ user }: Props) => {
             <li>✅ Add logo, company name & QR code</li>
             <li>✅ Email confirmations</li>
           </ul>
-          {currentPlan === "free"  ? (
+          {currentPlan === "free" ? (
             <Button disabled className='mt-6 w-full cursor-default'>
               Current Plan
             </Button>
@@ -106,6 +111,7 @@ export const PricingContent = ({ user }: Props) => {
           )}
         </div>
       </div>
+      
     </div>
   );
 };

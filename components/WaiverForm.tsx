@@ -217,7 +217,7 @@ export default function WaiverForm({
           disabled
           className='bg-gray-100 text-gray-500 px-4 py-2 rounded cursor-not-allowed border border-gray-300 w-full text-sm'
         >
-          This form is disabled for owners
+         You're viewing your own waiver. This form is disabled.
         </button>
       ) : (
         <button

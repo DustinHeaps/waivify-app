@@ -4,77 +4,101 @@ import { User } from "@prisma/client";
 import Link from "next/link";
 
 export function DefaultTemplatePicker({ user }: { user: User }) {
-  // user.plan === "free";
-  const plan = 'free'
+  const plan = user.plan;
+
   return (
-    <>
-      {plan === "free" ? (
-        <div className='rounded-xl border p-6 shadow-sm bg-white'>
-          <h2 className='text-lg font-semibold text-gray-900 mb-2'>
-            Your Waiver Template is Pre-Set
-          </h2>
+    <section className='space-y-10'>
 
-          <p className='text-sm text-gray-600 mb-28'>
-            Upgrade to Starter or Pro to customize your default template, create
-            new ones, and tailor forms for each client type.
-          </p>
-          <Link
-            href={"/waiver"}
-            className='bg-black text-white text-sm font-medium px-4 py-2 rounded hover:bg-gray-700'
-          >
-            Choose Template
-          </Link>
-          <Link href='/billing' className='underline pl-5'>
-            Upgrade
-          </Link>
-        </div>
-      ) : plan === "starter" ? (
-        <div className='rounded-xl border p-6 shadow-sm bg-white'>
-          <h2 className='text-lg font-semibold text-gray-900 mb-2'>
-            You’re Off to a Strong Start 💪
-          </h2>
-          <p className='text-sm text-gray-600 mb-[105px]'>
-            You've unlocked the ability to customize your default waiver
-            template and start collecting submissions faster.
-          </p>
+      <div>
+        {/* Free Tier */}
+        {plan === "free" && (
+          <div className='rounded-xl border bg-muted/50 p-6 shadow-sm'>
+            <h3 className='font-semibold text-sm text-gray-900 mb-2 flex items-center gap-1'>
+              Limited Customization Active 🔒
+            </h3>
+            <p className='text-sm text-gray-700 mb-4'>
+              You're currently using the default waiver template. Upgrade to
+              unlock full template editing, advanced form fields, and tailored
+              flows for each client type.
+            </p>
+            <ul className='text-sm text-gray-700 space-y-2'>
+              <li>🧾 Use pre-set waiver structure</li>
+              <li>🎯 Ideal for quick setup & testing</li>
+              <li>⚙️ Upgrade to customize and scale</li>
+            </ul>
+            <div className='mt-4 flex gap-3'>
+              <Link
+                href='/waiver'
+                className='bg-black text-white text-sm font-medium px-4 py-2 rounded hover:bg-gray-700'
+              >
+                Choose Template
+              </Link>
+              <Link
+                href='/billing'
+                className='inline-block bg-white border text-sm font-medium px-4 py-2 rounded hover:bg-gray-100'
+              >
+                Upgrade to Customize
+              </Link>
+            </div>
+          </div>
+        )}
 
-          <div className='flex items-center gap-4 mt-4'>
+        {/* Starter Tier */}
+        {plan === "starter" && (
+          <div className='rounded-xl border bg-muted/50 p-6 shadow-sm'>
+            <h3 className='font-semibold text-sm text-gray-900 mb-2 flex items-center gap-1'>
+              You’re off to a strong start 💪
+            </h3>
+            <p className='text-sm text-gray-700 mb-4'>
+              You can now customize your default waiver template and start
+              collecting submissions faster.
+            </p>
+            <ul className='text-sm text-gray-700 space-y-2'>
+              <li>📝 Edit your default waiver template</li>
+              <li>📂 Save time with a reusable structure</li>
+              <li>📬 Deliver a personalized signing flow</li>
+            </ul>
+            <div className='mt-4 flex gap-3'>
+              <Link
+                href='/template'
+                className='bg-black text-white text-sm font-medium px-4 py-2 rounded hover:bg-gray-700'
+              >
+                Edit Template
+              </Link>
+              <Link
+                href='/billing'
+                className='inline-block bg-white border text-sm font-medium px-4 py-2 rounded hover:bg-gray-100'
+              >
+                Upgrade to Pro
+              </Link>
+            </div>
+          </div>
+        )}
+
+        {/* Pro Tier */}
+        {plan === "pro" && (
+          <div className='rounded-xl border p-6 shadow-sm bg-muted/50'>
+            <h3 className='text-lg font-semibold text-gray-900 mb-2'>
+              You can now fully customize your waiver templates ✨
+            </h3>
+            <p className='text-sm text-gray-600 mb-4'>
+              Create multiple waiver types, apply branding, and fine-tune the
+              signing experience for each client.
+            </p>
+            <ul className='text-sm text-gray-700 space-y-2'>
+              <li>🧩 Build advanced templates with flexible fields</li>
+              <li>🎨 Match your brand with logo and colors</li>
+              <li>📊 Track usage and optimize your workflow</li>
+            </ul>
             <Link
-              href='/waiver/edit'
-              className='bg-black text-white text-sm font-medium px-4 py-2 rounded hover:bg-gray-700'
+              href={"/waiver"}
+              className='mt-4 inline-block bg-black text-white text-sm font-medium px-4 py-2 rounded hover:bg-gray-700'
             >
-              Edit Template
-            </Link>
-            <Link
-              href='/billing'
-              className='text-sm underline text-gray-600 hover:text-gray-800'
-            >
-              Upgrade to Pro
+              Manage Templates
             </Link>
           </div>
-        </div>
-      ) : (
-        <div className='rounded-xl border p-6 shadow-sm bg-white'>
-          <h2 className='text-lg font-semibold text-gray-900 mb-2'>
-            You’re in Control ✨
-          </h2>
-          <p className='text-sm text-gray-600 mb-4'>
-            Customize your default template, create multiple waiver types, and
-            tailor forms to every client scenario.
-          </p>
-          <ul className='text-sm text-gray-700 space-y-2'>
-            <li>🧩 Build advanced templates with flexible fields</li>
-            <li>🎨 Match your brand with logo and colors</li>
-            <li>📊 Track usage and optimize your workflow</li>
-          </ul>
-          <Link
-            href={"/waiver/edit"}
-            className='mt-4 inline-block bg-black text-white text-sm font-medium px-4 py-2 rounded hover:bg-gray-700'
-          >
-            Manage Templates
-          </Link>
-        </div>
-      )}
-    </>
+        )}
+      </div>
+    </section>
   );
 }

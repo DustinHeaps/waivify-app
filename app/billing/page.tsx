@@ -120,6 +120,7 @@ const BillingPageContent = () => {
       features: [
         "Everything in Free, plus:",
         "50 waivers/month",
+        "1 Custom Template",
         "Download PDFs",
         "Access to waiver table (search, filter, archive, delete, export)",
       ],
@@ -132,6 +133,7 @@ const BillingPageContent = () => {
       features: [
         "Unlimited waivers",
         "Remove Watermark",
+        "5 Custom Templates",
         "Access to Advanced Analytics",
         "Priority support",
       ],
@@ -140,12 +142,15 @@ const BillingPageContent = () => {
 
   return (
     <div className='max-w-screen-md mx-auto px-4 sm:px-6 py-6 space-y-6'>
-      <div className='space-y-1'>
-        <h1 className='text-xl font-semibold'>Billing & Subscription</h1>
-        <p className='text-muted-foreground text-sm'>
-          Manage your current plan or upgrade for more features.
+      <div className='space-y-1 text-center'>
+        <h1 className='text-3xl font-bold text-gray-900 dark:text-white'>
+          Simple, transparent billing
+        </h1>
+        <p className='text-sm text-muted-foreground'>
+          No contracts. Cancel anytime.
         </p>
       </div>
+
       {/* ✅ Feedback Banner */}
       {success && (
         <div className='rounded-lg border border-green-500 bg-green-50 p-4 text-center'>
@@ -175,8 +180,8 @@ const BillingPageContent = () => {
         </div>
       )}
       {card && (
-        <div className='border border-gray-200 rounded px-4 py-3 bg-gray-50 mb-4'>
-          <div className='text-sm text-muted-foreground'>
+        <div className='border border-muted rounded-lg px-4 py-3 bg-muted/30 mb-6 text-sm text-muted-foreground'>
+          <div className='text-sm text-muted-foreground border rounded-md p-3 bg-muted'>
             <p>
               💳 {card.brand.toUpperCase()} ending in {card.last4}
             </p>
@@ -189,12 +194,15 @@ const BillingPageContent = () => {
 
       {plans.map((p) => (
         <Card key={p.id}>
-          <CardContent className='p-5  space-y-3'>
-            <h2 className='font-medium'>
-              {p.name} - {p.price}
-            </h2>
+          <CardContent className='p-6  space-y-4'>
+            <div className='space-y-1'>
+              <h2 className='text-lg font-semibold text-gray-900 dark:text-white'>
+                {p.name}
+              </h2>
+              <p className='text-sm text-muted-foreground'>{p.price}</p>
+            </div>
             {p.preface && (
-              <p className='text-sm text-gray-500 font-medium mb-1'>
+              <p className='text-sm text-muted-foreground font-medium'>
                 {p.preface}
               </p>
             )}
@@ -205,9 +213,9 @@ const BillingPageContent = () => {
             </ul>
 
             {plan === p.id ? (
-              <span className='inline-block mt-2 rounded-full bg-green-100 text-green-700 text-xs font-medium px-3 py-1'>
-                Current Plan
-              </span>
+              <div className='text-sm font-medium text-green-700 border border-green-200 bg-green-50 px-2 py-1 w-fit'>
+                You’re on this plan
+              </div>
             ) : (
               <Button
                 disabled={!!loadingPlan}
@@ -232,13 +240,14 @@ const BillingPageContent = () => {
         </Card>
       ))}
 
-      <div className='pt-4'>
+      <div className='pt-6 text-center'>
         <Button
           onClick={handleManageSubscription}
           disabled={isPending}
           variant='outline'
+          className='w-full sm:w-auto'
         >
-          {isPending ? "Opening Portal..." : "Manage Subscription in Stripe"}
+          {isPending ? "Opening Stripe..." : "Manage Subscription in Stripe"}
         </Button>
       </div>
     </div>

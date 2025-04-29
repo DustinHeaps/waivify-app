@@ -22,6 +22,7 @@ type Field = {
   id: string;
   label: string;
   type: "text" | "date" | "checkbox";
+  required: boolean;
 };
 
 export default function CreateTemplatePage() {
@@ -32,6 +33,7 @@ export default function CreateTemplatePage() {
     null
   );
   const [formError, setFormError] = useState<string | null>(null);
+  const [formSuccess, setFormSuccess] = useState(false);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -44,8 +46,17 @@ export default function CreateTemplatePage() {
       id: crypto.randomUUID(),
       label: "",
       type,
+      required: true,
     };
     setFields([...fields, newField]);
+  };
+
+  const toggleRequired = (id: string) => {
+    setFields((prev) =>
+      prev.map((field) =>
+        field.id === id ? { ...field, required: !field.required } : field
+      )
+    );
   };
 
   const handleDragEnd = async (event: any) => {
@@ -66,6 +77,7 @@ export default function CreateTemplatePage() {
 
   const handleSave = async () => {
     setFormError("");
+    setFormSuccess(false);
 
     if (!templateName.trim()) {
       setFormError("Template name is required.");
@@ -98,6 +110,7 @@ export default function CreateTemplatePage() {
       if (!selectedTemplateId && savedTemplate?.id) {
         setSelectedTemplateId(savedTemplate.id);
       }
+      setFormSuccess(true);
     } catch (err) {
       console.error("Save failed", err);
       setFormError("Something went wrong. Please try again.");
@@ -170,17 +183,13 @@ export default function CreateTemplatePage() {
                   transition={{ duration: 0.2 }}
                   className=' space-y-4 py-12'
                 >
-                  <div className='flex items-center gap-2 border p-3 rounded-md bg-gray-50'>
-                    <div className='flex flex-col flex-1 space-y-2'>
-                      <Skeleton className='h-4 w-1/3' />
-                      <Skeleton className='h-8 w-full' />
-                    </div>
-                    <Skeleton className='h-6 w-16' />
+                  <div className='text-center text-gray-500 py-12 space-y-2'>
+                    <p className='text-3xl'>📋</p>
+                    <p className='text-sm'>
+                      No fields yet. Start by adding a Text, Date, or Checkbox
+                      field.
+                    </p>
                   </div>
-                  <p className='text-sm text-muted-foreground'>
-                    No fields yet. Start by adding a Text, Date, or Checkbox
-                    field.
-                  </p>
                 </motion.div>
               ) : (
                 <motion.div
@@ -204,6 +213,7 @@ export default function CreateTemplatePage() {
                       handleRemove={(id) => {
                         setFields(fields.filter((f) => f.id !== id));
                       }}
+                      toggleRequired={toggleRequired}
                     />
                   ))}
                 </motion.div>
@@ -232,6 +242,18 @@ export default function CreateTemplatePage() {
               className='text-sm text-red-500 mb-2 text-center'
             >
               {formError}
+            </motion.p>
+          )}
+          {formSuccess && (
+            <motion.p
+              key='form-success'
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className='text-sm text-green-600 mb-2 text-center'
+            >
+              ✅ Template saved successfully!
             </motion.p>
           )}
         </AnimatePresence>

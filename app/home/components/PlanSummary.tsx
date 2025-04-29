@@ -22,7 +22,7 @@ export function PlanSummary() {
     daysLeft = diff > 0 ? diff : 0;
   }
 
-  // daysLeft = 20
+
 
   useEffect(() => {
     if (!user?.id) return;
@@ -44,6 +44,12 @@ export function PlanSummary() {
         year: "numeric",
       })
     : "N/A";
+
+    const planDisplay = {
+      free: { label: "Free", emoji: "🎟️" },
+      starter: { label: "Starter", emoji: "🚀" },
+      pro: { label: "Pro", emoji: "🏆" },
+    };
 
   return (
     <div className='border rounded-xl p-6 w-full bg-white shadow-sm'>
