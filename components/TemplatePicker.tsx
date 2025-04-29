@@ -1,7 +1,13 @@
 "use client";
 
-import { useMediaQuery } from 'usehooks-ts';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { useMediaQuery } from "usehooks-ts";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 
 type Template = {
   id: string;
@@ -24,8 +30,8 @@ export function TemplatePicker({
     // Use shadcn Select for mobile
     return (
       <Select value={selectedId} onValueChange={onSelect}>
-        <SelectTrigger className="w-full">
-          <SelectValue placeholder="Select a Template" />
+        <SelectTrigger className='w-full'>
+          <SelectValue placeholder='Select a Template' />
         </SelectTrigger>
         <SelectContent>
           {templates.map((template) => (

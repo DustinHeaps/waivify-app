@@ -44,7 +44,45 @@ export async function getDefaultTemplates() {
   return templates;
 }
 
-export async function createTemplate() {
+
+export async function upsertTemplate(id: string | null, name: string, fields: any[]) {
+  const { userId } = await auth();
+  if (!userId) throw new Error("Not authenticated");
+
+  if (id) {
+    // If ID is provided, try to update
+    return await db.template.upsert({
+      where: { id },
+      update: {
+        name,
+        fields,
+      },
+      create: {
+        name,
+        fields,
+        user: {
+          connect: { clerkId: userId },
+        },
+        isDefault: false,
+      },
+    });
+  } else {
+    // No ID means we are **creating** a fresh template
+    return await db.template.create({
+      data: {
+        name,
+        fields,
+        user: {
+          connect: { clerkId: userId },
+        },
+        isDefault: false,
+      },
+    });
+  }
+}
+
+
+export async function createTemplate(name: string, fields: any) {
   const { userId } = await auth();
   if (!userId) throw new Error("Not authenticated");
 
@@ -60,8 +98,8 @@ export async function createTemplate() {
 
   const template = await db.template.create({
     data: {
-      name: "Untitled Waiver",
-      fields: [],
+      name,
+      fields,
       user: {
         connect: { clerkId: userId },
       },

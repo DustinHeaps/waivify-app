@@ -134,40 +134,40 @@ export default function TemplateEditor({
     }
   };
 
-  const handleCreateTemplate = async () => {
-    try {
-      const newTemplate = await createTemplate();
+  // const handleCreateTemplate = async () => {
+  //   try {
+  //     const newTemplate = await createTemplate();
 
-      const updatedFields = [
-        {
-          id: uuidv4(),
-          type: "text",
-          label: "Full Name",
-          required: true,
-          disabled: true,
-        },
-      ];
+  //     const updatedFields = [
+  //       {
+  //         id: uuidv4(),
+  //         type: "text",
+  //         label: "Full Name",
+  //         required: true,
+  //         disabled: true,
+  //       },
+  //     ];
 
-      setTemplateList((prev: any[]) => [
-        ...prev,
-        {
-          ...newTemplate,
-          fields: updatedFields,
-        },
-      ]);
+  //     setTemplateList((prev: any[]) => [
+  //       ...prev,
+  //       {
+  //         ...newTemplate,
+  //         fields: updatedFields,
+  //       },
+  //     ]);
       
-      setSelectedTemplateId(newTemplate.id);
+  //     setSelectedTemplateId(newTemplate.id);
   
-      await updateUser(user.clerkId, {
-        publicTemplateId: newTemplate.id,
-      });
+  //     await updateUser(user.clerkId, {
+  //       publicTemplateId: newTemplate.id,
+  //     });
 
-    } catch (err) {
-      console.error("Create failed", err);
-    } finally {
-      setIsSaving(false);
-    }
-  };
+  //   } catch (err) {
+  //     console.error("Create failed", err);
+  //   } finally {
+  //     setIsSaving(false);
+  //   }
+  // };
   const customTemplates = templateList.filter((t: any) => !t.isDefault);
   const canCreateTemplate =
     (user?.plan === "starter" && customTemplates.length < 1) ||
@@ -193,7 +193,7 @@ export default function TemplateEditor({
       </div>
       {canCreateTemplate && (
         <button
-          onClick={handleCreateTemplate}
+          // onClick={handleCreateTemplate}
           className='mt-2 text-sm text-blue-600 hover:underline'
         >
           ➕ Create Custom Template
