@@ -1,6 +1,6 @@
 
 import { notFound, redirect } from "next/navigation";
-import TemplateEditor from "@/components/TemplateEditor";
+// import TemplateEditor from "@/components/TemplateEditor";
 import {
   getAllUserTemplates,
 } from "@/app/actions/template";
@@ -28,7 +28,7 @@ export default async function EditWaiverPage({ params }: EditWaiverPageProps) {
   return (
     <div className='max-w-2xl mx-auto p-6 space-y-6'>
       <h1 className='text-xl font-semibold'>Edit Waiver Template</h1>
-      <TemplateEditor user={dbUser} templates={templates} template={template} />
+      {/* <TemplateEditor user={dbUser} templates={templates} template={template} /> */}
     </div>
   );
 }
