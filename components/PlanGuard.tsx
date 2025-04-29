@@ -1,17 +1,18 @@
 "use client";
 
 import { getUserById } from "@/app/actions/user";
-import { getWaiverLimit } from "@/lib/waiverUsage";
 import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
-export default function WaiverLimitGuard({
+export default function PlanGuard({
   children,
+  allowedPlans = ["starter", "pro"],
 }: {
   children: React.ReactNode;
+  allowedPlans?: ("free" | "starter" | "pro")[];
 }) {
   const { user } = useUser();
-  const [waiversUsed, setWaiversUsed] = useState<number>(0);
   const [plan, setPlan] = useState<"free" | "starter" | "pro">("free");
   const [loading, setLoading] = useState(true);
 
@@ -20,7 +21,6 @@ export default function WaiverLimitGuard({
 
     (async () => {
       const dbUser = await getUserById();
-      setWaiversUsed(dbUser?.waiverCount || 0);
       setPlan((dbUser?.plan as "free" | "starter" | "pro") || "free");
       setLoading(false);
     })();
@@ -28,14 +28,19 @@ export default function WaiverLimitGuard({
 
   if (loading) return null;
 
-  const limit = getWaiverLimit(plan as string);
-
-  if (waiversUsed >= limit) {
+  if (!allowedPlans.includes(plan)) {
     return (
       <div className='flex justify-center items-center min-h-[50vh]'>
-        <div className='bg-red-50 border border-red-200 text-red-600 text-sm rounded px-6 py-4 text-center max-w-md w-full'>
-          This waiver form is currently unavailable. Please contact the
-          business.
+        <div className='bg-yellow-50 border border-yellow-200 text-yellow-800 text-sm rounded px-6 py-4 text-center max-w-md w-full'>
+          <p className='mb-2 font-medium'>
+            Upgrade to customize waiver templates.
+          </p>
+          <Link
+            href='/billing'
+            className='inline-block mt-2 bg-black text-white px-4 py-2 rounded hover:bg-gray-800 text-sm'
+          >
+            Upgrade Your Plan
+          </Link>
         </div>
       </div>
     );

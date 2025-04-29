@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import WaiverForm from "@/components/WaiverForm";
-import WaiverLimitGuard from "@/components/WaiverGuard";
+import WaiverLimitGuard from "@/components/PlanGuard";
 import { auth } from "@clerk/nextjs/server";
 import { markWaiverViewed } from "../actions/analytics";
 import SimpleWaiverForm from "@/components/SimpleWaiverForm";

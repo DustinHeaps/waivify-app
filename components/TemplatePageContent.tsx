@@ -16,6 +16,7 @@ type Props = {
     id: string;
     name: string;
     fields: JsonValue;
+    isDefault: boolean
   }[];
   plan: string;
 };

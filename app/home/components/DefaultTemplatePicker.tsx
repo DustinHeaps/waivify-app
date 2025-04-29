@@ -8,7 +8,6 @@ export function DefaultTemplatePicker({ user }: { user: User }) {
 
   return (
     <section className='space-y-10'>
-
       <div>
         {/* Free Tier */}
         {plan === "free" && (
@@ -60,14 +59,20 @@ export function DefaultTemplatePicker({ user }: { user: User }) {
             </ul>
             <div className='mt-4 flex gap-3'>
               <Link
-                href='/template'
+                href='/waiver'
                 className='bg-black text-white text-sm font-medium px-4 py-2 rounded hover:bg-gray-700'
+              >
+                Choose Template
+              </Link>
+              <Link
+                href='/template'
+                className='bg-white border text-sm font-medium px-4 py-2 rounded hover:bg-gray-100'
               >
                 Edit Template
               </Link>
               <Link
                 href='/billing'
-                className='inline-block bg-white border text-sm font-medium px-4 py-2 rounded hover:bg-gray-100'
+                className='bg-white border text-sm font-medium px-4 py-2 rounded hover:bg-gray-100'
               >
                 Upgrade to Pro
               </Link>
@@ -90,12 +95,20 @@ export function DefaultTemplatePicker({ user }: { user: User }) {
               <li>🎨 Match your brand with logo and colors</li>
               <li>📊 Track usage and optimize your workflow</li>
             </ul>
-            <Link
-              href={"/waiver"}
-              className='mt-4 inline-block bg-black text-white text-sm font-medium px-4 py-2 rounded hover:bg-gray-700'
-            >
-              Manage Templates
-            </Link>
+            <div className='mt-4 flex flex-wrap gap-3'>
+              <Link
+                href='/waiver'
+                className='bg-black text-white text-sm font-medium px-4 py-2 rounded hover:bg-gray-700'
+              >
+                Choose Template
+              </Link>
+              <Link
+                href='/template'
+                className='bg-white border text-sm font-medium px-4 py-2 rounded hover:bg-gray-100'
+              >
+                Manage Templates
+              </Link>
+            </div>
           </div>
         )}
       </div>

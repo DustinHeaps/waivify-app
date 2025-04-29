@@ -13,6 +13,7 @@ type Template = {
   id: string;
   name: string;
   description?: string;
+  isDefault:boolean
 };
 
 export function TemplatePicker({
@@ -43,10 +44,19 @@ export function TemplatePicker({
       </Select>
     );
   }
-
+  const sortedTemplates = templates.sort((a, b) => {
+    const isCustomA = a.isDefault === false;
+    const isCustomB = b.isDefault === false;
+  
+    if (isCustomA && !isCustomB) return -1;
+    if (!isCustomA && isCustomB) return 1;
+  
+    return a.name.localeCompare(b.name);
+  });
+  
   return (
     <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
-      {templates.map((template) => (
+      {sortedTemplates.map((template) => (
         <button
           key={template.id}
           onClick={() => onSelect(template.id)}
