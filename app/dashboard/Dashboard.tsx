@@ -47,11 +47,11 @@ export default function Dashboard({ waivers, plan }: Props) {
     dateFilter
   );
 
-  useEffect(() => {
-    if (waiverList.length > 0) {
-      setIsLoading(false);
-    }
-  }, [waiverList]);
+  // useEffect(() => {
+  //   if (waiverList.length > 0) {
+  //     setIsLoading(false);
+  //   }
+  // }, [waiverList]);
 
   const totalPages = Math.ceil(waiverList.length / ITEMS_PER_PAGE);
 
@@ -61,9 +61,11 @@ export default function Dashboard({ waivers, plan }: Props) {
   }, [page, filteredWaivers]);
 
   useEffect(() => {
+    setIsLoading(true);
     const fetchWaivers = async () => {
       const data = await getAllWaiversByUser({ archived: viewArchived });
       setWaiverList(data);
+      setIsLoading(false);
     };
 
     fetchWaivers();
@@ -238,7 +240,7 @@ export default function Dashboard({ waivers, plan }: Props) {
         transition={{ duration: 0.3 }}
       >
         <div>
-          {waiverList.length === 0 ? (
+          {isLoading ? null : waiverList.length === 0 ? (
             <motion.div
               className='text-center bg-gray-50 p-6 rounded-lg'
               initial={{ opacity: 0 }}
@@ -257,11 +259,7 @@ export default function Dashboard({ waivers, plan }: Props) {
             </motion.div>
           ) : filteredWaivers.length === 0 ? (
             <div className='text-center bg-gray-50 p-6 rounded-lg'>
-              <p className='text-lg font-medium text-gray-500'>
-                {viewArchived
-                  ? "No archived waivers yet."
-                  : "No waivers match your filters."}
-              </p>
+              <p className='text-lg font-medium text-gray-500'></p>
             </div>
           ) : (
             <div>
