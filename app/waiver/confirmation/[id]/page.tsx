@@ -7,8 +7,7 @@ import { SendEmailButton } from "../../components/SendEmailButton";
 import WaiverDownloadButton from "../../components/WaiverDownloadButton";
 import { CloseButton } from "../../components/CloseButton";
 import { getUserById } from "@/app/actions/user";
-import { User } from '@prisma/client';
-
+import { User } from "@prisma/client";
 
 export const metadata = {
   title: "Waiver Signed – Confirmation | Waivify",
@@ -28,8 +27,7 @@ export default async function ConfirmationPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-
-  const user: User | null = await getUserById(); 
+  const user: User | null = await getUserById();
 
   const { id } = await params;
   const signature = await getSignatureById(id);
@@ -40,7 +38,6 @@ export default async function ConfirmationPage({
 
   return (
     <div className='max-w-md mx-auto mt-20 bg-white p-6 rounded-xl shadow-md text-center'>
-      
       <div className='text-center mt-10'>
         <h1 className='text-2xl font-bold text-green-600'>
           ✅ Waiver Submitted
@@ -59,8 +56,12 @@ export default async function ConfirmationPage({
         </p>
 
         <p className='text-center text-sm text-gray-600 mt-4'>
-          <span className='text-red-500'>Submitted by:</span> {signature.name}{" "}
-          <br />
+          {user?.name && (
+            <>
+              <span className='text-red-500'>Submitted by:</span>{" "}
+              {signature.name} <br />
+            </>
+          )}
           <span className='text-red-500'>Confirmation ID:</span> {signature.id}{" "}
           <br />
           <span className='text-red-500'>Submitted on:</span>{" "}

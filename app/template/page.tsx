@@ -26,6 +26,7 @@ export default function CreateTemplatePage() {
   const [templateName, setTemplateName] = useState("");
   const [fields, setFields] = useState<Field[]>([]);
   const [isSaving, setIsSaving] = useState(false);
+  const [isDefaultTemplate, setIsDefaultTemplate] = useState(false);
   const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(
     null
   );
@@ -48,6 +49,9 @@ export default function CreateTemplatePage() {
           if (current) {
             setTemplateName(current.name);
             setFields(current.fields as Field[]);
+            setIsDefaultTemplate(false);
+          } else {
+            setIsDefaultTemplate(true);
           }
         }
       } catch (err) {
@@ -152,9 +156,19 @@ export default function CreateTemplatePage() {
           setFields={setFields}
           templateName={templateName}
           setTemplateNameHandler={setTemplateName}
+          setIsDefaultTemplate={setIsDefaultTemplate}
+          isDefaultTemplate={isDefaultTemplate}
         />
-
-        <FieldControls addField={addField} />
+        {isDefaultTemplate && (
+          <div className='bg-blue-50 border border-blue-200 text-blue-800 text-sm rounded px-4 py-3 mb-4'>
+            This is a default template and cannot be edited. To make changes,
+            select or create a custom template.
+          </div>
+        )}
+        <FieldControls
+          isDefaultTemplate={isDefaultTemplate}
+          addField={addField}
+        />
 
         <FieldList
           fields={fields}
@@ -180,6 +194,7 @@ export default function CreateTemplatePage() {
           formSuccess={formSuccess}
           handleSave={handleSave}
           isSaving={isSaving}
+          isDefaultTemplate={isDefaultTemplate}
         />
       </div>
     </PlanGuard>

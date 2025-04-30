@@ -35,13 +35,13 @@ export default async function PublicWaiverPage({ params }: PageProps) {
   if (!business) return notFound();
 
   return (
-    <>
+    <div className="bg-gray-100 min-h-screen">
       {isOwner && (
         <div className='mb-4 rounded bg-blue-50 border border-blue-200 text-blue-700 p-3 text-sm text-center'>
           You're viewing your own public waiver form as a visitor would.
         </div>
       )}
-      <div className='max-w-xl mx-auto p-6 space-y-6'>
+      <div className='max-w-xl mx-auto p-6 space-y-6 '>
         <div className='flex items-center gap-3'>
           {business.logoUrl && (
             <img
@@ -60,6 +60,6 @@ export default async function PublicWaiverPage({ params }: PageProps) {
           isOwner={isOwner}
         />
       </div>
-    </>
+    </div>
   );
 }

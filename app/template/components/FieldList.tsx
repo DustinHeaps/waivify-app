@@ -13,13 +13,27 @@ import {
 } from "@dnd-kit/core";
 import { SortableItem } from "@/components/SortableItem";
 
+type Field = {
+  id: string;
+  label: string;
+  type: "text" | "date" | "checkbox";
+  required: boolean;
+};
+
+type Props = {
+  fields: Field[];
+  handleDragEnd: (event: any) => void;
+  updateLabel: (index: number, value: string) => void;
+  removeField: (id: string) => void;
+  toggleRequired: (id: string) => void;
+};
 export default function FieldList({
   fields,
   handleDragEnd,
   updateLabel,
   removeField,
   toggleRequired,
-}: any) {
+}: Props) {
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
   );

@@ -37,6 +37,7 @@ export default function TemplatePageContent({
 
   const selectedTemplate = templates.find((t) => t.id === selectedTemplateId);
 
+
   const handleSelectTemplate = async (id: string) => {
     await updateUser(clerkId, { publicTemplateId: id });
     setSelectedTemplateId(id);
@@ -79,6 +80,7 @@ export default function TemplatePageContent({
           templates={templates}
           selectedId={selectedTemplateId}
           onSelect={handleSelectTemplate}
+          
         />
       </div>
 

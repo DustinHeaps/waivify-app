@@ -1,7 +1,20 @@
-// components/template/SaveBar.tsx
 import { AnimatePresence, motion } from "framer-motion";
 
-export default function SaveBar({ formError, formSuccess, handleSave, isSaving }: any) {
+type Props = {
+  formError: string | null;
+  formSuccess: boolean;
+  handleSave: () => void;
+  isSaving: boolean;
+  isDefaultTemplate: boolean;
+};
+
+export default function SaveBar({
+  formError,
+  formSuccess,
+  handleSave,
+  isSaving,
+  isDefaultTemplate,
+}: Props) {
   return (
     <div>
       <AnimatePresence>
@@ -31,7 +44,7 @@ export default function SaveBar({ formError, formSuccess, handleSave, isSaving }
       <button
         type='button'
         onClick={handleSave}
-        disabled={isSaving}
+        disabled={isSaving || isDefaultTemplate}
         className='w-full bg-primary hover:bg-primary/90 text-white py-2 rounded-md text-sm disabled:opacity-50'
       >
         {isSaving ? "Saving..." : "Save Template"}
