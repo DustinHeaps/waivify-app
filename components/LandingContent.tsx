@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import Logo from "@/public/logo.png";
 import Link from "next/link";
 import { Card, CardContent } from "./ui/card";
+import { SignedOut, SignInButton } from "@clerk/nextjs";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -14,7 +15,7 @@ const fadeInUp = {
 
 export default function LandingContent() {
   return (
-    <div className='min-h-screen bg-gray-900 text-white p-6'>
+    <div className='min-h-screen bg-gray-900 text-white py-6'>
       {/* <TallyScript /> */}
 
       <motion.div
@@ -58,7 +59,6 @@ export default function LandingContent() {
           signatures — anywhere, anytime.
         </p>
         {/* <GetStartedButton /> */}
-
       </motion.section>
 
       <motion.section
@@ -148,22 +148,44 @@ export default function LandingContent() {
           <li>Go live in under 10 minutes</li>
         </ul>
       </motion.section>
-
       <motion.section
-        className='bg-gray-800 py-16 text-center'
+        className='max-w-4xl mx-auto py-12 text-center'
+        initial='hidden'
+        whileInView='show'
+        viewport={{ once: true }}
+        variants={fadeInUp}
+      >
+
+        <h2 className='text-3xl font-semibold mb-8 text-teal-400'>
+        <span role="img" aria-label="lock">🔐</span> Trusted by Modern Businesses
+        </h2>
+        <p className='text-gray-300 max-w-2xl mx-auto'>
+          Every waiver is protected by secure encryption, stored safely in the
+          cloud, and backed by legally binding e-signature compliance. Your data
+          stays private — always.
+        </p>
+      </motion.section>
+      <motion.section
+        className='bg-gray-800 py-16 text-center flex flex-col items-center justify-center'
         initial='hidden'
         whileInView='show'
         viewport={{ once: true }}
         variants={fadeInUp}
       >
         <h2 className='text-4xl font-bold mb-4 text-teal-400'>
-          Be among the first to simplify your waivers.
+          Ready to Ditch the Paperwork?
         </h2>
         <p className='mb-6 text-gray-300'>
-          Join the waitlist — it&apos;s free, and we’ll notify you as soon as
-          we’re live.
+          Go digital in minutes — create waivers, collect signatures, and stay
+          organized with Waivify.
         </p>
-        {/* <GetStartedButton /> */}
+        <SignedOut>
+          <SignInButton mode='modal'>
+            <button className='bg-teal-500 px-4 py-2 rounded text-white hover:bg-teal-400'>
+              Get Started
+            </button>
+          </SignInButton>
+        </SignedOut>
       </motion.section>
 
       <footer className='text-sm text-gray-400 text-center mt-10'>
