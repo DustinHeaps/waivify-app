@@ -15,7 +15,7 @@ const fadeInUp = {
 
 export default function LandingContent() {
   return (
-    <div className='min-h-screen bg-gray-900 text-white py-6'>
+    <div className='min-h-screen bg-gray-900 text-white py-6 px-4 sm:px-6 md:px-0'>
       {/* <TallyScript /> */}
 
       <motion.div
@@ -105,36 +105,23 @@ export default function LandingContent() {
         <h2 className='text-3xl font-semibold text-center mb-8 text-teal-400'>
           From Idea to Signature in 60 Seconds
         </h2>
-        <div className='grid grid-cols-1 md:grid-cols-4 gap-6'>
-          <motion.div variants={fadeInUp}>
-            <Card>
-              <CardContent className='p-6 text-center'>
-                📝 Create your waiver
-              </CardContent>
-            </Card>
-          </motion.div>
-          <motion.div variants={fadeInUp}>
-            <Card>
-              <CardContent className='p-6 text-center'>
-                📲 Share the link or QR code
-              </CardContent>
-            </Card>
-          </motion.div>
-          <motion.div variants={fadeInUp}>
-            <Card>
-              <CardContent className='p-6 text-center'>
-                ✍️ Client signs instantly
-              </CardContent>
-            </Card>
-          </motion.div>
-          <motion.div variants={fadeInUp}>
-            <Card>
-              <CardContent className='p-6 text-center'>
-                🗂️ View & download anytime
-              </CardContent>
-            </Card>
-          </motion.div>
+        <div className='grid grid-cols-1 md:grid-cols-4 gap-6 items-stretch'>
+          {[
+            "📝 Create your waiver",
+            "📲 Share the link or QR code",
+            "✍️ Client signs instantly",
+            "🗂️ View & download anytime",
+          ].map((text, i) => (
+            <motion.div variants={fadeInUp} key={i} className='h-full'>
+              <Card className='h-full flex flex-col'>
+                <CardContent className='p-6 text-center flex-1 flex items-center justify-center'>
+                  {text}
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
         </div>
+       
       </motion.section>
 
       <motion.section
@@ -242,7 +229,7 @@ export default function LandingContent() {
         </p>
       </motion.section>
       <motion.section
-        className='bg-gray-800 py-16 text-center flex flex-col items-center justify-center'
+        className='-mx-4 md:mx-0 bg-gray-800 py-16 text-center flex flex-col items-center justify-center'
         initial='hidden'
         whileInView='show'
         viewport={{ once: true }}
