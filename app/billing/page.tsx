@@ -108,8 +108,9 @@ const BillingPageContent = () => {
       features: [
         "10 total waivers",
         "Use default templates",
-        "Add logo, Company name, and QR code",
         "Email confirmations",
+        "Mobile Signing",
+        "Basic dashboard access (view, download, archive, delete)",
       ],
     },
     {
@@ -120,9 +121,9 @@ const BillingPageContent = () => {
       features: [
         "Everything in Free, plus:",
         "50 waivers/month",
-        "1 Custom Template",
-        "Download PDFs",
-        "Access to waiver table (search, filter, archive, delete, export)",
+        "1 saved waiver template",
+        "Email support",
+        "Advanced dashboard tools (search, filter, export, full history)",
       ],
     },
     {
@@ -132,10 +133,10 @@ const BillingPageContent = () => {
       preface: "Everything in Starter, plus:",
       features: [
         "Unlimited waivers",
-        "Remove Watermark",
-        "5 Custom Templates",
-        "Access to Advanced Analytics",
+        "White-labeled waivers (no Waivify branding)",
+        "5 Custom templates",
         "Priority support",
+        "Access to advanced analytics",
       ],
     },
   ];

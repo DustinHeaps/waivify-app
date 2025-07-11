@@ -40,10 +40,10 @@ export const PricingContent = ({ user }: Props) => {
           <ul className='flex-1 text-sm space-y-2 text-gray-700 dark:text-gray-300'>
             <li>Everything in Free, plus:</li>
             <li>✅ 50 waivers/month</li>
-            <li>✅ 1 Custom Template</li>
-            <li>✅ Download signed PDFs</li>
+            <li>✅ 1 saved waiver template</li>
+            <li>✅ Email support</li>
             <li>
-              ✅ Access waiver table (search, filter, archive, delete, export)
+              ✅ Advanced dashboard tools (search, filter, export, full history)
             </li>
           </ul>
 
@@ -76,9 +76,9 @@ export const PricingContent = ({ user }: Props) => {
             <li>Everything in Starter, plus:</li>
             <li>✅ Unlimited waivers</li>
             <li>✅ 5 Custom Templates</li>
-            <li>✅ Remove watermark</li>
+            <li>✅ White-labeled waivers (no Waivify branding)</li>
             <li>✅ Priority support</li>
-            <li>✅ Access to Advanced Analytics</li>
+            <li>✅ Access to advanced analytics</li>
           </ul>
           {currentPlan === "pro" ? (
             <Button disabled className='mt-6 w-full cursor-default'>
@@ -99,8 +99,12 @@ export const PricingContent = ({ user }: Props) => {
           <ul className='flex-1 text-sm space-y-2 text-gray-700 dark:text-gray-300'>
             <li>✅ 10 total waivers</li>
             <li>✅ Use default templates</li>
-            <li>✅ Add logo, company name & QR code</li>
+
             <li>✅ Email confirmations</li>
+            <li>✅ Mobile signing</li>
+            <li>
+              ✅ Basic dashboard access (view, download, archive, delete)
+            </li>
           </ul>
           {currentPlan === "free" ? (
             <Button disabled className='mt-6 w-full cursor-default'>
@@ -111,7 +115,6 @@ export const PricingContent = ({ user }: Props) => {
           )}
         </div>
       </div>
-      
     </div>
   );
 };

@@ -40,7 +40,7 @@ export default async function ViewWaiverPage({ params }: PageProps) {
           </div>
         )}
         <h1 className='text-2xl  font-bold'>Signed Waiver</h1>
-        {user?.plan !== "free" && <WaiverDownloadButton waiverId={waiver.id} />}
+        <WaiverDownloadButton waiverId={waiver.id} />
       </div>
       <p className='py-2 '>
         <b className='font-medium'>Waiver ID:</b>{" "}

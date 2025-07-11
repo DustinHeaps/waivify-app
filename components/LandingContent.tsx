@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import Logo from "@/public/logo.png";
 import Link from "next/link";
 import { Card, CardContent } from "./ui/card";
-import { SignedOut, SignInButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -58,6 +58,13 @@ export default function LandingContent() {
           A simple, mobile-friendly way for businesses to collect digital
           signatures — anywhere, anytime.
         </p>
+        <SignedOut>
+          <SignInButton mode='modal'>
+            <button className='mt-6 bg-teal-500 px-6 py-3 rounded-lg text-white text-lg hover:bg-teal-400 transition'>
+              Create Your First Waiver – Free
+            </button>
+          </SignInButton>
+        </SignedOut>
         {/* <GetStartedButton /> */}
       </motion.section>
 
@@ -96,37 +103,104 @@ export default function LandingContent() {
         variants={fadeInUp}
       >
         <h2 className='text-3xl font-semibold text-center mb-8 text-teal-400'>
-          How It Works
+          From Idea to Signature in 60 Seconds
         </h2>
         <div className='grid grid-cols-1 md:grid-cols-4 gap-6'>
           <motion.div variants={fadeInUp}>
             <Card>
               <CardContent className='p-6 text-center'>
-                📝 Create branded waivers
+                📝 Create your waiver
               </CardContent>
             </Card>
           </motion.div>
           <motion.div variants={fadeInUp}>
             <Card>
               <CardContent className='p-6 text-center'>
-                📲 Share with a link or QR code
+                📲 Share the link or QR code
               </CardContent>
             </Card>
           </motion.div>
           <motion.div variants={fadeInUp}>
             <Card>
               <CardContent className='p-6 text-center'>
-                ✍️ Clients sign on any device
+                ✍️ Client signs instantly
               </CardContent>
             </Card>
           </motion.div>
           <motion.div variants={fadeInUp}>
             <Card>
               <CardContent className='p-6 text-center'>
-                🗂️ Store & download waivers
+                🗂️ View & download anytime
               </CardContent>
             </Card>
           </motion.div>
+        </div>
+      </motion.section>
+
+      <motion.section
+        className='max-w-4xl mx-auto py-16 text-center'
+        initial='hidden'
+        whileInView='show'
+        viewport={{ once: true }}
+        variants={fadeInUp}
+      >
+        <h2 className='text-3xl font-semibold mb-4 text-teal-400'>Pricing</h2>
+        <p className='text-gray-300 mb-8'>
+          Start for free — upgrade as you grow.
+        </p>
+
+        <div className='grid grid-cols-1 md:grid-cols-3 gap-6 text-left'>
+          {/* Free Plan */}
+          <Card className='bg-gray-800'>
+            <CardContent className='p-6'>
+              <h3 className='text-xl font-semibold text-white mb-2'>Free</h3>
+              <p className='text-gray-400 mb-4'>Best for getting started</p>
+              <ul className='list-disc list-inside text-gray-300 space-y-2'>
+                <li>Up to 10 waivers</li>
+                <li>Basic templates</li>
+                <li>Email Confirmations</li>
+                <li>Mobile signing</li>
+                <li>
+                  Basic dashboard access (view, download, archive, delete)
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
+
+          {/* Starter Plan */}
+          <Card className='bg-gray-800'>
+            <CardContent className='p-6'>
+              <h3 className='text-xl font-semibold text-white mb-2'>Starter</h3>
+              <p className='text-gray-400 mb-4'>$12/month</p>
+              <ul className='list-disc list-inside text-gray-300 space-y-2'>
+                <li>50 waivers/month</li>
+                <li>1 saved waiver template</li>
+                <li>Custom branding</li>
+                <li>Email support</li>
+                <li>
+                  Advanced dashboard tools (search, filter, export, full
+                  history)
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
+
+          {/* Pro Plan */}
+          <Card className='bg-gray-800'>
+            <CardContent className='p-6'>
+              <h3 className='text-xl font-semibold text-white mb-2'>Pro</h3>
+              <p className='text-gray-400 mb-4'>$29/month</p>
+              <ul className='list-disc list-inside text-gray-300 space-y-2'>
+                <li>Unlimited waivers</li>
+                <li>5 waiver templates</li>
+                <li>White-labeled waivers (no Waivify branding)</li>
+
+                {/* <li>Google Calendar sync</li> */}
+                <li>Priority support</li>
+                <li>Access to advanced analytics</li>
+              </ul>
+            </CardContent>
+          </Card>
         </div>
       </motion.section>
 
@@ -155,9 +229,11 @@ export default function LandingContent() {
         viewport={{ once: true }}
         variants={fadeInUp}
       >
-
         <h2 className='text-3xl font-semibold mb-8 text-teal-400'>
-        <span role="img" aria-label="lock">🔐</span> Trusted by Modern Businesses
+          <span role='img' aria-label='lock'>
+            🔐
+          </span>{" "}
+          Trusted by Modern Businesses
         </h2>
         <p className='text-gray-300 max-w-2xl mx-auto'>
           Every waiver is protected by secure encryption, stored safely in the
@@ -176,8 +252,8 @@ export default function LandingContent() {
           Ready to Ditch the Paperwork?
         </h2>
         <p className='mb-6 text-gray-300'>
-          Go digital in minutes — create waivers, collect signatures, and stay
-          organized with Waivify.
+          Create your first waiver, share it with a client, and see it signed —
+          all in minutes.
         </p>
         <SignedOut>
           <SignInButton mode='modal'>
@@ -186,6 +262,13 @@ export default function LandingContent() {
             </button>
           </SignInButton>
         </SignedOut>
+        <SignedIn>
+          <Link href='/home'>
+            <button className='bg-teal-500 px-4 py-2 rounded text-white hover:bg-teal-400'>
+              Go to Dashboard
+            </button>
+          </Link>
+        </SignedIn>
       </motion.section>
 
       <footer className='text-sm text-gray-400 text-center mt-10'>
