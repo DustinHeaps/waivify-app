@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss";
 import tailwindcssAnimate from "tailwindcss-animate";
+import typography from "@tailwindcss/typography";
 
 const config: Config = {
   darkMode: ["class"],
@@ -11,6 +12,48 @@ const config: Config = {
 
   theme: {
     extend: {
+      // Blog style Override
+      
+      typography: (theme: (key: string) => string) => ({
+        DEFAULT: {
+          css: {
+            maxWidth: "100%",
+            fontSize: theme("fontSize.base"),
+            color: theme("colors.foreground"),
+            h1: {
+              fontWeight: "700",
+              fontSize: theme("fontSize.4xl"),
+              marginBottom: theme("spacing.4"),
+            },
+            h2: {
+              fontSize: theme("fontSize.2xl"),
+              fontWeight: "600",
+              marginTop: theme("spacing.10"),
+              marginBottom: theme("spacing.4"),
+            },
+            h3: {
+              fontSize: theme("fontSize.xl"),
+              fontWeight: "600",
+              marginTop: theme("spacing.8"),
+              marginBottom: theme("spacing.2"),
+            },
+            p: {
+              marginTop: theme("spacing.4"),
+              marginBottom: theme("spacing.4"),
+              lineHeight: theme("lineHeight.relaxed"),
+            },
+            ul: {
+              marginTop: theme("spacing.4"),
+              paddingLeft: theme("spacing.6"),
+            },
+            li: {
+              marginTop: theme("spacing.2"),
+            },
+            strong: { fontWeight: "600" },
+            code: { backgroundColor: theme("colors.muted.DEFAULT") },
+          },
+        },
+      }),
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
@@ -65,9 +108,6 @@ const config: Config = {
       },
     },
   },
-  plugins: [tailwindcssAnimate],
+  plugins: [tailwindcssAnimate, typography],
 };
 module.exports = config;
-
-
-

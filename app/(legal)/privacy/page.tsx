@@ -10,7 +10,7 @@ export const metadata = {
     siteName: "Waivify",
     images: [
       {
-        url: "https://waivify.com/LegalOG.png",
+        url: "https://waivify.com/LegalOG-Rectangle.png",
         width: 1200,
         height: 630,
         alt: "Privacy Policy | Waivify",
@@ -18,6 +18,13 @@ export const metadata = {
     ],
     locale: "en_US",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Privacy Policy | Waivify",
+    description:
+      "Learn how Waivify collects, uses, and protects your personal data when using our platform.",
+    images: ["https://waivify.com/LegalOG-Square.png"],
   },
 };
 

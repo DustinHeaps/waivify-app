@@ -1,9 +1,18 @@
-import type { NextConfig } from "next";
+const withMDX = require("@next/mdx")({
+  extension: /\.mdx$/,
+});
 
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   images: {
-    domains: ["utfs.io", "uploadthing.com", "api.qrserver.com"],
+    domains: [
+      "utfs.io",
+      "uploadthing.com",
+      "j809ylosmw.ufs.sh",
+      "api.qrserver.com",
+    ],
   },
+  pageExtensions: ["js", "jsx", "ts", "tsx", "mdx"],
 };
 
-export default nextConfig;
+module.exports = withMDX(nextConfig);

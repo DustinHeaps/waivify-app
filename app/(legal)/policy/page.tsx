@@ -8,7 +8,7 @@ export const metadata = {
       "Review Waivify's digital signature policy, ensuring legal compliance, data security, and trusted document handling.",
     images: [
       {
-        url: "https://www.waivify.com/OGLegal.png",
+        url: "https://www.waivify.com/OGLegal-Rectangle.png",
         width: 1200,
         height: 630,
         alt: "Waivify Digital Signature Policy",
@@ -16,6 +16,13 @@ export const metadata = {
     ],
     locale: "en_US",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Digital Signature Policy | Waivify",
+    description:
+      "Understand how Waivify manages and secures digital signatures for documents and waivers.",
+    images: ["https://www.waivify.com/OGLegal-Square.png"],
   },
 };
 

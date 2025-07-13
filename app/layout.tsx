@@ -44,7 +44,7 @@ export const metadata = {
     title: "Waivify – Digital Waivers Made Simple",
     description:
       "Ditch the paper. Waivify lets you create, share, and store legally binding digital waivers in econds — perfect for tattoo shops, pet groomers, yoga studios, and small businesses that need simple, secure signatures.",
-    images: ["https://www.waivify.com/OG-Rectangle.png"],
+    images: ["https://www.waivify.com/OG-Square.png"],
   },
   icons: {
     icon: [

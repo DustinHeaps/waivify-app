@@ -22,4 +22,10 @@ export type Waiver = {
   } | null;
 };
 
+export type Post = {
+  slug: string;
+  title: string;
+  description?: string;
+  date: string;
 
+};
