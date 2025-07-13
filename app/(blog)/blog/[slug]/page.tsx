@@ -1,14 +1,11 @@
 import { getPost } from "@/lib/mdx";
 import Image from "next/image";
 type Props = {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
+  // params: { slug: string };
 };
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string };
-}) {
-  const mdxSource = await getPost(params.slug);
+export async function generateMetadata({ params }: Props) {
+  const mdxSource = await getPost((await params).slug);
   const { title, description, date, tags, author, image } =
     mdxSource.frontmatter;
 
@@ -39,7 +36,8 @@ export async function generateMetadata({
 }
 
 export default async function BlogPost({ params }: Props) {
-  const { content, frontmatter } = await getPost(params.slug);
+  const { slug } = await params;
+  const { content, frontmatter } = await getPost(slug);
 
   return (
     <article className='px-4 pt-10 pb-20 max-w-3xl mx-auto'>
