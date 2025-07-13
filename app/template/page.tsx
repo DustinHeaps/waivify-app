@@ -21,6 +21,14 @@ type Field = {
   required: boolean;
 };
 
+const recommendedFields: { label: string; type: Field["type"]; required: boolean }[] = [
+  { label: "Full Name", type: "text", required: true },
+  { label: "Phone Number", type: "text", required: true },
+  { label: "Medical Conditions", type: "text", required: false },
+  { label: "Emergency Contact Name", type: "text", required: true },
+  { label: "Emergency Contact Phone", type: "text", required: true },
+];
+
 export default function CreateTemplatePage() {
   const [templates, setTemplates] = useState<any[]>([]);
   const [templateName, setTemplateName] = useState("");
@@ -62,14 +70,8 @@ export default function CreateTemplatePage() {
     fetchUser();
   }, []);
 
-  const addField = (type: Field["type"]) => {
-    const newField: Field = {
-      id: crypto.randomUUID(),
-      label: "",
-      type,
-      required: true,
-    };
-    setFields([...fields, newField]);
+  const addField = (field: Field) => {
+    setFields((prev) => [...prev, field]);
   };
 
   const toggleRequired = (id: string) => {
@@ -166,8 +168,10 @@ export default function CreateTemplatePage() {
           </div>
         )}
         <FieldControls
+          recommendedFields={recommendedFields}
           isDefaultTemplate={isDefaultTemplate}
           addField={addField}
+          fields={fields}
         />
 
         <FieldList

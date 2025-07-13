@@ -2,7 +2,6 @@ import { getPost } from "@/lib/mdx";
 import Image from "next/image";
 type Props = {
   params: Promise<{ slug: string }>;
-  // params: { slug: string };
 };
 export async function generateMetadata({ params }: Props) {
   const mdxSource = await getPost((await params).slug);

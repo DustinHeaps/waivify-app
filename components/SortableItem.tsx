@@ -47,11 +47,7 @@ export function SortableItem({
             value={field.label}
             placeholder={`Enter Label...`}
             onChange={(e) => handleLabelChange(index, e.target.value)}
-            className={`w-full text-sm px-3 py-1.5 border rounded ${
-              field.label === "Full Name"
-                ? "cursor-not-allowed pointer-events-none bg-gray-100 text-gray-500"
-                : ""
-            }`}
+            className={`w-full text-sm px-3 py-1.5 border rounded`}
           />
 
           <span className=' px-4 text-xs font-semibold text-gray-500 capitalize'>

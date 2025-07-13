@@ -1,4 +1,4 @@
-// components/template/FieldList.tsx
+
 import { AnimatePresence, motion } from "framer-motion";
 import {
   SortableContext,
@@ -13,7 +13,7 @@ import {
 } from "@dnd-kit/core";
 import { SortableItem } from "@/components/SortableItem";
 
-type Field = {
+export type Field = {
   id: string;
   label: string;
   type: "text" | "date" | "checkbox";

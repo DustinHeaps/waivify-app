@@ -31,7 +31,7 @@ export const metadata = {
 
 
 export default async function BlogPage() {
-//   const posts = await getAllPosts();
+  // const posts = await getAllPosts();
 
   return (
     <div className='max-w-3xl mx-auto px-6 py-12'>

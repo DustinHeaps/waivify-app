@@ -28,7 +28,7 @@ export function TemplatePicker({
   const isMobile = useMediaQuery("(max-width: 767px)");
 
   if (isMobile) {
-    // Use shadcn Select for mobile
+
     return (
       <Select value={selectedId} onValueChange={onSelect}>
         <SelectTrigger className='w-full'>
