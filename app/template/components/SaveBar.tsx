@@ -6,6 +6,7 @@ type Props = {
   handleSave: () => void;
   isSaving: boolean;
   isDefaultTemplate: boolean;
+  canSave: boolean
 };
 
 export default function SaveBar({
@@ -14,6 +15,7 @@ export default function SaveBar({
   handleSave,
   isSaving,
   isDefaultTemplate,
+  canSave
 }: Props) {
   return (
     <div>
@@ -44,7 +46,7 @@ export default function SaveBar({
       <button
         type='button'
         onClick={handleSave}
-        disabled={isSaving || isDefaultTemplate}
+        disabled={isSaving || (isDefaultTemplate && !canSave)}
         className='w-full bg-primary hover:bg-primary/90 text-white py-2 rounded-md text-sm disabled:opacity-50'
       >
         {isSaving ? "Saving..." : "Save Template"}

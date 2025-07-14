@@ -16,7 +16,7 @@ import { SortableItem } from "@/components/SortableItem";
 export type Field = {
   id: string;
   label: string;
-  type: "text" | "date" | "checkbox";
+  type: "text" | "date" | "checkbox" | "email";
   required: boolean;
 };
 

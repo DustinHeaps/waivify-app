@@ -31,6 +31,15 @@ export async function getAllUserTemplates(userId: string) {
   return templates;
 }
 
+export async function getTemplateById(id: string) {
+  return await db.template.findUnique({
+    where: { id },
+    include: {
+      user: true,
+    },
+  });
+}
+
 export async function getDefaultTemplates() {
   const templates = await db.template.findMany({
     where: {
@@ -45,21 +54,38 @@ export async function getDefaultTemplates() {
 }
 
 
-export async function upsertTemplate(id: string | null, name: string, fields: any[]) {
+export async function upsertTemplate(id: string | null, name: string, fields: any[], calendlyUrl: string) {
   const { userId } = await auth();
   if (!userId) throw new Error("Not authenticated");
 
   if (id) {
     // If ID is provided, try to update
+    const existing = await db.template.findUnique({ where: { id } });
+
+    //  Prevent edits to default templates — clone instead
+    if (existing?.isDefault) {
+      return await db.template.create({
+        data: {
+          name: existing.name,
+          fields: existing.fields ?? [],
+          calendlyUrl,
+          user: { connect: { clerkId: userId } },
+          isDefault: false,
+        },
+      });
+    }
+
     return await db.template.upsert({
       where: { id },
       update: {
         name,
         fields,
+        calendlyUrl
       },
       create: {
         name,
         fields,
+        calendlyUrl,
         user: {
           connect: { clerkId: userId },
         },
@@ -72,6 +98,7 @@ export async function upsertTemplate(id: string | null, name: string, fields: an
       data: {
         name,
         fields,
+        calendlyUrl,
         user: {
           connect: { clerkId: userId },
         },
@@ -82,33 +109,33 @@ export async function upsertTemplate(id: string | null, name: string, fields: an
 }
 
 
-export async function createTemplate(name: string, fields: any) {
-  const { userId } = await auth();
-  if (!userId) throw new Error("Not authenticated");
+// export async function createTemplate(name: string, fields: any) {
+//   const { userId } = await auth();
+//   if (!userId) throw new Error("Not authenticated");
 
 
-  const user = await getUserById();
+//   const user = await getUserById();
 
-  const currentCount = user?.Template.length;
-  const maxAllowed = getMaxCustomTemplatesByPlan(user?.plan as string);
+//   // const currentCount = user?.Template.length;
+//   const maxAllowed = getMaxCustomTemplatesByPlan(user?.plan as string);
 
-  if (Number(currentCount) >= maxAllowed) {
-    throw new Error("Template limit reached for your current plan.");
-  }
+//   if (Number(currentCount) >= maxAllowed) {
+//     throw new Error("Template limit reached for your current plan.");
+//   }
 
-  const template = await db.template.create({
-    data: {
-      name,
-      fields,
-      user: {
-        connect: { clerkId: userId },
-      },
-      isDefault: false,
-    },
-  });
+//   const template = await db.template.create({
+//     data: {
+//       name,
+//       fields,
+//       user: {
+//         connect: { clerkId: userId },
+//       },
+//       isDefault: false,
+//     },
+//   });
 
-  return template;
-}
+//   return template;
+// }
 
 export async function updateTemplate(id: string, name: string, fields: any[]) {
   await trackEvent({

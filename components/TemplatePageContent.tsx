@@ -16,7 +16,7 @@ type Props = {
     id: string;
     name: string;
     fields: JsonValue;
-    isDefault: boolean
+    isDefault: boolean;
   }[];
   plan: string;
 };
@@ -36,7 +36,6 @@ export default function TemplatePageContent({
   });
 
   const selectedTemplate = templates.find((t) => t.id === selectedTemplateId);
-
 
   const handleSelectTemplate = async (id: string) => {
     await updateUser(clerkId, { publicTemplateId: id });
@@ -80,13 +79,13 @@ export default function TemplatePageContent({
           templates={templates}
           selectedId={selectedTemplateId}
           onSelect={handleSelectTemplate}
-          
         />
       </div>
 
       {selectedTemplate && (
         <div className='md:w-1/2'>
           <WaiverForm
+            plan=''
             slug=''
             templateId={selectedTemplateId}
             fields={selectedTemplate.fields as any[]}

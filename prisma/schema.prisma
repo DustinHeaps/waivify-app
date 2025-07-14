@@ -37,6 +37,7 @@ model Signature {
   date       DateTime
   fileKey    String
   uploadedAt DateTime @default(now())
+  email      String?
 
   waiver   Waiver @relation(name: "WaiverSignature", fields: [waiverId], references: [id], onDelete: Cascade)
   waiverId String @unique
@@ -71,6 +72,7 @@ model Template {
   fields      Json
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  calendlyUrl String?
 
   userId      String?
   user        User?              @relation(fields: [userId], references: [id])

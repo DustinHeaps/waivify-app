@@ -1,3 +1,4 @@
+import { endOfWeek } from 'date-fns';
 "use server";
 
 import { db } from "@/lib/prisma";
@@ -6,7 +7,7 @@ import { trackEvent } from '@/lib/posthog/posthog.server';
 // import { revalidatePath } from 'next/cache';
 
 export async function uploadSignature(formData: FormData, waiverId: string, date: Date) {
-   
+  console.log(formData)
   const files = formData.getAll("file") as File[];
 
   if (!files || files.length === 0) {
@@ -14,6 +15,7 @@ export async function uploadSignature(formData: FormData, waiverId: string, date
   }
 
   const name = formData.get("name") as string;
+  const email = formData.get("email") as string;
   // const date = `${formData.get("date")}T00:00:00Z`;
 
   const uploaded = await utapi.uploadFiles(files);
@@ -27,6 +29,7 @@ export async function uploadSignature(formData: FormData, waiverId: string, date
   const saved = await db.signature.create({
     data: {
       name,
+      email,
       date,
       fileKey: file.key,
       waiver: {

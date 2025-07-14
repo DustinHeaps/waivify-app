@@ -1,10 +1,9 @@
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
-
 
 export function convertToCSV(data: any[]) {
   if (data.length === 0) return "";
@@ -28,7 +27,6 @@ export function downloadCSV(data: any[], filename = "Waivers.csv") {
   link.click();
 }
 
-
 export function getNameFieldValue(form: Record<string, string>) {
   const lowerEntries = Object.entries(form).map(([label, value]) => [
     label.toLowerCase(),
@@ -43,15 +41,22 @@ export function getNameFieldValue(form: Record<string, string>) {
   );
   if (participant) return participant[1];
 
-  const fullName = lowerEntries.find(([label]) =>
-    label.includes("full name")
-  );
+  const fullName = lowerEntries.find(([label]) => label.includes("full name"));
   return fullName ? fullName[1] : null;
 }
 
+export function getEmailFieldValue(form: Record<string, string>) {
+  const lowerEntries = Object.entries(form).map(([label, value]) => [
+    label.toLowerCase(),
+    value,
+  ]);
+
+  const emailField = lowerEntries.find(([label]) => label.includes("email"));
+
+  return emailField ? emailField[1] : null;
+}
 
 export function slugify(input: string): string {
-  
   return input
     .toLowerCase()
     .trim()

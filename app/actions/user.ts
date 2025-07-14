@@ -61,9 +61,9 @@ export async function getUserById() {
 
   try {
     const user = await db.user.findUnique({
-      include: {
-        Template: true,
-      },
+      // include: {
+      //   Template: true,
+      // },
       where: { clerkId: userId as string },
     });
 

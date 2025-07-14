@@ -10,7 +10,7 @@ export default function FieldControls({
   isDefaultTemplate: boolean;
   recommendedFields: {
     label: string;
-    type: "text" | "date" | "checkbox";
+    type: "text" | "date" | "checkbox" | "email";
     required: boolean;
   }[];
   fields: { label: string }[];

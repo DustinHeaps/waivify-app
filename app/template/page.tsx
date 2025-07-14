@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { upsertTemplate } from "../actions/template";
+import { getAllUserTemplates, upsertTemplate } from "../actions/template";
 
 import { arrayMove } from "@dnd-kit/sortable";
 
@@ -17,12 +17,17 @@ import SaveBar from "./components/SaveBar";
 type Field = {
   id: string;
   label: string;
-  type: "text" | "date" | "checkbox";
+  type: "text" | "date" | "checkbox" | "email";
   required: boolean;
 };
 
-const recommendedFields: { label: string; type: Field["type"]; required: boolean }[] = [
+const recommendedFields: {
+  label: string;
+  type: Field["type"];
+  required: boolean;
+}[] = [
   { label: "Full Name", type: "text", required: true },
+  { label: "Email", type: "email", required: true },
   { label: "Phone Number", type: "text", required: true },
   { label: "Medical Conditions", type: "text", required: false },
   { label: "Emergency Contact Name", type: "text", required: true },
@@ -41,23 +46,30 @@ export default function CreateTemplatePage() {
   const [formError, setFormError] = useState<string | null>(null);
   const [formSuccess, setFormSuccess] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [originalCalendlyUrl, setOriginalCalendlyUrl] = useState<string | null>(
+    null
+  );
+  const [calendlyUrl, setCalendlyUrl] = useState<string>("");
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const result = await getUserById();
         setUser(result);
-        setTemplates(result?.Template || []);
+        const userTemplates = await getAllUserTemplates(result?.id as string);
+        setTemplates(userTemplates || []);
 
         if (result?.publicTemplateId) {
           setSelectedTemplateId(result.publicTemplateId);
-          const current = result.Template.find(
+          const current = userTemplates.find(
             (t) => t.id === result.publicTemplateId
           );
           if (current) {
             setTemplateName(current.name);
             setFields(current.fields as Field[]);
             setIsDefaultTemplate(false);
+            setCalendlyUrl(current.calendlyUrl as string);
+            setOriginalCalendlyUrl(current.calendlyUrl || "");
           } else {
             setIsDefaultTemplate(true);
           }
@@ -95,7 +107,12 @@ export default function CreateTemplatePage() {
 
   const autoSave = async (newFields: any[]) => {
     setFields(newFields);
-    await upsertTemplate(selectedTemplateId, templateName, newFields);
+    await upsertTemplate(
+      selectedTemplateId,
+      templateName,
+      newFields,
+      calendlyUrl
+    );
   };
 
   const handleSave = async () => {
@@ -108,10 +125,12 @@ export default function CreateTemplatePage() {
       return;
     }
 
-    if (fields.length === 0) {
-      setFormError("At least one field is required.");
-      setTimeout(() => setFormError(null), 3000);
-      return;
+    if (!isDefaultTemplate) {
+      if (fields.length === 0) {
+        setFormError("At least one field is required.");
+        setTimeout(() => setFormError(null), 3000);
+        return;
+      }
     }
 
     if (hasEmptyField) {
@@ -122,10 +141,12 @@ export default function CreateTemplatePage() {
 
     try {
       setIsSaving(true);
+
       const savedTemplate = await upsertTemplate(
         selectedTemplateId,
-        templateName,
-        fields
+        isDefaultTemplate ? templateName : templateName,
+        isDefaultTemplate ? fields : fields,
+        calendlyUrl
       );
 
       await updateUser(user?.clerkId as string, {
@@ -146,6 +167,7 @@ export default function CreateTemplatePage() {
   };
 
   const hasEmptyField = fields.some((field) => !field.label.trim());
+  const calendlyUrlChanged = calendlyUrl !== (originalCalendlyUrl || "");
 
   return (
     <PlanGuard allowedPlans={["starter", "pro"]}>
@@ -155,6 +177,9 @@ export default function CreateTemplatePage() {
           selectedTemplateId={selectedTemplateId}
           setSelectedTemplateId={setSelectedTemplateId}
           setTemplateName={setTemplateName}
+          calendlyUrl={calendlyUrl}
+          setCalendlyUrl={setCalendlyUrl}
+          plan={user?.plan as string}
           setFields={setFields}
           templateName={templateName}
           setTemplateNameHandler={setTemplateName}
@@ -199,6 +224,7 @@ export default function CreateTemplatePage() {
           handleSave={handleSave}
           isSaving={isSaving}
           isDefaultTemplate={isDefaultTemplate}
+          canSave={isDefaultTemplate ? calendlyUrlChanged : true}
         />
       </div>
     </PlanGuard>

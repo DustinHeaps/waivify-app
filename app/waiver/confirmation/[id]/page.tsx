@@ -75,12 +75,13 @@ export default async function ConfirmationPage({
         <div className='flex justify-center items-center gap-2 mt-2 relative'>
           <WaiverDownloadButton waiverId={signature.waiverId} />
 
-          {user?.email && (
+          {signature.email && (
             <>
               <span className='text-gray-400'>or</span>
               <SendEmailButton
                 id={signature.id}
                 waiverId={signature.waiverId}
+                email={signature.email}
               />
             </>
           )}

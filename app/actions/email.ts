@@ -9,18 +9,13 @@ import { trackEvent } from "@/lib/posthog/posthog.server";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export async function sendEmail(id: string, waiverId: string) {
-  const { userId } = await auth();
-
-  if (!userId) throw new Error("Unauthorized");
-
-  const user = await getUserById();
-  if (!user) throw new Error("User not found");
-
-  const email = user.email;
-
+export async function sendEmail(id: string, waiverId: string, email: string) {
   const signature = await getSignatureById(id);
   if (!signature) throw new Error("Signature not found");
+
+  if (!email || !email.includes("@")) {
+    throw new Error("Invalid email address.");
+  }
 
   const response = await resend.emails.send({
     from: process.env.EMAIL_FROM as string,
@@ -49,14 +44,13 @@ export async function sendSupportEmail({
   name,
   email,
   message,
-  subject
+  subject,
 }: {
   name: string;
   email: string;
   message: string;
   subject: string;
 }) {
-  
   try {
     await resend.emails.send({
       from: "support@waivify.com",
