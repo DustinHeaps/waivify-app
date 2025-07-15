@@ -119,7 +119,6 @@ const BillingPageContent = () => {
       price: "$12/mo",
       preface: "Everything in Free, plus:",
       features: [
-        "Everything in Free, plus:",
         "50 waivers/month",
         "1 saved waiver template",
         "Email support",
@@ -135,6 +134,7 @@ const BillingPageContent = () => {
         "Unlimited waivers",
         "White-labeled waivers (no Waivify branding)",
         "5 Custom templates",
+        "Calendly Integration",
         "Priority support",
         "Access to advanced analytics",
       ],

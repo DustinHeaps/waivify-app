@@ -218,6 +218,19 @@ export default function LandingContent() {
               ],
             },
             {
+              title: "Pro",
+              price: "$29/month",
+              mostPopular: true,
+              benefits: [
+                "Unlimited waivers",
+                "5 templates",
+                "White-labeled (no Waivify branding)",
+                "Calendly Integration",
+                "Priority support",
+                "Advanced analytics",
+              ],
+            },
+            {
               title: "Starter",
               price: "$12/month",
               benefits: [
@@ -226,18 +239,6 @@ export default function LandingContent() {
                 "Custom branding",
                 "Email support",
                 "Search, filter, export tools",
-              ],
-            },
-            {
-              title: "Pro",
-              price: "$29/month",
-              mostPopular: true,
-              benefits: [
-                "Unlimited waivers",
-                "5 templates",
-                "White-labeled (no Waivify branding)",
-                "Priority support",
-                "Advanced analytics",
               ],
             },
           ].map((tier, i) => (

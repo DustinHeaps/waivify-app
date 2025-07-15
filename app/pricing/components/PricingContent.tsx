@@ -77,6 +77,7 @@ export const PricingContent = ({ user }: Props) => {
             <li>✅ Unlimited waivers</li>
             <li>✅ 5 Custom Templates</li>
             <li>✅ White-labeled waivers (no Waivify branding)</li>
+            <li>✅ Calendly Integration</li>
             <li>✅ Priority support</li>
             <li>✅ Access to advanced analytics</li>
           </ul>
