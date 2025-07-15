@@ -1,7 +1,13 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "../../../components/ui/tooltip";
 import { useEffect, useState } from "react";
+import { Field } from "@/app/template/components/FieldList";
+import { GripVertical } from 'lucide-react';
 
 export function SortableItem({
   field,
@@ -9,12 +15,16 @@ export function SortableItem({
   handleLabelChange,
   handleRemove,
   toggleRequired,
+  recommendedFields,
+  isDefaultTemplate,
 }: {
   field: any;
   index: number;
   handleLabelChange: (index: number, value: string) => void;
   handleRemove: (id: string) => void;
   toggleRequired: (id: string) => void;
+  recommendedFields: Field[];
+  isDefaultTemplate: boolean;
 }) {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -32,6 +42,9 @@ export function SortableItem({
 
   if (!isMounted) return null;
 
+  const isRecommended = recommendedFields.some(
+    (r) => r.label.toLowerCase() === field.label.toLowerCase()
+  );
   return (
     <Tooltip>
       <TooltipTrigger asChild>
@@ -42,12 +55,16 @@ export function SortableItem({
           {...listeners}
           className='w-full bg-white p-4 rounded border shadow-sm flex items-center justify-between'
         >
+          <div {...attributes} {...listeners} className='cursor-grab'>
+            <GripVertical className='w-4 h-4 text-gray-400' />
+          </div>
           <input
             type='text'
             value={field.label}
             placeholder={`Enter Label...`}
             onChange={(e) => handleLabelChange(index, e.target.value)}
             className={`w-full text-sm px-3 py-1.5 border rounded`}
+            readOnly={isRecommended || isDefaultTemplate}
           />
 
           <span className=' px-4 text-xs font-semibold text-gray-500 capitalize'>
@@ -61,7 +78,6 @@ export function SortableItem({
                 ? "bg-green-100 text-green-700 border-green-300"
                 : "bg-gray-100 text-gray-500 border-gray-300"
             }`}
-            
           >
             {field.required ? "Required" : "Optional"}
           </button>

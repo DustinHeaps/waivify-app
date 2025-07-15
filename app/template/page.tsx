@@ -1,7 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getAllUserTemplates, upsertTemplate } from "../actions/template";
+import {
+  getAllUserTemplates,
+  upsertTemplate,
+  upsertUserTemplateSettings,
+} from "../actions/template";
 
 import { arrayMove } from "@dnd-kit/sortable";
 
@@ -25,13 +29,14 @@ const recommendedFields: {
   label: string;
   type: Field["type"];
   required: boolean;
+  id: string
 }[] = [
-  { label: "Full Name", type: "text", required: true },
-  { label: "Email", type: "email", required: true },
-  { label: "Phone Number", type: "text", required: true },
-  { label: "Medical Conditions", type: "text", required: false },
-  { label: "Emergency Contact Name", type: "text", required: true },
-  { label: "Emergency Contact Phone", type: "text", required: true },
+  { id: "full-name", label: "Full Name", type: "text", required: true },
+  // {id: "email", label: "Email", type: "email", required: true },
+  { id: "phone-number", label: "Phone Number", type: "text", required: true },
+  {id: "medical", label: "Medical Conditions", type: "text", required: false },
+  { id: "emee=rgency-name", label: "Emergency Contact Name", type: "text", required: true },
+  { id: "emergency-phone", label: "Emergency Contact Phone", type: "text", required: true },
 ];
 
 export default function CreateTemplatePage() {
@@ -68,7 +73,11 @@ export default function CreateTemplatePage() {
             setTemplateName(current.name);
             setFields(current.fields as Field[]);
             setIsDefaultTemplate(false);
-            setCalendlyUrl(current.calendlyUrl as string);
+
+            // 🔁 Pull override from UserTemplateSettings if available
+            // const overrideUrl = current.calendlyUrl;
+
+            setCalendlyUrl(current.calendlyUrl || "");
             setOriginalCalendlyUrl(current.calendlyUrl || "");
           } else {
             setIsDefaultTemplate(true);
@@ -119,18 +128,42 @@ export default function CreateTemplatePage() {
     setFormError("");
     setFormSuccess(false);
 
+    if (isDefaultTemplate) {
+      try {
+        setIsSaving(true);
+        // Clone the default template
+        const savedTemplate = await upsertTemplate(
+          selectedTemplateId,
+          templateName,
+          fields,
+          calendlyUrl
+        );
+
+        await upsertUserTemplateSettings(
+          savedTemplate.id,
+          calendlyUrl,
+          user?.clerkId as string
+        );
+        setFormSuccess(true);
+      } catch (err) {
+        console.error("Calendly save failed", err);
+        setFormError("Something went wrong. Please try again.");
+      } finally {
+        setIsSaving(false);
+      }
+      return;
+    }
+
     if (!templateName.trim()) {
       setFormError("Template name is required.");
       setTimeout(() => setFormError(null), 3000);
       return;
     }
 
-    if (!isDefaultTemplate) {
-      if (fields.length === 0) {
-        setFormError("At least one field is required.");
-        setTimeout(() => setFormError(null), 3000);
-        return;
-      }
+    if (fields.length === 0) {
+      setFormError("At least one field is required.");
+      setTimeout(() => setFormError(null), 3000);
+      return;
     }
 
     if (hasEmptyField) {
@@ -144,8 +177,8 @@ export default function CreateTemplatePage() {
 
       const savedTemplate = await upsertTemplate(
         selectedTemplateId,
-        isDefaultTemplate ? templateName : templateName,
-        isDefaultTemplate ? fields : fields,
+        templateName,
+        fields,
         calendlyUrl
       );
 
@@ -185,6 +218,7 @@ export default function CreateTemplatePage() {
           setTemplateNameHandler={setTemplateName}
           setIsDefaultTemplate={setIsDefaultTemplate}
           isDefaultTemplate={isDefaultTemplate}
+          clerkId={user?.clerkId as string}
         />
         {isDefaultTemplate && (
           <div className='bg-blue-50 border border-blue-200 text-blue-800 text-sm rounded px-4 py-3 mb-4'>
@@ -211,6 +245,8 @@ export default function CreateTemplatePage() {
             setFields(fields.filter((f) => f.id !== id))
           }
           toggleRequired={toggleRequired}
+          recommendedFields={recommendedFields}
+          isDefaultTemplate={isDefaultTemplate}
         />
 
         <p className='text-xs text-gray-500 italic'>

@@ -1,4 +1,3 @@
-
 import { AnimatePresence, motion } from "framer-motion";
 import {
   SortableContext,
@@ -11,7 +10,7 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { SortableItem } from "@/components/SortableItem";
+import { SortableItem } from "@/app/template/components/SortableItem";
 
 export type Field = {
   id: string;
@@ -26,6 +25,8 @@ type Props = {
   updateLabel: (index: number, value: string) => void;
   removeField: (id: string) => void;
   toggleRequired: (id: string) => void;
+  recommendedFields: Field[];
+  isDefaultTemplate: boolean;
 };
 export default function FieldList({
   fields,
@@ -33,6 +34,8 @@ export default function FieldList({
   updateLabel,
   removeField,
   toggleRequired,
+  recommendedFields,
+  isDefaultTemplate,
 }: Props) {
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
@@ -82,6 +85,8 @@ export default function FieldList({
                     handleLabelChange={(i, val) => updateLabel(i, val)}
                     handleRemove={removeField}
                     toggleRequired={toggleRequired}
+                    recommendedFields={recommendedFields}
+                    isDefaultTemplate={isDefaultTemplate}
                   />
                 ))}
               </motion.div>

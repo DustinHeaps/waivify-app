@@ -1,3 +1,4 @@
+import { updateUser } from "@/app/actions/user";
 import {
   Select,
   SelectContent,
@@ -19,6 +20,7 @@ type Props = {
   setTemplateNameHandler: (name: string) => void;
   setIsDefaultTemplate: (flag: boolean) => void;
   isDefaultTemplate: boolean;
+  clerkId: string;
 };
 
 export default function TemplateHeader({
@@ -34,6 +36,7 @@ export default function TemplateHeader({
   setTemplateNameHandler,
   isDefaultTemplate,
   setIsDefaultTemplate,
+  clerkId,
 }: Props) {
   return (
     <div className='space-y-2 mb-6'>
@@ -64,7 +67,7 @@ export default function TemplateHeader({
           </label>
           <Select
             value={selectedTemplateId || ""}
-            onValueChange={(id) => {
+            onValueChange={async (id) => {
               const selected = templates.find((t: any) => t.id === id);
               if (selected) {
                 setSelectedTemplateId(id);
@@ -72,6 +75,14 @@ export default function TemplateHeader({
                 setFields(selected.fields);
                 setIsDefaultTemplate(!!selected.isDefault);
                 setCalendlyUrl(selected.calendlyUrl as string);
+
+                try {
+                  await updateUser(clerkId as string, {
+                    publicTemplateId: id,
+                  });
+                } catch (err) {
+                  console.error("Failed to update publicTemplateId", err);
+                }
               }
             }}
           >

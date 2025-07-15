@@ -21,16 +21,23 @@ const TemplateSchema = z.object({
 export async function getAllUserTemplates(userId: string) {
   const templates = await db.template.findMany({
     where: {
-      OR: [{ isDefault: true }, { userId: userId }],
+      OR: [{ userId }, { isDefault: true }],
     },
-    orderBy: {
-      name: "asc",
+    include: {
+      UserTemplateSettings: {
+        where: { userId },
+        select: { calendlyUrl: true },
+      },
     },
   });
-
-  return templates;
+  return templates.map((template) => ({
+    ...template,
+    calendlyUrl:
+      template.UserTemplateSettings?.[0]?.calendlyUrl ||
+      template.calendlyUrl ||
+      "",
+  }));
 }
-
 export async function getTemplateById(id: string) {
   return await db.template.findUnique({
     where: { id },
@@ -53,15 +60,20 @@ export async function getDefaultTemplates() {
   return templates;
 }
 
-
-export async function upsertTemplate(id: string | null, name: string, fields: any[], calendlyUrl: string) {
+export async function upsertTemplate(
+  id: string | null,
+  name: string,
+  fields: any[],
+  calendlyUrl: string
+) {
+  
   const { userId } = await auth();
   if (!userId) throw new Error("Not authenticated");
 
   if (id) {
     // If ID is provided, try to update
     const existing = await db.template.findUnique({ where: { id } });
-
+    
     //  Prevent edits to default templates — clone instead
     if (existing?.isDefault) {
       return await db.template.create({
@@ -80,7 +92,7 @@ export async function upsertTemplate(id: string | null, name: string, fields: an
       update: {
         name,
         fields,
-        calendlyUrl
+        calendlyUrl,
       },
       create: {
         name,
@@ -108,11 +120,61 @@ export async function upsertTemplate(id: string | null, name: string, fields: an
   }
 }
 
+export async function upsertUserTemplateSettings(
+  templateId: string,
+  calendlyUrl: string,
+  clerkId: string
+) {
+  const user = await db.user.findUnique({
+    where: { clerkId },
+  });
+  if (!user) throw new Error("User not found in DB");
+  return await db.userTemplateSettings.upsert({
+    where: {
+      userId_templateId: {
+        userId: user.id,
+        templateId,
+      },
+    },
+    update: {
+      calendlyUrl,
+    },
+    create: {
+      userId: user.id,
+      templateId,
+      calendlyUrl,
+    },
+  });
+}
+export async function getTemplateWithUserSettings(
+  templateId: string,
+  userId: string
+) {
+  const template = await db.template.findUnique({
+    where: { id: templateId },
+    include: {
+      UserTemplateSettings: {
+        where: { userId },
+        select: { calendlyUrl: true },
+      },
+    },
+  });
+
+  if (!template) throw new Error("Template not found");
+
+  // Override calendlyUrl if user has a custom one
+  const effectiveCalendlyUrl =
+    template.UserTemplateSettings[0]?.calendlyUrl || template.calendlyUrl;
+
+  return {
+    ...template,
+    calendlyUrl: effectiveCalendlyUrl,
+  };
+}
 
 // export async function createTemplate(name: string, fields: any) {
 //   const { userId } = await auth();
 //   if (!userId) throw new Error("Not authenticated");
-
 
 //   const user = await getUserById();
 
