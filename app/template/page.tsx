@@ -70,6 +70,16 @@ export default function CreateTemplatePage() {
   );
 
   useEffect(() => {
+    if (formSuccess) {
+      const timeout = setTimeout(() => {
+        setFormSuccess(false);
+      }, 3000);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [formSuccess]);
+
+  useEffect(() => {
     const fetchUser = async () => {
       try {
         const user = await getUserById();
@@ -218,11 +228,10 @@ export default function CreateTemplatePage() {
       if (!selectedTemplateId && savedTemplate?.id) {
         setSelectedTemplateId(savedTemplate.id);
       }
-      
+
       if (savedTemplate) {
         setTemplates((prev) => [...prev, savedTemplate]);
-      
-      
+
         if (!savedTemplate.isDefault) {
           setCustomUserTemplates((prev) => [...prev, savedTemplate]);
         }
