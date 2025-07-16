@@ -300,7 +300,7 @@ export default function CreateTemplatePage() {
         />
 
         <p className='text-xs text-gray-500 italic'>
-          ✍️ Signature and legal consent fields (terms, liability waiver) will
+          ✍️ Signature, email, and legal consent fields (terms, liability waiver) will
           be automatically included.
         </p>
 
