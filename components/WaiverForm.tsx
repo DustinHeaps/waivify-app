@@ -90,7 +90,7 @@ export default function WaiverForm({
     resolver: zodResolver(schema),
   });
 
-  const [email] = useDebounce(watch("email"), 600);
+  const email = watch("email");
 
   useEffect(() => {
     const handleFocus = async () => {
