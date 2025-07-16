@@ -40,7 +40,6 @@ export default function EstheticianLandingPage() {
             secure, and beautifully branded digital consent forms.
           </p>
         </div>
-
         <section className='mt-16 grid md:grid-cols-2 gap-6 text-gray-300'>
           <Card>
             <CardContent className='p-6'>
@@ -69,7 +68,7 @@ export default function EstheticianLandingPage() {
             </CardContent>
           </Card>
         </section>
-
+        
         <section className='mt-20 text-center'>
           <h2 className='text-3xl font-bold mb-4 text-teal-400'>
             See Waivify in Action
@@ -78,14 +77,13 @@ export default function EstheticianLandingPage() {
           <div className='w-full h-[500px]'>
             <iframe
               className='w-full h-full rounded shadow-lg'
-              src='https://www.youtube.com/embed/IMJKFzX5Sp4'
+              src='https://www.youtube.com/embed/fENne-5FHR0'
               title='Waivify Demo'
               allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
               allowFullScreen
             />
           </div>
         </section>
-
         <section className='mt-16 text-center'>
           <h2 className='text-2xl font-semibold mb-4'>
             Start Free — No Setup Required

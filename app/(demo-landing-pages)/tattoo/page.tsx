@@ -75,11 +75,11 @@ export default function TattooLandingPage() {
           <h2 className='text-3xl font-bold mb-4 text-teal-400'>
             See Waivify in Action
           </h2>
- 
+
           <div className='w-full h-[500px]'>
             <iframe
               className='w-full h-full rounded shadow-lg'
-              src='https://www.youtube.com/embed/IMJKFzX5Sp4'
+              src='https://www.youtube.com/embed/fENne-5FHR0'
               title='Waivify Tattoo Demo'
               allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
               allowFullScreen

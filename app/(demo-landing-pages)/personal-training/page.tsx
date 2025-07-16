@@ -36,7 +36,8 @@ export default function PersonalTrainingLandingPage() {
             Waivers That Work as Hard as You Do
           </h1>
           <p className='mt-4 text-lg text-gray-300'>
-            Designed for personal trainers — quick, mobile, branded waivers your clients can sign before their first session.
+            Designed for personal trainers — quick, mobile, branded waivers your
+            clients can sign before their first session.
           </p>
         </div>
 
@@ -77,7 +78,7 @@ export default function PersonalTrainingLandingPage() {
           <div className='w-full h-[500px]'>
             <iframe
               className='w-full h-full rounded shadow-lg'
-              src='https://www.youtube.com/embed/IMJKFzX5Sp4'
+              src='https://www.youtube.com/embed/fENne-5FHR0'
               title='Waivify Demo'
               allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
               allowFullScreen

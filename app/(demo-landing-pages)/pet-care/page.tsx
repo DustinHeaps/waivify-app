@@ -37,7 +37,8 @@ export default function PetCareLandingPage() {
             Waivers That Give Peace of Mind
           </h1>
           <p className='mt-4 text-lg text-gray-300'>
-            Designed for pet sitters, groomers, and boarding pros — collect signed waivers with ease and stay protected.
+            Designed for pet sitters, groomers, and boarding pros — collect
+            signed waivers with ease and stay protected.
           </p>
         </div>
 
@@ -78,7 +79,7 @@ export default function PetCareLandingPage() {
           <div className='w-full h-[500px]'>
             <iframe
               className='w-full h-full rounded shadow-lg'
-              src='https://www.youtube.com/embed/IMJKFzX5Sp4'
+              src='https://www.youtube.com/embed/fENne-5FHR0'
               title='Waivify Demo'
               allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
               allowFullScreen

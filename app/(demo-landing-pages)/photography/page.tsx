@@ -36,7 +36,8 @@ export default function PhotographyLandingPage() {
             Get Consent, Protect Your Work
           </h1>
           <p className='mt-4 text-lg text-gray-300'>
-            Built for photographers and videographers — mobile-friendly release forms your clients can sign in seconds.
+            Built for photographers and videographers — mobile-friendly release
+            forms your clients can sign in seconds.
           </p>
         </div>
 
@@ -77,7 +78,7 @@ export default function PhotographyLandingPage() {
           <div className='w-full h-[500px]'>
             <iframe
               className='w-full h-full rounded shadow-lg'
-              src='https://www.youtube.com/embed/IMJKFzX5Sp4'
+              src='https://www.youtube.com/embed/fENne-5FHR0'
               title='Waivify Demo'
               allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
               allowFullScreen
