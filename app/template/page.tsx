@@ -218,6 +218,16 @@ export default function CreateTemplatePage() {
       if (!selectedTemplateId && savedTemplate?.id) {
         setSelectedTemplateId(savedTemplate.id);
       }
+      
+      if (savedTemplate) {
+        setTemplates((prev) => [...prev, savedTemplate]);
+      
+      
+        if (!savedTemplate.isDefault) {
+          setCustomUserTemplates((prev) => [...prev, savedTemplate]);
+        }
+      }
+
       setFormSuccess(true);
     } catch (err) {
       console.error("Save failed", err);
