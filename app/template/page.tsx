@@ -65,29 +65,32 @@ export default function CreateTemplatePage() {
     null
   );
   const [calendlyUrl, setCalendlyUrl] = useState<string>("");
-  const [customUserTemplates, setCustomUserTemplates] = useState<Template[]>([]);
+  const [customUserTemplates, setCustomUserTemplates] = useState<Template[]>(
+    []
+  );
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const result = await getUserById();
-        setUser(result);
-        const userTemplates = await getAllUserTemplates(result?.id as string);
+        const user = await getUserById();
+        setUser(user);
+
+        const userTemplates = await getAllUserTemplates(user?.id as string);
 
         let customUserTemplates: Template[] = [];
 
         userTemplates.forEach((template) => {
-          if (!template.isDefault) {
-            customUserTemplates.push(template);
+          if (!template?.isDefault) {
+            customUserTemplates.push(template!);
           }
         });
-        setCustomUserTemplates(customUserTemplates)
+        setCustomUserTemplates(customUserTemplates);
         setTemplates(userTemplates || []);
 
-        if (result?.publicTemplateId) {
-          setSelectedTemplateId(result.publicTemplateId);
+        if (user?.publicTemplateId) {
+          setSelectedTemplateId(user.publicTemplateId);
           const current = userTemplates.find(
-            (t) => t.id === result.publicTemplateId
+            (t) => t?.id === user.publicTemplateId
           );
           if (current) {
             setTemplateName(current.name);
@@ -140,16 +143,17 @@ export default function CreateTemplatePage() {
       selectedTemplateId,
       templateName,
       newFields,
-      calendlyUrl
+      calendlyUrl,
+      user?.id as string,
+      user?.clerkId as string
     );
   };
 
   const handleSave = async () => {
     setFormError("");
-    setFormSuccess(false); 
+    setFormSuccess(false);
 
     if (isDefaultTemplate) {
-      debugger
       try {
         setIsSaving(true);
         // Clone the default template
@@ -158,15 +162,16 @@ export default function CreateTemplatePage() {
           templateName,
           fields,
           calendlyUrl,
-          
+          user?.id as string,
+          user?.clerkId as string
         );
 
-        await upsertUserTemplateSettings(
-          selectedTemplateId as string,
+        const settings = await upsertUserTemplateSettings(
+          savedTemplate?.id as string,
           calendlyUrl,
           user?.clerkId as string
-          
         );
+
         setFormSuccess(true);
       } catch (err) {
         console.error("Calendly save failed", err);
@@ -202,11 +207,13 @@ export default function CreateTemplatePage() {
         selectedTemplateId,
         templateName,
         fields,
-        calendlyUrl
+        calendlyUrl,
+        user?.id as string,
+        user?.clerkId as string
       );
 
       await updateUser(user?.clerkId as string, {
-        publicTemplateId: savedTemplate.id,
+        publicTemplateId: savedTemplate?.id,
       });
       if (!selectedTemplateId && savedTemplate?.id) {
         setSelectedTemplateId(savedTemplate.id);

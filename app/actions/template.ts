@@ -2,11 +2,12 @@
 
 import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
-import { z } from "zod";
+import { string, z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { getUserById, updateUser } from "./user";
 import { trackEvent } from "@/lib/posthog/posthog.server";
 import { getMaxCustomTemplatesByPlan } from "@/lib/waiverUsage";
+import { XOctagon } from "lucide-react";
 
 const TemplateSchema = z.object({
   name: z.string().min(1),
@@ -18,42 +19,36 @@ const TemplateSchema = z.object({
     })
   ),
 });
+
 export async function getAllUserTemplates(userId: string) {
+
   const templates = await db.template.findMany({
     where: {
       OR: [{ userId }, { isDefault: true }],
     },
-    include: {
-      UserTemplateSettings: {
-        where: { userId },
-        select: { calendlyUrl: true, template: true, templateId: true },
-      },
-    },
+
   });
 
-  const nonDefaultTemplates = templates.filter(
-    (template) => !template.isDefault
-  );
+  const filtered = templates.filter((template) => {
+    return !(template.isDefault && template.userId === userId);
+  });
 
-  const overriddenDefaults = templates
-    .filter(
-      (template) =>
-        template.isDefault && template.UserTemplateSettings.length > 0
-    )
-    .map((template) => template.UserTemplateSettings[0].template);
+  const userTemplates = filtered.filter((template, _, self) => {
+    if (!template.isDefault) return true;
+  
+    const hasUserVersion = self.some(
+      (t) =>
+        t.name === template.name &&
+        t.isDefault &&
+        t.userId !== null
+    );
+  
+    // If this one has no userId and another version does, skip it
+    if (template.userId === null && hasUserVersion) return false;
+  
+    return true;
+  });
 
-  const untouchedDefaults = templates.filter(
-    (template) =>
-      template.isDefault && template.UserTemplateSettings.length === 0
-  );
-
-  const userTemplates = [
-    ...nonDefaultTemplates,
-    ...overriddenDefaults,
-    ...untouchedDefaults,
-  ];
-
-  console.log(userTemplates);
 
   return userTemplates;
 }
@@ -80,51 +75,72 @@ export async function getDefaultTemplates() {
 }
 
 export async function upsertTemplate(
-  id: string | null,
+  templateId: string | null,
   name: string,
   fields: any[],
-  calendlyUrl: string
+  calendlyUrl: string,
+  userId: string,
+  clerkId: string
 ) {
-  const { userId } = await auth();
-  if (!userId) throw new Error("Not authenticated");
+  if (!clerkId) throw new Error("Not authenticated");
 
-  if (id) {
+  if (templateId) {
     // If ID is provided, try to update
-    const existing = await db.template.findUnique({ where: { id } });
+    const allExistingTemplates = await db.template.findMany({
+      where: { name },
+    });
 
-    //  Prevent edits to default templates — clone instead
-    if (existing?.isDefault) {
+    const userTemplateArray = allExistingTemplates.filter(
+      (template) => template.userId === userId
+    );
 
-      return await db.template.update({
-        where: { id: existing.id },
-        data: {
-          name: existing.name,
-          fields: existing.fields ?? [],
+    const existingUserTemplate = userTemplateArray[0];
+
+    if (!existingUserTemplate?.isDefault) {
+      // update the users custom template
+      return await db.template.upsert({
+        where: { id: templateId },
+        update: {
+          name,
+          fields,
           calendlyUrl,
-          user: { connect: { clerkId: userId } },
+        },
+        create: {
+          name,
+          fields,
+          calendlyUrl,
+          user: {
+            connect: { clerkId },
+          },
+          isDefault: false,
+        },
+      });
+    } else if (existingUserTemplate) {
+      //  Update the cloned default template.
+      return await db.template.update({
+        where: { id: existingUserTemplate.id },
+        data: {
+          name: existingUserTemplate.name,
+          fields: existingUserTemplate.fields ?? [],
+          calendlyUrl,
+          user: { connect: { clerkId } },
           isDefault: true,
-          description: existing.description,
+          description: existingUserTemplate.description,
+        },
+      });
+    } else {
+      return await db.template.create({
+        // Create a clone of the default tmeplate
+        data: {
+          name: allExistingTemplates[0]?.name as string,
+          fields: allExistingTemplates[0]?.fields ?? [],
+          calendlyUrl,
+          user: { connect: { clerkId } },
+          isDefault: true,
+          description: allExistingTemplates[0]?.description,
         },
       });
     }
-
-    return await db.template.upsert({
-      where: { id },
-      update: {
-        name,
-        fields,
-        calendlyUrl,
-      },
-      create: {
-        name,
-        fields,
-        calendlyUrl,
-        user: {
-          connect: { clerkId: userId },
-        },
-        isDefault: false,
-      },
-    });
   } else {
     // No ID means we are **creating** a fresh template
     return await db.template.create({
@@ -133,7 +149,7 @@ export async function upsertTemplate(
         fields,
         calendlyUrl,
         user: {
-          connect: { clerkId: userId },
+          connect: { clerkId },
         },
         isDefault: false,
       },
@@ -146,9 +162,12 @@ export async function upsertUserTemplateSettings(
   calendlyUrl: string,
   clerkId: string
 ) {
+  const id = "user_2wJzmolT7OoGdGJ8sAHDN8nTzlH"; // heaps12345
+  // const id = 'user_2vQ9dXwJOTeQPuvNYmC4Eawz6BU' // dustinheaps
   const user = await db.user.findUnique({
-    where: { clerkId },
+    where: { clerkId: id },
   });
+
   if (!user) throw new Error("User not found in DB");
   return await db.userTemplateSettings.upsert({
     where: {
