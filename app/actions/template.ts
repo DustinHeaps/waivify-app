@@ -89,14 +89,14 @@ export async function upsertTemplate(
     const allExistingTemplates = await db.template.findMany({
       where: { name },
     });
-
+    
     const userTemplateArray = allExistingTemplates.filter(
       (template) => template.userId === userId
     );
 
     const existingUserTemplate = userTemplateArray[0];
-
-    if (!existingUserTemplate?.isDefault) {
+    
+    if (existingUserTemplate?.isDefault === false) {
       // update the users custom template
       return await db.template.upsert({
         where: { id: templateId },
@@ -162,10 +162,9 @@ export async function upsertUserTemplateSettings(
   calendlyUrl: string,
   clerkId: string
 ) {
-  const id = "user_2wJzmolT7OoGdGJ8sAHDN8nTzlH"; // heaps12345
-  // const id = 'user_2vQ9dXwJOTeQPuvNYmC4Eawz6BU' // dustinheaps
+ 
   const user = await db.user.findUnique({
-    where: { clerkId: id },
+    where: { clerkId },
   });
 
   if (!user) throw new Error("User not found in DB");

@@ -166,11 +166,11 @@ export default function CreateTemplatePage() {
           user?.clerkId as string
         );
 
-        const settings = await upsertUserTemplateSettings(
-          savedTemplate?.id as string,
-          calendlyUrl,
-          user?.clerkId as string
-        );
+        // const settings = await upsertUserTemplateSettings(
+        //   savedTemplate?.id as string,
+        //   calendlyUrl,
+        //   user?.clerkId as string
+        // );
 
         setFormSuccess(true);
       } catch (err) {
