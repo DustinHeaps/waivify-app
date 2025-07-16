@@ -53,6 +53,7 @@ export default function TemplateHeader({
               setSelectedTemplateId(null);
               setTemplateName("");
               setFields([]);
+              setIsDefaultTemplate(false)
             }}
             className='text-sm bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-md'
           >
