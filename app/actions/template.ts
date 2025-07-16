@@ -21,34 +21,29 @@ const TemplateSchema = z.object({
 });
 
 export async function getAllUserTemplates(userId: string) {
-
   const templates = await db.template.findMany({
     where: {
       OR: [{ userId }, { isDefault: true }],
     },
-
   });
 
   const filtered = templates.filter((template) => {
     return !(template.isDefault && template.userId === userId);
   });
 
-  const userTemplates = filtered.filter((template, _, self) => {
+  const userTemplates = templates.filter((template) => {
     if (!template.isDefault) return true;
-  
-    const hasUserVersion = self.some(
-      (t) =>
-        t.name === template.name &&
-        t.isDefault &&
-        t.userId !== null
+
+    const othersWithSameName = templates.filter(
+      (t) => t.isDefault && t.name === template.name && t.userId === userId
     );
-  
-    // If this one has no userId and another version does, skip it
-    if (template.userId === null && hasUserVersion) return false;
-  
+
+    if (othersWithSameName.length > 0) {
+      return template.userId === userId;
+    }
+
     return true;
   });
-
 
   return userTemplates;
 }
@@ -89,13 +84,13 @@ export async function upsertTemplate(
     const allExistingTemplates = await db.template.findMany({
       where: { name },
     });
-    
+
     const userTemplateArray = allExistingTemplates.filter(
       (template) => template.userId === userId
     );
 
     const existingUserTemplate = userTemplateArray[0];
-    
+
     if (existingUserTemplate?.isDefault === false) {
       // update the users custom template
       return await db.template.upsert({
@@ -162,7 +157,6 @@ export async function upsertUserTemplateSettings(
   calendlyUrl: string,
   clerkId: string
 ) {
- 
   const user = await db.user.findUnique({
     where: { clerkId },
   });
