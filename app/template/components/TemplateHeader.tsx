@@ -6,6 +6,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Template } from '@prisma/client';
 
 type Props = {
   templates: any[];
@@ -21,6 +22,7 @@ type Props = {
   setIsDefaultTemplate: (flag: boolean) => void;
   isDefaultTemplate: boolean;
   clerkId: string;
+  customUserTemplates: Template[]
 };
 
 export default function TemplateHeader({
@@ -37,12 +39,14 @@ export default function TemplateHeader({
   isDefaultTemplate,
   setIsDefaultTemplate,
   clerkId,
+  customUserTemplates
+  
 }: Props) {
   return (
     <div className='space-y-2 mb-6'>
       <h2 className='text-lg font-semibold text-gray-900'>Manage Templates</h2>
       <div className='flex items-center justify-between'>
-        {templates.length < 5 ? (
+        {customUserTemplates.length < 5 ? (
           <button
             type='button'
             onClick={() => {
@@ -60,7 +64,7 @@ export default function TemplateHeader({
           </span>
         )}
       </div>
-      {templates.length > 0 && (
+      {customUserTemplates.length > 0 && (
         <div className='mt-2'>
           <label className='block text-sm font-medium mb-1'>
             Select Template

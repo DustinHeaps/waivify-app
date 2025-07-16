@@ -10,7 +10,7 @@ import {
 import { arrayMove } from "@dnd-kit/sortable";
 
 import { getUserById, updateUser } from "../actions/user";
-import { User } from "@prisma/client";
+import { Template, User } from "@prisma/client";
 import PlanGuard from "@/components/PlanGuard";
 
 import TemplateHeader from "./components/TemplateHeader";
@@ -29,14 +29,24 @@ const recommendedFields: {
   label: string;
   type: Field["type"];
   required: boolean;
-  id: string
+  id: string;
 }[] = [
   { id: "full-name", label: "Full Name", type: "text", required: true },
   // {id: "email", label: "Email", type: "email", required: true },
   { id: "phone-number", label: "Phone Number", type: "text", required: true },
-  {id: "medical", label: "Medical Conditions", type: "text", required: false },
-  { id: "emee=rgency-name", label: "Emergency Contact Name", type: "text", required: true },
-  { id: "emergency-phone", label: "Emergency Contact Phone", type: "text", required: true },
+  { id: "medical", label: "Medical Conditions", type: "text", required: false },
+  {
+    id: "emee=rgency-name",
+    label: "Emergency Contact Name",
+    type: "text",
+    required: true,
+  },
+  {
+    id: "emergency-phone",
+    label: "Emergency Contact Phone",
+    type: "text",
+    required: true,
+  },
 ];
 
 export default function CreateTemplatePage() {
@@ -55,6 +65,7 @@ export default function CreateTemplatePage() {
     null
   );
   const [calendlyUrl, setCalendlyUrl] = useState<string>("");
+  const [customUserTemplates, setCustomUserTemplates] = useState<Template[]>([]);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -62,6 +73,15 @@ export default function CreateTemplatePage() {
         const result = await getUserById();
         setUser(result);
         const userTemplates = await getAllUserTemplates(result?.id as string);
+
+        let customUserTemplates: Template[] = [];
+
+        userTemplates.forEach((template) => {
+          if (!template.isDefault) {
+            customUserTemplates.push(template);
+          }
+        });
+        setCustomUserTemplates(customUserTemplates)
         setTemplates(userTemplates || []);
 
         if (result?.publicTemplateId) {
@@ -219,6 +239,7 @@ export default function CreateTemplatePage() {
           setIsDefaultTemplate={setIsDefaultTemplate}
           isDefaultTemplate={isDefaultTemplate}
           clerkId={user?.clerkId as string}
+          customUserTemplates={customUserTemplates}
         />
         {isDefaultTemplate && (
           <div className='bg-blue-50 border border-blue-200 text-blue-800 text-sm rounded px-4 py-3 mb-4'>
