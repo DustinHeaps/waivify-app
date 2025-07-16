@@ -249,8 +249,9 @@ export default function CreateTemplatePage() {
   };
 
   const hasEmptyField = fields.some((field) => !field.label.trim());
-  const calendlyUrlChanged = calendlyUrl !== (originalCalendlyUrl || "");
-
+  const calendlyUrlChanged =
+    (originalCalendlyUrl ?? "") !== (calendlyUrl ?? "");
+    
   return (
     <PlanGuard allowedPlans={["starter", "pro"]}>
       <div className='max-w-3xl mx-auto py-8 space-y-6'>
@@ -300,8 +301,8 @@ export default function CreateTemplatePage() {
         />
 
         <p className='text-xs text-gray-500 italic'>
-          ✍️ Signature, email, and legal consent fields (terms, liability waiver) will
-          be automatically included.
+          ✍️ Signature, email, and legal consent fields (terms, liability
+          waiver) will be automatically included.
         </p>
 
         <SaveBar
