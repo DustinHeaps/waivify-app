@@ -62,6 +62,13 @@ export default function LandingContent() {
             </button>
           </SignInButton>
         </SignedOut>
+        <SignedIn>
+          <Link href='/home'>
+            <button className='bg-teal-500 px-4 py-2 rounded text-white hover:bg-teal-400'>
+              Go to Dashboard
+            </button>
+          </Link>
+        </SignedIn>
       </motion.section>
       <motion.section
         className='max-w-4xl mx-auto pb-12 text-center'
@@ -311,14 +318,14 @@ export default function LandingContent() {
             </button>
           </SignInButton>
         </SignedOut>
-        <SignedIn>
+       <SignedIn>
           <Link href='/home'>
             <button className='bg-teal-500 px-4 py-2 rounded text-white hover:bg-teal-400'>
               Go to Dashboard
             </button>
           </Link>
         </SignedIn>
-      </motion.section>
+      </motion.section> 
 
       <footer className='text-sm text-gray-400 text-center mt-10'>
         <p>
