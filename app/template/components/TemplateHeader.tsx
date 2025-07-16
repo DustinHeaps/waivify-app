@@ -64,7 +64,7 @@ export default function TemplateHeader({
           </span>
         )}
       </div>
-      {customUserTemplates.length > 0 && (
+      {plan !== 'free' && (
         <div className='mt-2'>
           <label className='block text-sm font-medium mb-1'>
             Select Template
@@ -78,7 +78,7 @@ export default function TemplateHeader({
                 setTemplateName(selected.name);
                 setFields(selected.fields);
                 setIsDefaultTemplate(!!selected.isDefault);
-                setCalendlyUrl(selected.calendlyUrl as string);
+                setCalendlyUrl(selected.calendlyUrl || "");
 
                 try {
                   await updateUser(clerkId as string, {

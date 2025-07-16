@@ -146,9 +146,10 @@ export default function CreateTemplatePage() {
 
   const handleSave = async () => {
     setFormError("");
-    setFormSuccess(false);
+    setFormSuccess(false); 
 
     if (isDefaultTemplate) {
+      debugger
       try {
         setIsSaving(true);
         // Clone the default template
@@ -156,13 +157,15 @@ export default function CreateTemplatePage() {
           selectedTemplateId,
           templateName,
           fields,
-          calendlyUrl
+          calendlyUrl,
+          
         );
 
         await upsertUserTemplateSettings(
-          savedTemplate.id,
+          selectedTemplateId as string,
           calendlyUrl,
           user?.clerkId as string
+          
         );
         setFormSuccess(true);
       } catch (err) {

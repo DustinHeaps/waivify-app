@@ -26,17 +26,36 @@ export async function getAllUserTemplates(userId: string) {
     include: {
       UserTemplateSettings: {
         where: { userId },
-        select: { calendlyUrl: true },
+        select: { calendlyUrl: true, template: true, templateId: true },
       },
     },
   });
-  return templates.map((template) => ({
-    ...template,
-    calendlyUrl:
-      template.UserTemplateSettings?.[0]?.calendlyUrl ||
-      template.calendlyUrl ||
-      "",
-  }));
+
+  const nonDefaultTemplates = templates.filter(
+    (template) => !template.isDefault
+  );
+
+  const overriddenDefaults = templates
+    .filter(
+      (template) =>
+        template.isDefault && template.UserTemplateSettings.length > 0
+    )
+    .map((template) => template.UserTemplateSettings[0].template);
+
+  const untouchedDefaults = templates.filter(
+    (template) =>
+      template.isDefault && template.UserTemplateSettings.length === 0
+  );
+
+  const userTemplates = [
+    ...nonDefaultTemplates,
+    ...overriddenDefaults,
+    ...untouchedDefaults,
+  ];
+
+  console.log(userTemplates);
+
+  return userTemplates;
 }
 export async function getTemplateById(id: string) {
   return await db.template.findUnique({
@@ -66,23 +85,25 @@ export async function upsertTemplate(
   fields: any[],
   calendlyUrl: string
 ) {
-  
   const { userId } = await auth();
   if (!userId) throw new Error("Not authenticated");
 
   if (id) {
     // If ID is provided, try to update
     const existing = await db.template.findUnique({ where: { id } });
-    
+
     //  Prevent edits to default templates — clone instead
     if (existing?.isDefault) {
-      return await db.template.create({
+
+      return await db.template.update({
+        where: { id: existing.id },
         data: {
           name: existing.name,
           fields: existing.fields ?? [],
           calendlyUrl,
           user: { connect: { clerkId: userId } },
-          isDefault: false,
+          isDefault: true,
+          description: existing.description,
         },
       });
     }

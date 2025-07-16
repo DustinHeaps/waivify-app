@@ -17,6 +17,8 @@ export default function SaveBar({
   isDefaultTemplate,
   canSave
 }: Props) {
+
+  console.log(canSave, isDefaultTemplate)
   return (
     <div>
       <AnimatePresence>
