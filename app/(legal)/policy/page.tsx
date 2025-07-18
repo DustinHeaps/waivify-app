@@ -28,7 +28,7 @@ export const metadata = {
 
 export default function DigitalSignaturePolicyPage() {
   return (
-    <div className='max-w-3xl mx-auto px-4 py-16 text-black prose prose-sm sm:prose lg:prose-lg print:prose print:max-w-none print:text-black print:bg-white print:p-0'>
+    <div className="max-w-3xl mx-auto py-12 px-4">
       <h1 className='text-3xl font-bold text-teal-600 mb-6 flex items-center gap-2'>
         <span role='img' aria-label='pen'>
           🖋️

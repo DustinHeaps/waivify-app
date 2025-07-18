@@ -12,14 +12,25 @@ const config: Config = {
 
   theme: {
     extend: {
-      // Blog style Override
-      
       typography: (theme: (key: string) => string) => ({
         DEFAULT: {
+          css: {
+            "--tw-prose-links": theme("colors.blue.500"),
+            a: {
+              color: "var(--tw-prose-links)",
+              "&:hover": {
+                color: theme("colors.blue.700"),
+              },
+            },
+          },
+        },
+        // Blog style Override
+        blog: {
           css: {
             maxWidth: "100%",
             fontSize: theme("fontSize.base"),
             color: theme("colors.foreground"),
+
             h1: {
               fontWeight: "700",
               fontSize: theme("fontSize.4xl"),

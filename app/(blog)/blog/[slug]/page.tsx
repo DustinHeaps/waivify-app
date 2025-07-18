@@ -73,15 +73,17 @@ export default async function BlogPost({ params }: Props) {
       {frontmatter.image && (
         <Image
           src={frontmatter.image}
-          alt="Zapier x Waivify automation flow"
+          alt='Zapier x Waivify automation flow'
           width={1200}
           height={630}
-          className="rounded-lg mb-10"
+          className='rounded-lg mb-10'
         />
       )}
-      <div className='prose prose-neutral prose-headings:font-semibold prose-headings:tracking-tight prose-headings:mb-3 prose-p:leading-relaxed prose-p:mb-4 prose-ul:pl-5 prose-ul:mb-4 prose-li:marker:text-neutral-400 prose-a:text-[#0D89EC] max-w-2xl mx-auto'>
+      {/* <div className='prose prose-neutral prose-headings:font-semibold prose-headings:tracking-tight prose-headings:mb-3 prose-p:leading-relaxed prose-p:mb-4 prose-ul:pl-5 prose-ul:mb-4 prose-li:marker:text-neutral-400 prose-a:text-[#0D89EC] max-w-2xl mx-auto'>
         {content}
-      </div>
+      </div> */}
+
+      <div className='prose prose-blog max-w-2xl mx-auto'> {content}</div>
     </article>
   );
 }
