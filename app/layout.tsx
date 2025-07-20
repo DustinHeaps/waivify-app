@@ -4,7 +4,7 @@ import AuthProvider from "./AuthProvider";
 import ClerkButtons from "@/components/ClerkButtons";
 import PostHogWrapper from "@/lib/posthog/posthogWrapper";
 import { PostHogIdentify } from "@/lib/posthog/posthogIdentify";
-
+import { Analytics } from '@vercel/analytics/react';
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -88,6 +88,7 @@ export default function RootLayout({
           <body className={inter.className}>
             <ClerkButtons />
             {children}
+            <Analytics />
           </body>
         </html>
       </PostHogWrapper>
