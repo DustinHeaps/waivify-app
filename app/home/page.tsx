@@ -1,8 +1,10 @@
-import { getUserById } from '../actions/user';
+import { getUserById } from "../actions/user";
 import { HomePageContent } from "./components/HomePageContent";
 
 export default async function HomePage() {
   const user = await getUserById();
 
-  return <HomePageContent user={user!} />;
+  if (!user) return null;
+  
+  return <HomePageContent user={user} />;
 }
