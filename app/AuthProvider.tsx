@@ -12,6 +12,7 @@ export default function AuthProvider({
       publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY as string}
       signInUrl='/sign-in'
       signUpUrl='/sign-up'
+      
       signInFallbackRedirectUrl='/home'
       signUpFallbackRedirectUrl='/home'
     >
