@@ -1,4 +1,4 @@
-import { getPost } from "@/lib/mdx";
+import { getPost } from "@/lib/post";
 import Image from "next/image";
 type Props = {
   params: Promise<{ slug: string }>;

@@ -6,6 +6,10 @@ import Logo from "@/public/logo.png";
 import Link from "next/link";
 import { Card, CardContent } from "./ui/card";
 import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
+import FeaturedPosts from '@/app/(blog)/blog/components/FeaturedPosts';
+import { fetchAllPosts } from '@/app/actions/post';
+import { useEffect, useState } from 'react';
+import { Post } from '@/types';
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -13,6 +17,22 @@ const fadeInUp = {
 };
 
 export default function LandingContent() {
+   const [posts, setPosts] = useState<Post[]>([]);
+
+  useEffect(() => {
+      const getPosts = async () => {
+        try {
+          const posts = await fetchAllPosts();
+          setPosts(posts);
+        } catch (err) {
+          console.error("Failed to fetch posts:", err);
+        }
+      };
+  
+      getPosts();
+    }, []);
+
+  const featured = posts.slice(0, 2);
   return (
     <div className='min-h-screen bg-gray-900 text-white py-6 px-4 sm:px-6 md:px-0'>
       <motion.div
@@ -295,6 +315,11 @@ export default function LandingContent() {
           <li>Everything stored securely</li>
           <li>Go live in under 10 minutes</li>
         </ul>
+        <p className='mt-6 text-teal-400'>
+          <Link href='/blog' className='underline hover:text-white'>
+            Browse the blog – waivers, workflows & wins →
+          </Link>
+        </p>
       </motion.section>
 
       <motion.section
@@ -318,14 +343,62 @@ export default function LandingContent() {
             </button>
           </SignInButton>
         </SignedOut>
-       <SignedIn>
+        <SignedIn>
           <Link href='/home'>
             <button className='bg-teal-500 px-4 py-2 rounded text-white hover:bg-teal-400'>
               Go to Dashboard
             </button>
           </Link>
         </SignedIn>
-      </motion.section> 
+      </motion.section>
+      {/* <motion.section
+        className='max-w-4xl mx-auto pt-12 text-center'
+        initial='hidden'
+        whileInView='show'
+        viewport={{ once: true }}
+        variants={fadeInUp}
+      >
+        <h2 className='text-3xl font-semibold mb-6 text-teal-400'>
+          Featured Posts
+        </h2> */}
+        {/* <FeaturedPosts posts={featured} /> */}
+        {/* <div className='grid md:grid-cols-3 gap-6 text-left'>
+          {[
+            {
+              title: "What Makes a Waiver Legally Binding?",
+              description:
+                "We break down the must-haves for compliance — without the legal jargon.",
+              href: "/blog/legally-binding-waivers",
+            },
+            {
+              title: "Best Practices for Client Intake",
+              description:
+                "Make signups smoother and faster with these small but powerful tips.",
+              href: "/blog/client-intake-best-practices",
+            },
+            {
+              title: "How to Share Waivers via QR Code",
+              description:
+                "Drop the clipboard. Here’s how to share your waiver link instantly.",
+              href: "/blog/share-waivers-with-qr-code",
+            },
+          ].map((post, i) => (
+            <Link
+              href={post.href}
+              key={i}
+              className='block bg-gray-800 rounded-lg p-6 hover:shadow-lg hover:bg-gray-700 transition'
+            >
+              <h3 className='text-lg font-semibold text-white mb-2'>
+                {post.title}
+              </h3>
+              <p className='text-gray-400 text-sm'>{post.description}</p>
+              <span className='text-teal-400 text-sm mt-4 inline-block'>
+                Read more →
+              </span>
+            </Link>
+          ))}
+        </div>
+      </motion.section> */}
 
       <footer className='text-sm text-gray-400 text-center mt-10'>
         <p>

@@ -9,6 +9,9 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/dashboard", "/api"],
       },
     ],
-    sitemap: "https://www.waivify.com/sitemap.xml",
+    sitemap: [
+      "https://www.waivify.com/sitemap.xml",
+      "https://waivify.com/blog/rss.xml",
+    ],
   };
 }

@@ -25,7 +25,10 @@ export type Waiver = {
 export type Post = {
   slug: string;
   title: string;
+  author: string;
   description?: string;
   date: string;
-
+  tags: string[];
+  image: string;
+  featured: boolean;
 };
