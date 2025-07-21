@@ -13,6 +13,7 @@ export default function AuthProvider({
       signInUrl='/sign-in'
       signUpUrl='/sign-up'
       signInFallbackRedirectUrl='/home'
+      signUpFallbackRedirectUrl='/home'
     >
       {children}
     </ClerkProvider>
