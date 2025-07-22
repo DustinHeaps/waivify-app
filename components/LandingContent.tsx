@@ -5,11 +5,11 @@ import { motion } from "framer-motion";
 import Logo from "@/public/logo.png";
 import Link from "next/link";
 import { Card, CardContent } from "./ui/card";
-import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
-import FeaturedPosts from '@/app/(blog)/blog/components/FeaturedPosts';
-import { fetchAllPosts } from '@/app/actions/post';
-import { useEffect, useState } from 'react';
-import { Post } from '@/types';
+import { GoogleOneTap, SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
+import FeaturedPosts from "@/app/(blog)/blog/components/FeaturedPosts";
+import { fetchAllPosts } from "@/app/actions/post";
+import { useEffect, useState } from "react";
+import { Post } from "@/types";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -17,20 +17,20 @@ const fadeInUp = {
 };
 
 export default function LandingContent() {
-   const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
-      const getPosts = async () => {
-        try {
-          const posts = await fetchAllPosts();
-          setPosts(posts);
-        } catch (err) {
-          console.error("Failed to fetch posts:", err);
-        }
-      };
-  
-      getPosts();
-    }, []);
+    const getPosts = async () => {
+      try {
+        const posts = await fetchAllPosts();
+        setPosts(posts);
+      } catch (err) {
+        console.error("Failed to fetch posts:", err);
+      }
+    };
+
+    getPosts();
+  }, []);
 
   const featured = posts.slice(0, 2);
   return (
@@ -75,8 +75,9 @@ export default function LandingContent() {
           Clients sign in 3 taps — no weird links or extra steps. Waivify is the
           modern tool they wish you had.
         </p>
+    
         <SignedOut>
-          <SignInButton mode='modal'>
+          <SignInButton  mode='modal' >
             <button className=' bg-teal-500 px-6 py-3 rounded-lg text-white text-lg hover:bg-teal-400 transition'>
               Create Your First Waiver – Free
             </button>
@@ -361,8 +362,8 @@ export default function LandingContent() {
         <h2 className='text-3xl font-semibold mb-6 text-teal-400'>
           Featured Posts
         </h2> */}
-        {/* <FeaturedPosts posts={featured} /> */}
-        {/* <div className='grid md:grid-cols-3 gap-6 text-left'>
+      {/* <FeaturedPosts posts={featured} /> */}
+      {/* <div className='grid md:grid-cols-3 gap-6 text-left'>
           {[
             {
               title: "What Makes a Waiver Legally Binding?",

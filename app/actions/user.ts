@@ -34,6 +34,7 @@ export async function createUser({
       },
       update: {},
     });
+
     return newUser;
   } catch (error) {
     console.error(error);

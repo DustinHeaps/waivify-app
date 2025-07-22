@@ -32,7 +32,6 @@ export async function POST(req: Request) {
   const payload = await req.json();
   const body = JSON.stringify(payload);
 
-
   let evt: WebhookEvent;
 
   // Verify payload with headers
@@ -50,17 +49,16 @@ export async function POST(req: Request) {
   }
 
   const eventType = evt.type;
-  
+
   if (eventType === "user.created") {
     const { id, email_addresses, first_name } = evt.data;
-   
 
+  
     await createUser({
       clerkId: id,
       email: email_addresses[0]?.email_address || "",
       name: first_name || "",
     });
-   
   }
   return new Response("Webhook received", { status: 200 });
 }
