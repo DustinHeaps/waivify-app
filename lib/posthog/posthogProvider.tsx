@@ -20,7 +20,7 @@ export default function PostHogProvider({
             (ph as any).loadWebVitals?.();
           },
         });
-        posthog.capture("page_loaded");
+        posthog.capture("$pageview");
       });
     }
   }, []);
