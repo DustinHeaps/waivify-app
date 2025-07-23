@@ -1,8 +1,14 @@
 "use client";
 
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import { usePathname } from "next/navigation";
 
 export default function ClerkButtons() {
+  const pathname = usePathname();
+  
+  // ❌ Don't render anything on /blog routes
+  if (pathname?.startsWith("/blog")) return null;
+
   return (
     <div className='absolute top-6 right-6 z-50'>
       <SignedOut>

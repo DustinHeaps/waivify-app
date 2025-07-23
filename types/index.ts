@@ -31,4 +31,6 @@ export type Post = {
   tags: string[];
   image: string;
   featured: boolean;
+  readTime?: number;
+  publishedAt: string;
 };

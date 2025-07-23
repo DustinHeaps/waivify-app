@@ -8,6 +8,8 @@ import MdxImage from "@/app/(blog)/blog/components/MDXImage";
 
 const POSTS_PATH = path.join(process.cwd(), "app/(blog)/blog/content/posts");
 
+const wordsPerMinute = 200;
+
 export async function getPost(slug: string) {
   const filePath = path.join(
     process.cwd(),
@@ -25,19 +27,20 @@ export async function getPost(slug: string) {
     image: string;
     featured: boolean;
   }>({
-    
     source,
     options: { parseFrontmatter: true },
     components: {
       Image: MdxImage,
     },
   });
-
-  return { content, frontmatter };
+  const wordCount = source.split(/\s+/).length;
+  const readTime = Math.ceil(wordCount / wordsPerMinute);
+  return { content, frontmatter, readTime };
 }
 
 export async function getAllPosts() {
   const files = await fs.readdir(POSTS_PATH);
+  const now = new Date();
 
   const posts = await Promise.all(
     files
@@ -55,21 +58,33 @@ export async function getAllPosts() {
           tags: [string];
           image: string;
           featured: boolean;
+          publishedAt: string;
         }>({
           source,
           options: { parseFrontmatter: true },
           components: { Image: MdxImage },
         });
 
+        const wordCount = source.split(/\s+/).length;
+        const readTime = Math.ceil(wordCount / wordsPerMinute);
         return {
           ...frontmatter,
           slug,
+          readTime,
         };
       })
   );
 
-  // Optional: sort by date (latest first)
-  return posts.sort(
+  // ✅ Filter by publish time
+  const visiblePosts = posts.filter((post) => {
+    const publishedAt = post.publishedAt;
+    return new Date(publishedAt) <= now;
+  });
+
+  // ✅ Sort by publish date (latest first)
+  return visiblePosts.sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
 }
+
+

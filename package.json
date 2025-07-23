@@ -5,12 +5,14 @@
   "prisma": {
     "seed": "ts-node prisma/seed.cjs"
   },
+
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate"
+    
   },
   "dependencies": {
     "@clerk/nextjs": "^6.12.12",

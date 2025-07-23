@@ -1,5 +1,6 @@
 import { getPost } from "@/lib/post";
 import Image from "next/image";
+import { BackToBlog } from "../components/BackToBlogButton";
 type Props = {
   params: Promise<{ slug: string }>;
 };
@@ -36,14 +37,14 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function BlogPost({ params }: Props) {
   const { slug } = await params;
-  const { content, frontmatter } = await getPost(slug);
+  const { content, frontmatter, readTime } = await getPost(slug);
 
   return (
-    <article className='px-4 pt-10 pb-20 max-w-3xl mx-auto'>
+    <article className='bg-muted px-4 pt-10 pb-20 max-w-3xl mx-auto'>
       <h1 className='text-[2rem] font-semibold tracking-tight leading-snug mb-2 text-neutral-900'>
-        {frontmatter.title}
+        {frontmatter.title} 
       </h1>
-
+      <BackToBlog />
       {/* Meta info section */}
       <div className='text-sm text-muted-foreground mb-8 space-y-1'>
         {frontmatter.description && (
@@ -56,6 +57,7 @@ export default async function BlogPost({ params }: Props) {
             <span>📅 {new Date(frontmatter.date).toLocaleDateString()}</span>
           )}
           {frontmatter.author && <span>✍️ {frontmatter.author}</span>}
+          {readTime && <span>⏱️ {readTime} min read</span>}
           {frontmatter.tags && frontmatter.tags.length > 0 && (
             <div className='flex gap-2'>
               {frontmatter.tags.map((tag: string) => (

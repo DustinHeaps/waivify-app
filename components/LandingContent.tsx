@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import Logo from "@/public/logo.png";
 import Link from "next/link";
 import { Card, CardContent } from "./ui/card";
-import { GoogleOneTap, SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 import FeaturedPosts from "@/app/(blog)/blog/components/FeaturedPosts";
 import { fetchAllPosts } from "@/app/actions/post";
 import { useEffect, useState } from "react";

@@ -22,7 +22,7 @@ export default function BlogLayout({ children }: { children: ReactNode }) {
           href='/blog/rss.xml'
         />
       </Head>
-      <main className='min-h-screen bg-background text-foreground'>
+      <main className='min-h-screen bg-muted  text-foreground'>
         {children}
       </main>
     </>
