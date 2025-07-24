@@ -26,6 +26,7 @@ export async function getPost(slug: string) {
     tags: [string];
     image: string;
     featured: boolean;
+    publishedAt: string;
   }>({
     source,
     options: { parseFrontmatter: true },

@@ -6,8 +6,11 @@ type Props = {
 };
 export async function generateMetadata({ params }: Props) {
   const mdxSource = await getPost((await params).slug);
-  const { title, description, date, tags, author, image } =
+  const { title, description, date, tags, author, image, publishedAt } =
     mdxSource.frontmatter;
+
+    const realasedAt = new Date(publishedAt);
+    const formattedDate = realasedAt.toISOString().split("T")[0]
 
   return {
     title,
@@ -20,6 +23,7 @@ export async function generateMetadata({ params }: Props) {
       description,
       date,
       tags,
+      publishedTime: formattedDate,
       author,
       images: [image],
     },
@@ -54,7 +58,7 @@ export default async function BlogPost({ params }: Props) {
         )}
         <div className='flex flex-wrap gap-4 items-center text-xs'>
           {frontmatter.date && (
-            <span>📅 {new Date(frontmatter.date).toLocaleDateString()}</span>
+            <span>📅 {new Date(frontmatter.publishedAt).toLocaleDateString()}</span>
           )}
           {frontmatter.author && <span>✍️ {frontmatter.author}</span>}
           {readTime && <span>⏱️ {readTime} min read</span>}

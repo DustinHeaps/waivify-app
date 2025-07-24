@@ -4,8 +4,10 @@ import Image from "next/image";
 import clsx from "clsx";
 
 export default function BlogCard(props: Post) {
-  const { slug, title, description, date, image, tags, readTime, featured } =
+  const { slug, title, description, date, image, tags, readTime, publishedAt, featured } =
     props;
+    const realasedAt = new Date(publishedAt);
+    const formattedDate = realasedAt.toISOString().split("T")[0]
 
   return (
     <Link href={`/blog/${slug}`}>
@@ -38,7 +40,7 @@ export default function BlogCard(props: Post) {
             ))}
           </div>
           <span className='text-sm text-muted-foreground mt-2 block'>
-            {date}
+            {formattedDate}
           </span>
         </div>
       </div>
