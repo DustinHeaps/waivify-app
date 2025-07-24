@@ -12,7 +12,10 @@ export async function fetchAllPosts() {
   return posts;
 }
 
-export async function publishToDevto(slug: string) {
+export async function publishToDevto(
+  slug: string,
+  options?: { publish?: boolean }
+) {
   const DEVTO_API_KEY = process.env.DEVTO_API_KEY!;
   if (!DEVTO_API_KEY) throw new Error("Missing DEVTO_API_KEY");
 
@@ -29,7 +32,22 @@ export async function publishToDevto(slug: string) {
     outputFormat: "function-body",
   });
 
-  const markdown = matter.stringify(compiled.toString(), data);
+  const cleanTags = (data.tags || [])
+  .slice(0, 4)
+  .map((tag: string) =>
+    tag
+      .toLowerCase()
+      .replace(/[^a-z0-9]/gi, "") 
+  )
+  .filter(Boolean);
+
+  const markdown = content;
+
+  const baseUrl = "https://waivify.com";
+
+  const imageUrl = data.image?.startsWith("http")
+    ? data.image
+    : `${baseUrl}${data.image}`;
 
   const res = await fetch("https://dev.to/api/articles", {
     method: "POST",
@@ -40,10 +58,11 @@ export async function publishToDevto(slug: string) {
     body: JSON.stringify({
       article: {
         title: data.title || "Untitled",
-        published: false,
+        published: options?.publish ?? false,
         body_markdown: markdown,
-        tags: (data.tags || []).slice(0, 4),
+        tags: cleanTags,
         canonical_url: `https://waivify.com/blog/${data.slug || slug}`,
+        cover_image: imageUrl || undefined
       },
     }),
   });
