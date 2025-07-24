@@ -49,7 +49,7 @@ export async function publishToDevto(
     ? data.image
     : `${baseUrl}${data.image}`;
 
-    const image = "https://waivify.com/blog-images/digital-waivers.webp"
+
 
   const res = await fetch("https://dev.to/api/articles", {
     method: "POST",
@@ -64,7 +64,8 @@ export async function publishToDevto(
         body_markdown: markdown,
         tags: cleanTags,
         canonical_url: `https://waivify.com/blog/${data.slug || slug}`,
-        cover_image: image || undefined
+        cover_image: imageUrl
+        
       },
     }),
   });
