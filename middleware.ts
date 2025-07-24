@@ -12,6 +12,11 @@ const isProtectedRoute = createRouteMatcher([
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
+  const url = req.nextUrl.pathname;
+
+  // Skip confirmation page explicitly
+  if (url.startsWith("/waiver/confirmation")) return;
+
   if (isProtectedRoute(req)) await auth.protect();
 });
 
