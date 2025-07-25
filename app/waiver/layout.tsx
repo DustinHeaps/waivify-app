@@ -1,3 +1,5 @@
+"use client"
+
 import { ReactNode } from "react";
 import { Logo } from "@/components/Logo";
 import { usePathname } from "next/navigation";
