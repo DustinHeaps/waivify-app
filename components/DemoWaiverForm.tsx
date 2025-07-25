@@ -51,7 +51,7 @@ export default function SimpleWaiverForm() {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-      setShowSignupPrompt(true)
+      setShowSignupPrompt(true);
     }, 1000);
     setError("");
   };
@@ -84,7 +84,7 @@ export default function SimpleWaiverForm() {
       </div>
 
       <div>
-        <label className='flex items-center space-x-2'>
+        <label className='flex text-sm items-center space-x-2'>
           <input type='checkbox' {...register("terms" as const)} />
           <span>I agree to the terms & conditions</span>
         </label>
@@ -110,7 +110,7 @@ export default function SimpleWaiverForm() {
         )}
       </div>
       <div>
-        <label className='flex text-xs items-center space-x-2'>
+        <label className='flex text-sm items-center space-x-2'>
           <input type='checkbox' {...register("liability" as const)} />
           <span>I release liability for this service</span>
         </label>
@@ -127,6 +127,15 @@ export default function SimpleWaiverForm() {
           <p className='text-red-500 text-sm mt-1'>{signatureError}</p>
         )}
       </div>
+      <div className='mt-2 text-xs text-center text-muted-foreground'>
+        Want clients to book before signing?{" "}
+        <span className='text-blue-600 underline hover:text-blue-700 cursor-pointer'>
+          Add a Calendly link →
+        </span>
+        <div className='mt-1 text-[11px] text-gray-400 italic'>
+          (Pro feature)
+        </div>
+      </div>
       <div className='flex justify-center'>
         <button
           type='submit'
@@ -135,13 +144,12 @@ export default function SimpleWaiverForm() {
         >
           {isLoading ? "Submitting..." : "Submit Waiver"}
         </button>
-      
       </div>
       {showSignupPrompt && (
-          <p className='text-sm text-muted-foreground mt-2 text-center'>
-            Sign up to save or submit this waiver.
-          </p>
-        )}
+        <p className='text-sm text-muted-foreground mt-2 text-center'>
+          Sign up to save or submit this waiver.
+        </p>
+      )}
       {error && <p className='text-red-500 text-sm mt-2'>{error}</p>}
     </form>
   );
