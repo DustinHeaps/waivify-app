@@ -12,6 +12,7 @@ export default function ClerkButtons() {
   if (pathname?.startsWith("/sign-up")) return null;
 
   if (pathname?.startsWith("/sign-in")) return null;
+  if (pathname?.startsWith("/waiver/confirmation")) return null;
 
   if (isBlog) return null;
   return (
