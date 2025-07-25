@@ -29,7 +29,7 @@ export const metadata = {
 export default function DigitalSignaturePolicyPage() {
   return (
     <div className="max-w-3xl mx-auto py-12 px-4">
-      <h1 className='text-3xl font-bold text-teal-600 mb-6 flex items-center gap-2'>
+      <h1 className='text-3xl font-bold text-navy mb-6 flex items-center gap-2'>
         <span role='img' aria-label='pen'>
           🖋️
         </span>
@@ -54,7 +54,7 @@ export default function DigitalSignaturePolicyPage() {
               href='https://www.fdic.gov/regulations/compliance/manual/pdf/XIII-1.1.pdf'
               target='_blank'
               rel='noopener noreferrer'
-              className='text-teal-600 underline hover:text-teal-500'
+              className='text-blue-600 underline hover:text-blue-500'
             >
               U.S. Electronic Signatures in Global and National Commerce Act
               (ESIGN)
@@ -64,7 +64,7 @@ export default function DigitalSignaturePolicyPage() {
               href='https://www.uniformlaws.org/committees/community-home?CommunityKey=2c04b76c-2b7d-4399-977e-d5876ba7e034'
               target='_blank'
               rel='noopener noreferrer'
-              className='text-teal-600 underline hover:text-teal-500'
+              className='text-blue-600 underline hover:text-blue-500'
             >
               Uniform Electronic Transactions Act (UETA)
             </a>
@@ -103,7 +103,7 @@ export default function DigitalSignaturePolicyPage() {
             feel free to contact us at{" "}
             <a
               href='mailto:support@waivify.com'
-              className='text-teal-600 underline hover:text-teal-500'
+              className='text-blue-600 underline hover:text-blue-500'
             >
               support@waivify.com
             </a>

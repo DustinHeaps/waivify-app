@@ -31,7 +31,7 @@ export const metadata = {
 export default function PrivacyPage() {
   return (
     <div className='max-w-3xl mx-auto py-12 px-4'>
-      <h1 className='text-3xl font-bold text-teal-600 mb-4'>Privacy Policy</h1>
+      <h1 className='text-3xl font-bold text-navy mb-4'>Privacy Policy</h1>
       <p className='text-gray-700 mb-6'>
         This Privacy Policy explains how Waivify collects, uses, and protects
         your personal data when you use our platform.

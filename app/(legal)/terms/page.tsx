@@ -29,7 +29,7 @@ export const metadata = {
 export default function TermsPage() {
     return (
       <div className="max-w-3xl mx-auto py-12 px-4">
-        <h1 className="text-3xl font-bold text-teal-600 mb-4">Terms of Service</h1>
+        <h1 className="text-3xl font-bold text-navy mb-4">Terms of Service</h1>
         <p className="text-gray-700 mb-6">
           These Terms of Service ("Terms") govern your access to and use of Waivify’s
           services, so please read them carefully.
