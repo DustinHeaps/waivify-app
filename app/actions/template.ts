@@ -20,6 +20,7 @@ const TemplateSchema = z.object({
   ),
 });
 
+
 export async function getAllUserTemplates(userId: string) {
   const templates = await db.template.findMany({
     where: {
@@ -27,26 +28,35 @@ export async function getAllUserTemplates(userId: string) {
     },
   });
 
-  const filtered = templates.filter((template) => {
-    return !(template.isDefault && template.userId === userId);
-  });
-
   const userTemplates = templates.filter((template) => {
+    // Always include non-default templates (custom ones)
     if (!template.isDefault) return true;
 
-    const othersWithSameName = templates.filter(
-      (t) => t.isDefault && t.name === template.name && t.userId === userId
+    // Find all overrides for this default template name for this user
+    const userOverrides = templates.filter(
+      (t) =>
+        t.isDefault &&
+        t.name === template.name &&
+        t.userId === userId
     );
 
-    if (othersWithSameName.length > 0) {
+    // If this user has an override, only include it
+    if (userOverrides.length > 0) {
       return template.userId === userId;
     }
 
-    return true;
+    // Otherwise, only return the original base default (no userId)
+    return template.userId === null;
   });
 
-  return userTemplates;
+  // Optionally filter out demo template
+  const cleaned = userTemplates.filter(
+    (template) => template.id !== "cmdj26jbe0000vrwuup4pptu3"
+  );
+
+  return cleaned;
 }
+
 export async function getTemplateById(id: string) {
   return await db.template.findUnique({
     where: { id },

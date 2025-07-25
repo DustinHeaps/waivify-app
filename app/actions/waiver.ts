@@ -22,10 +22,8 @@ const WaiverSchema = z.object({
   fields: z.record(z.any()),
 });
 
-
 export async function saveWaiver(data: unknown, slug: string) {
-
-  const { userId } = await auth();
+  // const { userId } = await auth();
   const forwardedFor = (await headers()).get("x-forwarded-for");
   const ip = forwardedFor?.split(",")[0] ?? "Unknown";
 
@@ -33,7 +31,6 @@ export async function saveWaiver(data: unknown, slug: string) {
 
   const token = jwt.sign({ waiverId: id }, process.env.JWT_SECRET as string);
 
-  
   const parsed = WaiverSchema.safeParse(data);
   if (!parsed.success) {
     console.error("Zod error:", parsed.error.flatten());
@@ -45,22 +42,27 @@ export async function saveWaiver(data: unknown, slug: string) {
   if (!parsed.success) {
     throw new Error("Invalid form data");
   }
-  const business = await db.user.findFirst({
-    where: { slug: slug },
-  });
+  
 
-  if (!business) {
-    throw new Error("Business not found for this slug");
-  }
-
-
-  const waiverLimit = getWaiverLimit(business.plan || "free");
-  const currentCount = business.waiverCount || 0;
+    const business = await db.user.findFirst({
+      where: { slug: slug },
+    });
+  
 
 
-  if (currentCount >= waiverLimit) {
-    throw new Error("Waiver Limit");
-  }
+    if (!business) {
+      throw new Error("Business not found for this slug");
+    }
+  
+    const waiverLimit = getWaiverLimit(business.plan || "free");
+    const currentCount = business.waiverCount || 0;
+  
+    if (currentCount >= waiverLimit) {
+      throw new Error("Waiver Limit");
+    }
+  
+
+
 
   const waiver = await db.waiver.create({
     data: {
@@ -69,9 +71,8 @@ export async function saveWaiver(data: unknown, slug: string) {
       id,
       token,
       userId: business.id,
-      templateId: waiverData.templateId,
+      templateId: waiverData.templateId ,
       fields: waiverData.fields,
-    
     },
   });
 
@@ -80,6 +81,7 @@ export async function saveWaiver(data: unknown, slug: string) {
     distinctId: waiver.id,
   });
   await incrementWaiverUsage(slug);
+
   return waiver;
 }
 
@@ -140,7 +142,6 @@ export async function getWaiverById(waiverId: string) {
   }
 }
 
-
 export async function getWaiverByToken(token: string) {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
@@ -190,5 +191,3 @@ export async function deleteWaivers(ids: string[]) {
     return { success: false };
   }
 }
-
-

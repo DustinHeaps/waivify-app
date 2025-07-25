@@ -14,6 +14,7 @@ export async function uploadSignature(formData: FormData, waiverId: string, date
   }
 
   const name = formData.get("name") as string;
+ 
   const email = formData.get("email") as string;
   // const date = `${formData.get("date")}T00:00:00Z`;
 

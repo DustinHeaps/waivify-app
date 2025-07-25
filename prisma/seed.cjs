@@ -4,6 +4,7 @@ const { db } = require("../lib/prisma.js");
 async function main() {
   await db.template.createMany({
     data: [
+      
       {
         name: "Basic Waiver",
         description:

@@ -26,8 +26,7 @@ export async function hasAvailableWaivers(userId: string): Promise<boolean> {
 
 // --- Increment usage ---
 export async function incrementWaiverUsage(slug: string): Promise<void> {
-  
-  const dbUser = await getUserBySlug(slug)
+  const dbUser = await getUserBySlug(slug);
   if (!dbUser) return;
 
   const currentCount = dbUser.waiverCount ?? 0;
@@ -44,9 +43,8 @@ export async function resetWaiverUsage(userId: string): Promise<void> {
   });
 }
 
-
 export function getMaxCustomTemplatesByPlan(plan: string): number {
   if (plan === "pro") return 5;
   if (plan === "starter") return 1;
-  return 0; 
+  return 0;
 }

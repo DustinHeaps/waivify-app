@@ -1,17 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import SimpleWaiverForm from "@/components/DemoWaiverForm"; // update path if needed
+import SimpleWaiverForm from "@/components/DemoWaiverForm";
 import { BookmarkIcon } from "lucide-react";
 import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 import { Button } from "./ui/button";
-// import { toast } from "sonner"; // or your toast system
+
 
 export default function LandingContentV2() {
-  function handleDemoSubmit(data: any) {
-    // toast.info("This is just a demo. Sign up to save your waivers.");
-    // console.log("Demo submission:", data);
-  }
 
   return (
     <main className='bg-white text-gray-900'>

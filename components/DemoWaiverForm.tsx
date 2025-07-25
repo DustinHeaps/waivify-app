@@ -3,8 +3,11 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import SignaturePad from "react-signature-pad-wrapper";
+import { useClerk } from "@clerk/nextjs";
+import { getEmailFieldValue, getNameFieldValue } from "@/lib/utils";
+import { v4 as uuidv4 } from "uuid";
 
 const WaiverSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -24,10 +27,10 @@ const WaiverSchema = z.object({
 type FormData = z.infer<typeof WaiverSchema>;
 
 export default function SimpleWaiverForm() {
-  const [error, setError] = useState("");
+  const [formError, setFormError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [signatureError, setSignatureError] = useState("");
-  const [showSignupPrompt, setShowSignupPrompt] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -36,6 +39,8 @@ export default function SimpleWaiverForm() {
   } = useForm<FormData>({
     resolver: zodResolver(WaiverSchema),
   });
+
+  const { openSignUp } = useClerk();
 
   const sigPadRef = useRef<any>(null);
 
@@ -48,12 +53,48 @@ export default function SimpleWaiverForm() {
       setSignatureError("Signature is required.");
       return;
     }
-    setIsLoading(true);
-    setTimeout(() => {
+
+    
+    try {
+      const blob = await (await fetch(signatureDataURL)).blob();
+      const file = new File([blob], "signature.png", { type: "image/png" });
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const name = getNameFieldValue({ name: data.name });
+      formData.append("name", name as string);
+
+      const email = getEmailFieldValue({ email: data.email });
+      formData.append("email", email as string);
+
+      const waiverId = uuidv4();
+
+
+      const newWaiverData = {
+        fields: data,
+        id: waiverId,
+        name: data.name,
+        ipAddress: "192.168.1.1",
+        terms: data.terms,
+        liability: data.liability,
+        date: new Date().toISOString(),
+        templateId: "cmdj26jbe0000vrwuup4pptu3",
+        signature: signatureDataURL
+      };
+
+      
+
+
+      sessionStorage.setItem("waiverDraft", JSON.stringify(newWaiverData));
+
+      openSignUp({ forceRedirectUrl: "/dashboard" });
+    } catch (error) {
+      setFormError("Something went wrong. Please try again.");
+      console.error("Upload failed:", error);
+    } finally {
       setIsLoading(false);
-      setShowSignupPrompt(true);
-    }, 1000);
-    setError("");
+    }
   };
 
   return (
@@ -64,7 +105,7 @@ export default function SimpleWaiverForm() {
       className='max-w-md mx-auto space-y-4 p-6 border rounded bg-white shadow-md'
     >
       <div>
-        <label className='block font-semibold'>Name</label>
+        <label className='text-sm block font-semibold'>Name</label>
         <input {...register("name")} className='w-full border p-2 rounded' />
         {errors.name && (
           <p className='text-red-500 text-sm'>{errors.name.message}</p>
@@ -72,7 +113,7 @@ export default function SimpleWaiverForm() {
       </div>
 
       <div>
-        <label className='block font-semibold'>Date</label>
+        <label className='text-sm block font-semibold'>Date</label>
         <input
           type='date'
           {...register("date")}
@@ -82,24 +123,14 @@ export default function SimpleWaiverForm() {
           <p className='text-red-500 text-sm'>{errors.date.message}</p>
         )}
       </div>
-
-      <div>
-        <label className='flex text-sm items-center space-x-2'>
-          <input type='checkbox' {...register("terms" as const)} />
-          <span>I agree to the terms & conditions</span>
-        </label>
-        {errors.terms && (
-          <p className='text-red-500 text-sm'>{errors.terms.message}</p>
-        )}
-      </div>
       <div className='mb-4'>
-        <label className='text-sm font-normal text-black mb-1 block'>
+        <label className='text-sm font-semibold text-black mb-1 block'>
           Email
         </label>
         <input
           type='email'
           {...register("email" as const)}
-          className={`w-full px-3 py-2 border rounded-md shadow-sm ${
+          className={`w-full px-3 py-2 border  rounded-md shadow-sm ${
             errors.email ? "border-red-500" : "border-gray-300"
           }`}
         />
@@ -111,6 +142,16 @@ export default function SimpleWaiverForm() {
       </div>
       <div>
         <label className='flex text-sm items-center space-x-2'>
+          <input type='checkbox' {...register("terms" as const)} />
+          <span>I agree to the terms & conditions</span>
+        </label>
+        {errors.terms && (
+          <p className='text-red-500 text-sm'>{errors.terms.message}</p>
+        )}
+      </div>
+
+      <div>
+        <label className='flex text-sm items-center space-x-2'>
           <input type='checkbox' {...register("liability" as const)} />
           <span>I release liability for this service</span>
         </label>
@@ -118,8 +159,9 @@ export default function SimpleWaiverForm() {
           <p className='text-red-500 text-sm'>{errors.liability.message}</p>
         )}
       </div>
+     
       <div>
-        <label className='block font-semibold mb-1'>Signature</label>
+        <label className='text-sm block font-semibold mb-1'>Signature</label>
         <div className='border rounded'>
           <SignaturePad ref={sigPadRef} options={{ penColor: "black" }} />
         </div>
@@ -145,12 +187,8 @@ export default function SimpleWaiverForm() {
           {isLoading ? "Submitting..." : "Submit Waiver"}
         </button>
       </div>
-      {showSignupPrompt && (
-        <p className='text-sm text-muted-foreground mt-2 text-center'>
-          Sign up to save or submit this waiver.
-        </p>
-      )}
-      {error && <p className='text-red-500 text-sm mt-2'>{error}</p>}
+     
+      {formError && <p className='text-red-500 text-sm mt-2'>{formError}</p>}
     </form>
   );
 }

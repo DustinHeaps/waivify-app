@@ -120,7 +120,7 @@ export default function WaiverTable({
                         />
                       </td>
                       <td className='px-4 py-3 text-sm whitespace-nowrap '>
-                        {waiver.signature?.name}
+                        {waiver.signature?.name as string || waiver.name as string}
                       </td>
                       <td className='px-4 py-3 text-sm whitespace-nowrap'>
                         {waiver.date

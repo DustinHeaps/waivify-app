@@ -27,10 +27,7 @@ export default async function DashboardPage() {
   const waivers = await getAllWaiversByUser({ archived: false });
   const user = await getUserById();
 
-  return (
-    <Dashboard
-      plan={user?.plan as "free" | "starter" | "pro"}
-      waivers={waivers}
-    />
-  );
+  if (!user) return null;
+
+  return <Dashboard user={user} waivers={waivers} />;
 }

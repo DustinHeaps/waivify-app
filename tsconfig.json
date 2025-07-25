@@ -30,7 +30,8 @@
     "tailwind.config.ts",
     "prisma/seedTemplates.ts",
     "prisma/seed.cjs",
-    "lib/prisma.ts"
-, "scripts/publish-to-devto.ts"  ],
+    "lib/prisma.ts",
+    "scripts/publish-to-devto.ts"
+  ],
   "exclude": ["node_modules"]
 }
