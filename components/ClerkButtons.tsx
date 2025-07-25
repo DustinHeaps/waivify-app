@@ -15,6 +15,9 @@ export default function ClerkButtons() {
   if (pathname?.startsWith("/waiver/confirmation")) return null;
   if (pathname?.startsWith("/co-")) return null;
 
+  if (pathname?.startsWith("/terms")) return null;
+  if (pathname?.startsWith("/policy")) return null;
+  if (pathname?.startsWith("/privacy")) return null;
 
   if (isBlog) return null;
   return (
