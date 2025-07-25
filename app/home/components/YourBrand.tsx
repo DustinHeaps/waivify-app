@@ -17,7 +17,7 @@ export default function YourBrand({
   const hasBrand = !!logoUrl && !!companyName;
 
   return (
-    <div className='rounded-xl border p-6 shadow-sm bg-white'>
+    <div className='rounded-xl border p-6 shadow-sm bg-muted/50'>
       <h2 className='text-lg font-semibold text-gray-900 mb-2'>Your Brand</h2>
       <p className='text-sm text-gray-600 mb-4'>
         This is how your business appears on public waivers. Update your logo,
@@ -44,7 +44,7 @@ export default function YourBrand({
 
       <Link
         href='/account'
-        className='block text-center w-full bg-black text-white text-sm font-medium px-4 py-2 rounded hover:bg-gray-700'
+        className='block text-center w-full bg-[#000080] text-white text-sm font-medium px-4 py-2 rounded hover:bg-[#000080]/90 transition'
       >
         Customize Branding
       </Link>

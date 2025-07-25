@@ -4,7 +4,7 @@ export const Links = () => {
       <h2 className='text-sm font-medium text-muted-foreground'>
         Helpful Resources
       </h2>
-      <ul className='text-sm space-y-1 text-teal-500'>
+      <ul className='text-sm space-y-1 text-navy'>
         <li>
           <a href='/features' className='hover:underline'>
             Features

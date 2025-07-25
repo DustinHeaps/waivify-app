@@ -3,7 +3,7 @@ import WaiverForm from "@/components/WaiverForm";
 import WaiverLimitGuard from "@/components/PlanGuard";
 import { auth } from "@clerk/nextjs/server";
 import { markWaiverViewed } from "../actions/analytics";
-import SimpleWaiverForm from "@/components/SimpleWaiverForm";
+import SimpleWaiverForm from "@/components/DemoWaiverForm";
 import { getUserById, getUserBySlug } from "../actions/user";
 
 export const metadata = {

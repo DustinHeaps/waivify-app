@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.btn-navy {
+  @apply bg-navy text-white hover:bg-navy/85 transition;
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;

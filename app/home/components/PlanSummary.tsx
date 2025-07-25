@@ -22,8 +22,6 @@ export function PlanSummary() {
     daysLeft = diff > 0 ? diff : 0;
   }
 
-
-
   useEffect(() => {
     if (!user?.id) return;
 
@@ -45,14 +43,14 @@ export function PlanSummary() {
       })
     : "N/A";
 
-    const planDisplay = {
-      free: { label: "Free", emoji: "🎟️" },
-      starter: { label: "Starter", emoji: "🚀" },
-      pro: { label: "Pro", emoji: "🏆" },
-    };
+  const planDisplay = {
+    free: { label: "Free", emoji: "🎟️" },
+    starter: { label: "Starter", emoji: "🚀" },
+    pro: { label: "Pro", emoji: "🏆" },
+  };
 
   return (
-    <div className='border rounded-xl p-6 w-full bg-white shadow-sm'>
+    <div className='border rounded-xl p-6 w-full bg-muted/50 shadow-sm'>
       <h3 className='text-md font-semibold mb-4'>Plan Summary</h3>
 
       <div className='space-y-2 text-sm'>
@@ -79,7 +77,7 @@ export function PlanSummary() {
 
       <Link
         href={"/billing"}
-        className='mt-4 block w-full bg-black text-white py-2 rounded-md text-sm font-medium text-center hover:bg-gray-700 transition'
+        className='mt-4 block w-full bg-[#000080] text-white py-2 rounded-md text-sm font-medium text-center hover:bg-[#000080]/90 transition'
       >
         Manage Plan
       </Link>

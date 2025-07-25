@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     fontFamily: "Helvetica",
     position: "relative",
     borderBottomWidth: 4,
-    borderBottomColor: "#2563eb", // your brand blue
+    borderBottomColor: "#000080",
     borderStyle: "solid",
   },
   watermarkWrapper: {
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   brandBar: {
-    backgroundColor: "#2563eb",
+    backgroundColor: "#000080",
     height: 8,
     width: "100%",
   },

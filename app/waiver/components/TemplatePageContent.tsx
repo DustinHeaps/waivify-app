@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { TemplateSelector } from "@/components/TemplateSelector";
-import SimpleWaiverForm from "@/components/SimpleWaiverForm";
+import SimpleWaiverForm from "@/components/DemoWaiverForm";
 import { JsonValue } from "@prisma/client/runtime/library";
-import WaiverForm from "./WaiverForm";
+import WaiverForm from "../../../components/WaiverForm";
 import { updateUser } from "@/app/actions/user";
-import { TemplatePicker } from "./TemplatePicker";
+import { TemplatePicker } from "../../../components/TemplatePicker";
 
 type Props = {
   isOwner: boolean;

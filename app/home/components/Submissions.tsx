@@ -9,7 +9,7 @@ export function Submissions() {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
     >
-      <Card className='transition-all duration-200 py-0 h-full'>
+      <Card className='bg-muted/50 transition-all duration-200 py-0 h-full'>
         <CardContent className='p-6 md:p-8 flex flex-col justify-between h-full'>
           <div>
             <h2 className='text-base font-semibold text-gray-900'>
@@ -22,7 +22,7 @@ export function Submissions() {
           </div>
           <Link
             href='/dashboard'
-            className='mt-8 text-center inline-block bg-black text-white text-sm px-4 py-2 rounded hover:bg-gray-700'
+            className='mt-8 text-center inline-block bg-[#000080] text-white text-sm px-4 py-2 rounded hover:bg-[#000080]/90 transition'
           >
             Go to Dashboard
           </Link>

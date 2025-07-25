@@ -48,7 +48,7 @@ export default function SaveBar({
         type='button'
         onClick={handleSave}
         disabled={isSaving || (isDefaultTemplate && !canSave)}
-        className='w-full bg-primary hover:bg-primary/90 text-white py-2 rounded-md text-sm disabled:opacity-50'
+        className='w-full btn-navy py-2 rounded-md text-sm disabled:opacity-50'
       >
         {isSaving ? "Saving..." : "Save Template"}
       </button>

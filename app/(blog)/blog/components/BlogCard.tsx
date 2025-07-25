@@ -4,16 +4,25 @@ import Image from "next/image";
 import clsx from "clsx";
 
 export default function BlogCard(props: Post) {
-  const { slug, title, description, date, image, tags, readTime, publishedAt, featured } =
-    props;
-    const realasedAt = new Date(publishedAt);
-    const formattedDate = realasedAt.toISOString().split("T")[0]
+  const {
+    slug,
+    title,
+    description,
+    date,
+    image,
+    tags,
+    readTime,
+    publishedAt,
+    featured,
+  } = props;
+  const realasedAt = new Date(publishedAt);
+  const formattedDate = realasedAt.toISOString().split("T")[0];
 
   return (
     <Link href={`/blog/${slug}`}>
       <div
         className={clsx(
-          "border border-border flex flex-col h-full rounded overflow-hidden hover:shadow transition"
+          "bg-white border border-border flex flex-col h-full rounded overflow-hidden hover:shadow transition"
           // featured && "ring-2 ring-primary"
         )}
       >
@@ -39,9 +48,11 @@ export default function BlogCard(props: Post) {
               </span>
             ))}
           </div>
-          <span className='text-sm text-muted-foreground mt-2 block'>
-            {formattedDate}
-          </span>
+          <div className='mt-auto pt-4'>
+            <span className='text-sm text-muted-foreground block'>
+              {formattedDate}
+            </span>
+          </div>
         </div>
       </div>
     </Link>

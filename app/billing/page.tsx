@@ -194,8 +194,8 @@ const BillingPageContent = () => {
       )}
 
       {plans.map((p) => (
-        <Card key={p.id}>
-          <CardContent className='p-6  space-y-4'>
+        <Card className=' bg-muted/50' key={p.id}>
+          <CardContent className='p-6 space-y-4'>
             <div className='space-y-1'>
               <h2 className='text-lg font-semibold text-gray-900 dark:text-white'>
                 {p.name}

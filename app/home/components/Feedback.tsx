@@ -23,7 +23,7 @@ export function Feedback() {
   };
 
   return (
-    <div className='border rounded-lg p-4 bg-white shadow-sm'>
+    <div className='border rounded-lg p-4 bg-muted/50 shadow-sm'>
       <h2 className='text-sm font-medium mb-2'>Got Feedback?</h2>
       <form onSubmit={handleSubmit} className='space-y-2'>
         <textarea
@@ -35,7 +35,7 @@ export function Feedback() {
         <button
           type='submit'
           disabled={status === "sending" || message.trim() === ""}
-          className='block w-full text-sm px-3 py-2 bg-black text-white rounded hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed'
+          className='block w-full text-sm px-3 py-2 bg-[#000080] text-white rounded hover:bg-[#000080]/90 disabled:opacity-50 disabled:cursor-not-allowed'
         >
           {status === "sending" ? "Sending..." : "Submit Feedback"}
         </button>

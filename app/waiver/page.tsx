@@ -2,7 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { getUserById } from "../actions/user";
 
 import { getAllUserTemplates, getDefaultTemplates } from "../actions/template";
-import TemplatePageContent from "@/components/TemplatePageContent";
+import TemplatePageContent from "@/app/waiver/components/TemplatePageContent";
 
 export const metadata = {
   title: "Sign Your Waiver – Fast & Secure | Powered by Waivify",

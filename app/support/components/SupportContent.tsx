@@ -126,7 +126,7 @@ export const SupportContent = () => {
 
           <button
             type='submit'
-            className='w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-md transition'
+            className='w-full btn-navy font-semibold py-3 rounded-md '
             disabled={isSubmitting}
           >
             {isSubmitting ? "Sending..." : "Send Message"}

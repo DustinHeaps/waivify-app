@@ -1,4 +1,5 @@
 import LandingContent from "@/components/LandingContent";
+import LandingContentV2 from '@/components/LandingContentV2';
 
 export const metadata = {
   title: "Waivify – The Simple Way to Collect Digital Waivers",
@@ -7,5 +8,5 @@ export const metadata = {
 };
 
 export default function LandingPage() {
-  return <LandingContent />;
+  return <LandingContentV2 />;
 }

@@ -75,7 +75,7 @@ export default function BlogPage() {
       <a href='/' className='text-sm text-blue-600 hover:underline'>
         ← Check out Waivify
       </a>
-      <div className='bg-gradient-to-br from-teal-500 to-teal-400 text-white py-16 px-8 rounded-2xl text-center shadow-lg mb-12'>
+      <div className='bg-[#000080] text-white py-16 px-8 rounded-2xl text-center shadow-lg mb-12'>
         <h1 className='text-5xl font-bold mb-4 tracking-tight'>
           The Waivify Blog
         </h1>
@@ -125,7 +125,7 @@ export default function BlogPage() {
           <button
             onClick={() => setSelectedTag(null)}
             className={`px-3 py-1 rounded-full text-sm font-medium transition ${
-              selectedTag === null ? "bg-primary text-white" : "hover:bg-muted"
+              selectedTag === null ? "bg-navy text-white" : "hover:bg-muted"
             }`}
           >
             All
@@ -135,7 +135,7 @@ export default function BlogPage() {
               key={tag}
               onClick={() => setSelectedTag(tag)}
               className={`px-3 py-1 rounded-full text-sm font-medium transition ${
-                selectedTag === tag ? "bg-primary text-white" : "hover:bg-muted"
+                selectedTag === tag ? "bg-navy text-white" : "hover:bg-muted"
               }`}
             >
               {tag}

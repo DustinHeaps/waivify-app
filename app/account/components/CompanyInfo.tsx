@@ -8,7 +8,7 @@ import { SaveButton } from "./SaveButton";
 import { uploadFile } from "@/app/actions/account";
 import { getUserById } from "@/app/actions/user";
 import { Label } from "@/components/ui/label";
-import { slugify } from '@/lib/utils';
+import { slugify } from "@/lib/utils";
 
 export default function CompanyInfo({
   companyName,
@@ -42,15 +42,21 @@ export default function CompanyInfo({
   const handleSave = async () => {
     setStatus("saving");
     await SaveButton({ name, logo });
-    const slug = slugify(name)
-    onChange(name, logo, slug );
+    const slug = slugify(name);
+    onChange(name, logo, slug);
     setStatus("saved");
   };
 
-
+  const saveAfterUploading = async (url: string) => {
+    setStatus("saving");
+    await new Promise((resolve) => setTimeout(resolve, 10)); // wait for state update
+    await SaveButton({ name, logo: url }); // use fresh `url` directly
+    const slug = slugify(name);
+    onChange(name, url, slug);
+  };
 
   return (
-    <div className='border rounded-lg p-4 space-y-4 bg-white'>
+    <div className='border rounded-lg p-4 space-y-4 bg-muted/50'>
       <h3 className='text-sm font-semibold'>Company Info</h3>
       <p className='text-sm text-muted-foreground'>
         Customize how your brand appears on public waivers. This info shows up
@@ -63,6 +69,7 @@ export default function CompanyInfo({
             Company Name
           </Label>
           <Input
+            className='bg-white'
             id='companyName'
             value={name}
             onChange={(e) => {
@@ -74,7 +81,7 @@ export default function CompanyInfo({
         </div>
 
         <div className='space-y-2'>
-          <Label htmlFor='logo' className='text-sm font-medium'>
+          <Label htmlFor='logo' className=' text-sm font-medium'>
             Logo Upload
           </Label>
           <input
@@ -95,7 +102,10 @@ export default function CompanyInfo({
 
               try {
                 const url = await uploadFile(formData);
+
                 setLogo(url);
+                saveAfterUploading(url);
+                setStatus("saved");
               } catch (err) {
                 console.error("Upload failed", err);
               } finally {
@@ -114,8 +124,12 @@ export default function CompanyInfo({
         </div>
       </div>
 
-      <div className='flex items-center gap-4'>
-        <Button onClick={handleSave} disabled={isPending}>
+      <div className='flex items-center gap-4 '>
+        <Button
+          className='btn-navy hover:bg-navy/85 '
+          onClick={handleSave}
+          disabled={isPending || status === "uploading"}
+        >
           Save Info
         </Button>
         {status === "saving" && (

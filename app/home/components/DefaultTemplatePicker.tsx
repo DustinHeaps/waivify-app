@@ -28,13 +28,13 @@ export function DefaultTemplatePicker({ user }: { user: User }) {
             <div className='mt-4 flex gap-3'>
               <Link
                 href='/waiver'
-                className='bg-black text-white text-sm font-medium px-4 py-2 rounded hover:bg-gray-700'
+                className='btn-navy text-sm font-medium px-4 py-2 rounded '
               >
                 Choose Template
               </Link>
               <Link
                 href='/billing'
-                className='inline-block bg-white border text-sm font-medium px-4 py-2 rounded hover:bg-gray-100'
+                className='btn-secondary inline-block  text-sm font-medium px-4 py-2 rounded'
               >
                 Upgrade to Customize
               </Link>
@@ -60,19 +60,19 @@ export function DefaultTemplatePicker({ user }: { user: User }) {
             <div className='mt-4 flex gap-3'>
               <Link
                 href='/waiver'
-                className='bg-black text-white text-sm font-medium px-4 py-2 rounded hover:bg-gray-700'
+                className='btn-navy text-sm font-medium px-4 py-2 rounded '
               >
                 Choose Template
               </Link>
               <Link
                 href='/template'
-                className='bg-white border text-sm font-medium px-4 py-2 rounded hover:bg-gray-100'
+                className='bg-white border text-sm font-medium px-4 py-2 rounded hover:bg-[#000080]/10 transition'
               >
                 Edit Template
               </Link>
               <Link
                 href='/billing'
-                className='bg-white border text-sm font-medium px-4 py-2 rounded hover:bg-gray-100'
+                className='btn-secondary text-sm font-medium px-4 py-2 rounded '
               >
                 Upgrade to Pro
               </Link>
@@ -98,13 +98,13 @@ export function DefaultTemplatePicker({ user }: { user: User }) {
             <div className='mt-4 flex flex-wrap gap-3'>
               <Link
                 href='/waiver'
-                className='bg-black text-white text-sm font-medium px-4 py-2 rounded hover:bg-gray-700'
+                className='btn-navy text-sm font-medium px-4 py-2 rounded '
               >
                 Choose Template
               </Link>
               <Link
                 href='/template'
-                className='bg-white border text-sm font-medium px-4 py-2 rounded hover:bg-gray-100'
+                className='btn-secondary text-sm font-medium px-4 py-2 rounded '
               >
                 Manage Templates
               </Link>

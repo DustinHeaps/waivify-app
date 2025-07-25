@@ -58,7 +58,10 @@ export default async function WaiverConfirmationEmail({
             </Text>
             <Link
               href={`https://waivify.com/waiver/${waiver?.token}`}
-              className='text-center text-sm bg-teal-600 text-white px-5 py-2 rounded-md inline-block'
+              className='text-center text-sm text-[#000080] px-5 py-2 rounded-md inline-block'
+              style={{
+                border: "1px solid #000080",
+              }}
             >
               View Your Waiver
             </Link>

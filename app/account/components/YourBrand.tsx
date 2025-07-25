@@ -29,7 +29,7 @@ export function YourBrand({
   };
 
   return (
-    <div className='flex flex-col md:flex-row justify-between items-start gap-6 p-5 border rounded-lg bg-white shadow-sm'>
+    <div className='flex flex-col md:flex-row justify-between items-start gap-6 p-5 border rounded-lg bg-muted/50 shadow-sm'>
       <div className='flex-1 space-y-2'>
         <h2 className='text-lg font-semibold'>Your Brand</h2>
 
@@ -53,12 +53,12 @@ export function YourBrand({
           <Link
             href={publicUrl}
             target='_blank'
-            className='text-sm px-3 py-1.5 bg-black text-white rounded hover:bg-gray-700'
+            className='btn-navy text-sm px-3 py-1.5 rounded '
           >
             View Public Waiver
           </Link>
 
-          <Button variant='outline' size='sm' onClick={handleCopy}>
+          <Button className='btn-secondary text-sm hover:text-[#000080] hover:bg-opacity-10 text-[#000080]' variant='outline' size='sm' onClick={handleCopy}>
             {!copied ? "Copy Link" : "Copied"}
           </Button>
         </div>

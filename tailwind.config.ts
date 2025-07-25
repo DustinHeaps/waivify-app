@@ -76,6 +76,7 @@ const config: Config = {
         sm: "calc(var(--radius) - 4px)",
       },
       colors: {
+        navy: "#000080",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {
@@ -119,6 +120,30 @@ const config: Config = {
       },
     },
   },
-  plugins: [tailwindcssAnimate, typography],
+  plugins: [
+    tailwindcssAnimate,
+    typography,
+    function ({ addComponents }: any) {
+      addComponents({
+        ".btn-navy": {
+          backgroundColor: "#000080",
+          color: "white",
+          transition: "background-color 0.2s",
+          "&:hover": {
+            backgroundColor: "rgba(0, 0, 128, 0.85)",
+          },
+        },
+        ".btn-secondary": {
+          backgroundColor: "#fff",
+          border: "1px solid #000080",
+          color: "#000080",
+          transition: "background-color 0.2s",
+          "&:hover": {
+            backgroundColor: "rgba(0, 0, 128, 0.1)",
+          },
+        },
+      });
+    },
+  ],
 };
 module.exports = config;
