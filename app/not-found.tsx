@@ -26,7 +26,7 @@ export default async function NotFound() {
 
         <Link
           href='/home'
-          className='inline-block bg-teal-500 hover:bg-teal-600 text-white px-6 py-2 rounded mb-3 transition'
+          className='inline-block border-2 btn-secondary text-navy px-6 py-2 rounded mb-3'
         >
           Return Home
         </Link>
