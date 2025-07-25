@@ -5,7 +5,8 @@
      "schedule": "0 8 * * *"
     },
     {
-      "path": "/api/publish-devto"
+      "path": "/api/publish-devto",
+      "schedule": "0 0 1 1 *"
     }
 
   ]
