@@ -53,9 +53,8 @@ export default function TattooLandingPage() {
           Digital Tattoo Consent Forms, Done Right
         </h2>
         <p className='text-lg text-gray-600 max-w-xl mx-auto mb-8'>
-          Replace your paper release forms with secure, mobile-friendly
-          waivers. Collect signatures online — before the session or right at
-          the shop.
+          Replace your paper release forms with secure, mobile-friendly waivers.
+          Collect signatures online — before the session or right at the shop.
         </p>
         <div className='flex justify-center gap-4'>
           <SignedOut>
@@ -86,12 +85,14 @@ export default function TattooLandingPage() {
             </div>
             <div className='mt-4 mb-6 text-sm text-center text-gray-500'>
               See how easy it is for clients to sign online.{" "}
-              <Link
-                href='/sign-up'
-                className='text-[#000080] underline font-medium hover:text-opacity-80'
-              >
-                Want to save it? → Create your account
-              </Link>
+              <div>
+                <Link
+                  href='/sign-up'
+                  className='text-[#000080] underline font-medium hover:text-opacity-80'
+                >
+                  Want to save it? → Create your account
+                </Link>
+              </div>
             </div>
 
             <SimpleWaiverForm />
@@ -107,14 +108,18 @@ export default function TattooLandingPage() {
           </h3>
           <div className='grid grid-cols-1 md:grid-cols-3 gap-8 text-left'>
             <div>
-              <h4 className='font-semibold text-lg mb-2'>1. Create your waiver</h4>
+              <h4 className='font-semibold text-lg mb-2'>
+                1. Create your waiver
+              </h4>
               <p className='text-gray-600'>
                 Start with a tattoo consent template or build your own. Add age
                 verification, medical history, terms, and image release.
               </p>
             </div>
             <div>
-              <h4 className='font-semibold text-lg mb-2'>2. Share with clients</h4>
+              <h4 className='font-semibold text-lg mb-2'>
+                2. Share with clients
+              </h4>
               <p className='text-gray-600'>
                 Send a link before their appointment, or post a QR code at the
                 shop for walk-ins to sign on the spot.
@@ -146,7 +151,9 @@ export default function TattooLandingPage() {
             “I used to chase down paper waivers. Now clients sign on their
             phones, and I’ve got everything backed up instantly.”
           </p>
-          <p className='mt-2 text-sm text-gray-500'>- Jess, Black Fern Studio</p>
+          <p className='mt-2 text-sm text-gray-500'>
+            - Jess, Black Fern Studio
+          </p>
         </div>
       </section>
 
