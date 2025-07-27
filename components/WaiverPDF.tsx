@@ -174,10 +174,10 @@ export default function WaiverPDF({
             </Text>
           </View>
 
-          <View style={styles.section}>
+          {/* <View style={styles.section}>
             <Text style={styles.label}>IP Address:</Text>
             <Text style={styles.value}>{ipAddress}</Text>
-          </View>
+          </View> */}
 
           {Object.entries(fields).map(([label, value]) => {
             let displayValue = value;

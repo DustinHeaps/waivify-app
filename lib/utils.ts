@@ -17,22 +17,28 @@ function flattenValue(value: any): string {
   }
   return String(value);
 }
-
-
 export function convertToCSV(data: any[]) {
   if (data.length === 0) return "";
 
-  // Collect all unique field keys from `fields`
   const allFieldKeys = Array.from(
     new Set(data.flatMap((row) => Object.keys(row.fields || {})))
   );
 
-  const baseKeys = ["name", "date", "ipAddress", "terms", "liability", "viewedAt", "archived"];
+  const baseKeys = [
+    "name",
+    "date",
+    "ipAddress",
+    "terms",
+    "liability",
+    "viewedAt",
+    "archived",
+  ];
   const headers = [...baseKeys, ...allFieldKeys];
 
   const rows = data.map((row) => {
     const baseValues = baseKeys.map((key) => {
-      const value = row[key];
+      let value = row[key];
+      if (key === "ipAddress") return `"REDACTED"`;
       if (value === null || value === undefined) return "";
       if (typeof value === "object") return `"${JSON.stringify(value)}"`;
       return `"${String(value).replace(/"/g, '""')}"`;
@@ -49,7 +55,6 @@ export function convertToCSV(data: any[]) {
 
   return [headers.join(","), ...rows].join("\n");
 }
-
 
 export function downloadCSV(data: any[], filename = "Waivers.csv") {
   const csv = convertToCSV(data);
