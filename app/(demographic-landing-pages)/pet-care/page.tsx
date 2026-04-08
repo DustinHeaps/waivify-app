@@ -4,7 +4,8 @@ import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 
 export const metadata = {
-  title: "Pet Care Liability Waivers – Digital Forms for Groomers, Sitters & Trainers | Waivify",
+  title:
+    "Pet Care Liability Waivers – Digital Forms for Groomers, Sitters & Trainers | Waivify",
   description:
     "Create and send pet care waivers in seconds. Clients sign on their phone before the appointment. Great for groomers, trainers, pet sitters, and more.",
   keywords: [
@@ -18,14 +19,15 @@ export const metadata = {
     "pet owner consent form",
   ],
   openGraph: {
-    title: "Pet Care Liability Waivers – Digital Forms for Groomers, Sitters & Trainers | Waivify",
+    title:
+      "Pet Care Liability Waivers – Digital Forms for Groomers, Sitters & Trainers | Waivify",
     description:
       "Waivify helps pet care pros collect digital waivers and consent forms before appointments — quick, secure, and mobile-friendly.",
     url: "https://waivify.com/pet-care",
     type: "website",
     images: [
       {
-        url: "https://your-og-url.com/pet-care.png",
+        url: "https://www.waivify.com/OG-Rectangle.png",
         width: 1200,
         height: 630,
         alt: "Pet Care Waiver Form – Waivify",
@@ -34,10 +36,11 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Pet Care Liability Waivers – Digital Forms for Groomers, Sitters & Trainers | Waivify",
+    title:
+      "Pet Care Liability Waivers – Digital Forms for Groomers, Sitters & Trainers | Waivify",
     description:
       "Waivify makes it easy to collect pet care waivers — before a groom, walk, or training session. Try it free.",
-    images: ["https://your-og-url.com/pet-care.png"],
+    images: ["https://www.waivify.com/OG-Square.png"],
   },
 };
 
@@ -54,7 +57,8 @@ export default function PetCareLandingPage() {
           Digital Waivers for Pet Care Professionals
         </h2>
         <p className='text-lg text-gray-600 max-w-xl mx-auto mb-8'>
-          Get waivers signed before any groom, walk, or visit. Pet owners sign on their phone, and you get a PDF instantly.
+          Get waivers signed before any groom, walk, or visit. Pet owners sign
+          on their phone, and you get a PDF instantly.
         </p>
         <div className='flex justify-center gap-4'>
           <SignedOut>
@@ -84,7 +88,8 @@ export default function PetCareLandingPage() {
               </h3>
             </div>
             <div className='mt-4 mb-6 text-sm text-center text-gray-500'>
-              This is a live demo of what pet owners would fill out before a visit.{" "}
+              This is a live demo of what pet owners would fill out before a
+              visit.{" "}
               <div>
                 <Link
                   href='/sign-up'
@@ -112,7 +117,8 @@ export default function PetCareLandingPage() {
                 1. Start with a waiver template
               </h4>
               <p className='text-gray-600'>
-                Use our ready-made pet care liability forms or customize your own with pet details, risks, and terms.
+                Use our ready-made pet care liability forms or customize your
+                own with pet details, risks, and terms.
               </p>
             </div>
             <div>
@@ -120,7 +126,8 @@ export default function PetCareLandingPage() {
                 2. Send it before the appointment
               </h4>
               <p className='text-gray-600'>
-                Share via text or email — or have pet parents sign on-site with a QR code.
+                Share via text or email — or have pet parents sign on-site with
+                a QR code.
               </p>
             </div>
             <div>
@@ -128,7 +135,8 @@ export default function PetCareLandingPage() {
                 3. Store signed PDFs automatically
               </h4>
               <p className='text-gray-600'>
-                Every waiver is saved in your dashboard with time stamps and pet owner info.
+                Every waiver is saved in your dashboard with time stamps and pet
+                owner info.
               </p>
             </div>
           </div>
@@ -145,7 +153,9 @@ export default function PetCareLandingPage() {
             “It keeps me covered without all the paper clutter.”
           </h3>
           <p className='text-gray-600 italic'>
-            “I used to print waivers for every grooming session. Now I just send a link — pet owners sign ahead of time, and I have everything saved.”
+            “I used to print waivers for every grooming session. Now I just send
+            a link — pet owners sign ahead of time, and I have everything
+            saved.”
           </p>
           <p className='mt-2 text-sm text-gray-500'>
             — Luis, Mobile Dog Groomer
@@ -159,7 +169,8 @@ export default function PetCareLandingPage() {
           Make pet care paperwork painless
         </h3>
         <p className='text-lg mb-6'>
-          Waivify helps you stay organized, professional, and protected — no clipboards required.
+          Waivify helps you stay organized, professional, and protected — no
+          clipboards required.
         </p>
 
         <SignedOut>
@@ -181,7 +192,7 @@ export default function PetCareLandingPage() {
       {/* Footer */}
       <footer className='text-navy py-10 text-center text-sm'>
         <p>
-          © {2025} Waivify ·{" "}
+          © {new Date().getFullYear()} Waivify ·{" "}
           <Link
             target='_blank'
             href='/policy'

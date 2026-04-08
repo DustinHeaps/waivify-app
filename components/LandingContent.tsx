@@ -403,7 +403,7 @@ export default function LandingContent() {
 
       <footer className='text-sm text-gray-400 text-center mt-10'>
         <p>
-          © {2025} Waivify ·{" "}
+          © {new Date().getFullYear()} Waivify ·{" "}
           <Link
             target='_blank'
             href='/policy'

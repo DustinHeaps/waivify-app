@@ -25,7 +25,7 @@ export const metadata = {
     type: "website",
     images: [
       {
-        url: "https://your-og-url.com/salon.png",
+        url: "https://www.waivify.com/OG-Rectangle.png",
         width: 1200,
         height: 630,
         alt: "Salon Waiver Form – Waivify",
@@ -37,7 +37,7 @@ export const metadata = {
     title: "Salon Consent Forms – Digital Waivers for Hairstylists & Estheticians | Waivify",
     description:
       "Waivify helps you stay legally covered and organized with mobile-friendly digital waivers for every salon service.",
-    images: ["https://your-og-url.com/salon.png"],
+    images: ["https://www.waivify.com/OG-Square.png"],
   },
 };
 
@@ -183,7 +183,7 @@ export default function SalonLandingPage() {
       {/* Footer */}
       <footer className='text-navy py-10 text-center text-sm'>
         <p>
-          © {2025} Waivify ·{" "}
+          © {new Date().getFullYear()} Waivify ·{" "}
           <Link
             target='_blank'
             href='/policy'

@@ -4,7 +4,8 @@ import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 
 export const metadata = {
-  title: "Event Participation Waivers – Digital Forms for Workshops, Classes & Retreats | Waivify",
+  title:
+    "Event Participation Waivers – Digital Forms for Workshops, Classes & Retreats | Waivify",
   description:
     "Collect event participation waivers ahead of time — clients sign on their phone. Perfect for group classes, workshops, and retreats.",
   keywords: [
@@ -18,14 +19,15 @@ export const metadata = {
     "in-person class waiver",
   ],
   openGraph: {
-    title: "Event Participation Waivers – Digital Forms for Workshops, Classes & Retreats | Waivify",
+    title:
+      "Event Participation Waivers – Digital Forms for Workshops, Classes & Retreats | Waivify",
     description:
       "Send participation waivers digitally before your workshop or class. Clients sign on their phone. You get a PDF instantly.",
     url: "https://waivify.com/events",
     type: "website",
     images: [
       {
-        url: "https://your-og-url.com/events.png",
+        url: "https://www.waivify.com/OG-Rectangle.png",
         width: 1200,
         height: 630,
         alt: "Event Participation Waiver – Waivify",
@@ -34,10 +36,11 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Event Participation Waivers – Digital Forms for Workshops, Classes & Retreats | Waivify",
+    title:
+      "Event Participation Waivers – Digital Forms for Workshops, Classes & Retreats | Waivify",
     description:
       "Waivify makes it easy to collect signed participant waivers before your next class, seminar, or group event.",
-    images: ["https://your-og-url.com/events.png"],
+    images: ["https://www.waivify.com/OG-Square.png"],
   },
 };
 
@@ -54,7 +57,8 @@ export default function EventsLandingPage() {
           Event Participation Waivers Made Easy
         </h2>
         <p className='text-lg text-gray-600 max-w-xl mx-auto mb-8'>
-          Send waivers before your class, workshop, or retreat. Participants sign on their phone — you get a signed PDF instantly.
+          Send waivers before your class, workshop, or retreat. Participants
+          sign on their phone — you get a signed PDF instantly.
         </p>
         <div className='flex justify-center gap-4'>
           <SignedOut>
@@ -112,7 +116,8 @@ export default function EventsLandingPage() {
                 1. Choose a waiver template
               </h4>
               <p className='text-gray-600'>
-                Start with a ready-made event form or create your own for your class, workshop, or seminar.
+                Start with a ready-made event form or create your own for your
+                class, workshop, or seminar.
               </p>
             </div>
             <div>
@@ -120,7 +125,8 @@ export default function EventsLandingPage() {
                 2. Share before the event
               </h4>
               <p className='text-gray-600'>
-                Email a link or post a QR code at check-in — attendees can sign right from their phone.
+                Email a link or post a QR code at check-in — attendees can sign
+                right from their phone.
               </p>
             </div>
             <div>
@@ -128,7 +134,8 @@ export default function EventsLandingPage() {
                 3. Signed copies are saved automatically
               </h4>
               <p className='text-gray-600'>
-                Each waiver is stored as a PDF in your dashboard — tied to each participant and date.
+                Each waiver is stored as a PDF in your dashboard — tied to each
+                participant and date.
               </p>
             </div>
           </div>
@@ -145,7 +152,8 @@ export default function EventsLandingPage() {
             “I send waivers with every signup link now.”
           </h3>
           <p className='text-gray-600 italic'>
-            “I run weekend workshops, and Waivify lets me handle liability forms ahead of time. No more paper clipboards or rushing at the door.”
+            “I run weekend workshops, and Waivify lets me handle liability forms
+            ahead of time. No more paper clipboards or rushing at the door.”
           </p>
           <p className='mt-2 text-sm text-gray-500'>
             — Elena, Workshop Host & Retreat Leader
@@ -159,7 +167,8 @@ export default function EventsLandingPage() {
           Get ready for your next event — stress-free
         </h3>
         <p className='text-lg mb-6'>
-          Waivify handles your waivers so you can focus on the experience, not the paperwork.
+          Waivify handles your waivers so you can focus on the experience, not
+          the paperwork.
         </p>
 
         <SignedOut>
@@ -181,7 +190,7 @@ export default function EventsLandingPage() {
       {/* Footer */}
       <footer className='text-navy py-10 text-center text-sm'>
         <p>
-          © {2025} Waivify ·{" "}
+          © {new Date().getFullYear()} Waivify ·{" "}
           <Link
             target='_blank'
             href='/policy'

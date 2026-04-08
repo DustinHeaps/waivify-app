@@ -215,7 +215,7 @@ export default function WaiverPDF({
           </View>
 
           <Text style={styles.footer}>
-            © 2025 Waivify Inc. All rights reserved.
+            © 2026 Waivify Inc. All rights reserved.
           </Text>
         </View>
       </Page>

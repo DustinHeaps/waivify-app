@@ -27,7 +27,7 @@ export const metadata = {
     type: "website",
     images: [
       {
-        url: "https://your-og-url.com/photographers.png",
+        url: "https://www.waivify.com/OG-Rectangle.png",
         width: 1200,
         height: 630,
         alt: "Photography Model Release Form – Waivify",
@@ -40,7 +40,7 @@ export const metadata = {
       "Photography Release Form – Digital Waivers for Photographers | Waivify",
     description:
       "Get signed releases before your shoot — Waivify makes it easy for photographers to stay covered and organized.",
-    images: ["https://your-og-url.com/photographers.png"],
+    images: ["https://www.waivify.com/OG-Square.png"],
   },
 };
 
@@ -193,7 +193,7 @@ export default function PhotographyLandingPage() {
       {/* Footer */}
       <footer className='text-navy py-10 text-center text-sm'>
         <p>
-          © {2025} Waivify ·{" "}
+          © {new Date().getFullYear()} Waivify ·{" "}
           <Link
             target='_blank'
             href='/policy'

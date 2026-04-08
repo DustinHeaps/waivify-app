@@ -24,7 +24,7 @@ export const metadata = {
     type: "website",
     images: [
       {
-        url: "https://your-og-url.com/tattoo.png", // Replace with actual OG image
+        url: "https://www.waivify.com/OG-Rectangle.png",
         width: 1200,
         height: 630,
         alt: "Digital Tattoo Consent Form Example – Waivify",
@@ -36,7 +36,7 @@ export const metadata = {
     title: "Tattoo Consent Form – Digital Waivers for Artists | Waivify",
     description:
       "Digital tattoo waivers that take less than 2 minutes to send and sign. Built for modern artists.",
-    images: ["https://your-og-url.com/tattoo.png"],
+    images: ["https://www.waivify.com/OG-Square.png"],
   },
 };
 
@@ -186,7 +186,7 @@ export default function TattooLandingPage() {
       {/* Footer */}
       <footer className='text-navy py-10 text-center text-sm'>
         <p>
-          © {2025} Waivify ·{" "}
+          © {new Date().getFullYear()} Waivify ·{" "}
           <Link
             target='_blank'
             href='/policy'
