@@ -55,6 +55,8 @@ export default async function ViewWaiverPage({ params }: PageProps) {
 
             if (label.toLowerCase() === "terms") {
               displayLabel = "Terms";
+            } else if (label.toLowerCase() === "email") {
+              displayLabel = "Email";
             } else if (label.toLowerCase() === "liability") {
               displayLabel = "Liability";
             }
