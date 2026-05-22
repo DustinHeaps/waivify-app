@@ -197,6 +197,9 @@ export default function WaiverPDF({
             if (label.toLowerCase() === "terms") {
               label = "Terms";
             }
+            if (label.toLowerCase() === "email") {
+              label = "Email";
+            }
             if (label.toLowerCase() === "liability") {
               label = "Liability";
             }
