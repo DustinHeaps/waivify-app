@@ -14,22 +14,30 @@ export default function PersonalTrainingContent() {
 
       {/* Hero */}
       <section className='py-24 px-6 text-center'>
-        <h2 className='text-4xl md:text-5xl font-bold mb-4'>
-          Waivers Built for Personal Trainers
+        <h2 className='text-4xl font-bold mb-4'>
+          Stop Chasing Waivers — Get Them Signed Before Every Session
         </h2>
-        <p className='text-lg text-gray-600 max-w-xl mx-auto mb-8'>
-          Send digital liability waivers before each session — clients sign on
-          their phone, and you get a signed PDF instantly. Zero paper, zero
-          friction.
+        <p className='text-xl text-gray-600 max-w-2xl mx-auto mb-4'>
+          Send waivers before sessions - without printing forms or chasing
+          clients.
+        </p>
+
+        <p className='text-lg text-gray-500 max-w-2xl mx-auto mb-8'>
+          Clients sign on their phone, and you get signed PDFs instantly.
         </p>
         <div className='flex justify-center gap-4'>
-          <SignedOut>
-            <SignInButton mode='modal'>
-              <Button className='bg-[#000080] text-base text-white px-6 py-6 rounded-xl hover:bg-opacity-90 transition'>
-                Try It Free
-              </Button>
-            </SignInButton>
-          </SignedOut>
+          <div className='flex items-center flex-col'>
+            <SignedOut>
+              <SignInButton mode='modal'>
+                <Button className='bg-[#000080] text-base text-white px-6 py-6 rounded-xl hover:bg-opacity-90 transition'>
+                  Create Your First Waiver
+                </Button>
+              </SignInButton>
+              <p className='text-sm text-muted-foreground mt-3'>
+                No signup required to try the demo.
+              </p>
+            </SignedOut>
+          </div>
           <SignedIn>
             <Link href='/home'>
               <button className='btn-navy px-4 py-2 rounded'>
@@ -109,7 +117,8 @@ export default function PersonalTrainingContent() {
             Trusted by coaches & fitness pros
           </p>
           <h3 className='text-xl font-semibold mb-6'>
-            “It’s one less thing I have to manage.”
+            “I stopped chasing clients for waivers — everything is signed before
+            sessions now.”
           </h3>
           <p className='text-gray-600 italic'>
             “Waivify keeps my forms organized, and my clients love how easy it
