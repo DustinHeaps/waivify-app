@@ -53,7 +53,7 @@ export default function Dashboard({ waivers, user }: Props) {
   );
 
   useEffect(() => {
-    // if (!user) return;
+    if (!user) return;
 
     const saveDraft = async () => {
       const draft = sessionStorage.getItem("waiverDraft");
