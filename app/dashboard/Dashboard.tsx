@@ -22,6 +22,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { User } from "@prisma/client";
 import { uploadSignature } from "../actions/signature";
+import { useRouter } from "next/navigation";
 
 type Props = {
   waivers: Waiver[];
@@ -51,6 +52,8 @@ export default function Dashboard({ waivers, user }: Props) {
     searchQuery,
     dateFilter,
   );
+
+  const router = useRouter();
 
   useEffect(() => {
     if (!user) return;
@@ -85,6 +88,7 @@ export default function Dashboard({ waivers, user }: Props) {
         sessionStorage.removeItem("waiverDraft");
 
         setShowBanner(true);
+        router.refresh();
       } catch (err) {
         console.error("Failed to save waiver:", err);
       }
