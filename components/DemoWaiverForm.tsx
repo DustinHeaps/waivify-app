@@ -5,7 +5,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useRef, useState } from "react";
 import SignaturePad from "react-signature-pad-wrapper";
-import { useClerk } from "@clerk/nextjs";
+import { useClerk, useAuth } from "@clerk/nextjs";
 import { getEmailFieldValue, getNameFieldValue } from "@/lib/utils";
 import { v4 as uuidv4 } from "uuid";
 
@@ -54,7 +54,6 @@ export default function DemoWaiverForm() {
       return;
     }
 
-    
     try {
       const blob = await (await fetch(signatureDataURL)).blob();
       const file = new File([blob], "signature.png", { type: "image/png" });
@@ -70,7 +69,6 @@ export default function DemoWaiverForm() {
 
       const waiverId = uuidv4();
 
-
       const newWaiverData = {
         fields: data,
         id: waiverId,
@@ -80,11 +78,8 @@ export default function DemoWaiverForm() {
         liability: data.liability,
         date: new Date().toISOString(),
         templateId: "cmdj26jbe0000vrwuup4pptu3",
-        signature: signatureDataURL
+        signature: signatureDataURL,
       };
-
-      
-
 
       sessionStorage.setItem("waiverDraft", JSON.stringify(newWaiverData));
 
@@ -96,6 +91,8 @@ export default function DemoWaiverForm() {
       setIsLoading(false);
     }
   };
+
+  const { isSignedIn } = useAuth();
 
   return (
     <form
@@ -159,11 +156,15 @@ export default function DemoWaiverForm() {
           <p className='text-red-500 text-sm'>{errors.liability.message}</p>
         )}
       </div>
-     
+
       <div>
         <label className='text-sm block font-semibold mb-1'>Signature</label>
         <div className='border rounded'>
-          <SignaturePad ref={sigPadRef} height={150} options={{ penColor: "black" }} />
+          <SignaturePad
+            ref={sigPadRef}
+            height={150}
+            options={{ penColor: "black" }}
+          />
         </div>
         {signatureError && (
           <p className='text-red-500 text-sm mt-1'>{signatureError}</p>
@@ -182,12 +183,16 @@ export default function DemoWaiverForm() {
         <button
           type='submit'
           className='btn-navy px-6 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed'
-          disabled={isLoading}
+          disabled={isLoading || isSignedIn}
         >
-          {isLoading ? "Submitting..." : "Submit Waiver"}
+          {isSignedIn
+            ? "Already Signed In"
+            : isLoading
+              ? "Submitting..."
+              : "Submit Waiver"}
         </button>
       </div>
-     
+
       {formError && <p className='text-red-500 text-sm mt-2'>{formError}</p>}
     </form>
   );

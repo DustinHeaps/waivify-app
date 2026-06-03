@@ -49,7 +49,7 @@ export default function Dashboard({ waivers, user }: Props) {
   const filteredWaivers = useFilteredWaivers(
     waiverList,
     searchQuery,
-    dateFilter
+    dateFilter,
   );
 
   useEffect(() => {
@@ -64,7 +64,7 @@ export default function Dashboard({ waivers, user }: Props) {
         const { signature, ...waiverWithoutSignature } = waiverData;
         const newWaiver = await saveWaiver(
           { ...waiverWithoutSignature, userId: user.id },
-          user.slug as string
+          user.slug as string,
         );
 
         // Convert base64 to File like in onSubmit
@@ -79,14 +79,12 @@ export default function Dashboard({ waivers, user }: Props) {
         const newSignature = await uploadSignature(
           formData,
           newWaiver.id,
-          waiverData.date
+          waiverData.date,
         );
 
         sessionStorage.removeItem("waiverDraft");
 
-          setShowBanner(true);
-          setTimeout(() => setShowBanner(false), 7500);
-        
+        setShowBanner(true);
       } catch (err) {
         console.error("Failed to save waiver:", err);
       }
@@ -190,16 +188,44 @@ export default function Dashboard({ waivers, user }: Props) {
         </p>
 
         {showBanner && (
-          <Link href='/home'>
-            <motion.div
-              initial={{ opacity: 0, y: -6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              className='mt-4 mb-6 rounded-md border border-green-300 bg-green-50 px-4 py-3 text-sm text-green-800'
-            >
-              <span>✅ Your demo waiver has been saved! Go to Home →</span>
-            </motion.div>
-          </Link>
+          <motion.div
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            className='mt-5 mb-8 rounded-2xl border border-green-200 bg-green-50 p-6'
+          >
+            <div className='flex flex-col md:flex-row md:items-center md:justify-between gap-5'>
+              <div>
+                <p className='text-sm font-medium text-green-700 mb-1'>
+                  Demo waiver saved
+                </p>
+
+                <h2 className='text-2xl font-bold text-green-950'>
+                  Your first waiver has been saved.
+                </h2>
+
+                <p className='mt-2 text-sm text-green-800 max-w-2xl'>
+                  Every signed waiver from your clients will appear here
+                  automatically. Next, choose a template and create your public
+                  waiver link.
+                </p>
+              </div>
+
+              <div className='flex flex-col sm:flex-row gap-3 shrink-0'>
+                <Link href='/home' onClick={() => setShowBanner(false)}>
+                  <Button className='bg-[#000080] text-white hover:bg-[#000080]/90'>
+                    Continue Setup
+                  </Button>
+                </Link>
+
+                <Link href='/waiver' onClick={() => setShowBanner(false)}>
+                  <Button variant='outline' className='bg-white'>
+                    Pick Your Waiver Template
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </motion.div>
         )}
       </div>
 

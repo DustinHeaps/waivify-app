@@ -31,12 +31,20 @@ export default function PersonalTrainingContent() {
           <span>✓ Collect signatures</span>
           <span>✓ Download signed PDFs</span>
         </div>
-
-        <a href='#demo'>
-          <Button className='bg-[#000080] text-base text-white px-6 py-6 rounded-xl hover:bg-opacity-90 transition'>
-            Try the Live Demo
-          </Button>
-        </a>
+        <SignedOut>
+          <a href='#demo'>
+            <Button className='bg-[#000080] text-base text-white px-6 py-6 rounded-xl hover:bg-opacity-90 transition'>
+              Try the Live Demo
+            </Button>
+          </a>
+        </SignedOut>
+        <SignedIn>
+          <Link href='/home'>
+            <Button className='bg-[#000080] text-base text-white px-6 py-6 rounded-xl hover:bg-opacity-90 transition'>
+             Go to Home Page
+            </Button>
+          </Link>
+        </SignedIn>
 
         <p className='text-sm text-muted-foreground mt-3'>
           No signup required.
@@ -57,7 +65,7 @@ export default function PersonalTrainingContent() {
               </p>
             </div>
 
-            <DemoWaiverForm />
+            <DemoWaiverForm  />
           </div>
 
           <a

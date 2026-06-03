@@ -13,7 +13,7 @@ export function DefaultTemplatePicker({ user }: { user: User }) {
         {plan === "free" && (
           <div className='rounded-xl border bg-muted/50 p-6 shadow-sm'>
             <h3 className='font-semibold text-sm text-gray-900 mb-2 flex items-center gap-1'>
-              Limited Customization Active 🔒
+              Free Plan Active
             </h3>
             <p className='text-sm text-gray-700 mb-4'>
               You're currently using the default waiver template. Upgrade to
