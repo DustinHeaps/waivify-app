@@ -26,7 +26,7 @@ const WaiverSchema = z.object({
 
 type FormData = z.infer<typeof WaiverSchema>;
 
-export default function SimpleWaiverForm() {
+export default function DemoWaiverForm() {
   const [formError, setFormError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [signatureError, setSignatureError] = useState("");
@@ -102,7 +102,7 @@ export default function SimpleWaiverForm() {
       method='post'
       noValidate
       onSubmit={handleSubmit(onSubmit)}
-      className='max-w-md mx-auto space-y-4 p-6 border rounded bg-white shadow-md'
+      className='max-w-sm mx-auto space-y-2.5 p-4 border rounded bg-white shadow-md'
     >
       <div>
         <label className='text-sm block font-semibold'>Name</label>
@@ -123,7 +123,7 @@ export default function SimpleWaiverForm() {
           <p className='text-red-500 text-sm'>{errors.date.message}</p>
         )}
       </div>
-      <div className='mb-4'>
+      <div>
         <label className='text-sm font-semibold text-black mb-1 block'>
           Email
         </label>
@@ -163,7 +163,7 @@ export default function SimpleWaiverForm() {
       <div>
         <label className='text-sm block font-semibold mb-1'>Signature</label>
         <div className='border rounded'>
-          <SignaturePad ref={sigPadRef} options={{ penColor: "black" }} />
+          <SignaturePad ref={sigPadRef} height={150} options={{ penColor: "black" }} />
         </div>
         {signatureError && (
           <p className='text-red-500 text-sm mt-1'>{signatureError}</p>
