@@ -214,13 +214,13 @@ export async function getWeeklyWaiverDays() {
 }
 
 export async function log404(path: string) {
-  trackEvent({
-    event: "404_page_view",
-    distinctId: "server",
-    properties: {
-      path,
-    },
-  });
+  // trackEvent({
+  //   event: "404_page_view",
+  //   distinctId: "server",
+  //   properties: {
+  //     path,
+  //   },
+  // });
 }
 
 export async function markWaiverViewed(page: string) {
