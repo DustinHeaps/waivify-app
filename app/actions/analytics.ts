@@ -224,10 +224,10 @@ export async function log404(path: string) {
 }
 
 export async function markWaiverViewed(page: string) {
-  await trackEvent({
-    event: "waiver_viewed",
-    distinctId: page,
-  });
+  // await trackEvent({
+  //   event: "waiver_viewed",
+  //   distinctId: page,
+  // });
 
   //   await db.waiver.update({
   //     where: { id: waiverId },
